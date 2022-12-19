@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 
+#include <vector>
+
 #define TIMEOUT  10000 //10 * 1000 = 10sec
 
 //allocation statique ou dynamique (pollfd)
@@ -22,14 +24,14 @@
  */
 int ft_socket()
 {
-	int sockfd = socket(AF_INET6, SOCK_STREAM | SOCK_NONBLOCK, 0); //IPPROTO_TCP?
+	int sockfd = socket(AF_INET6, SOCK_STREAM | SOCK_NONBLOCK, 0);
 	if (sockfd == -1)
 	{
 		std::cerr << "Error while using socket" << std::endl;
 		return (-1);
 	}
 	
-	int opt = 1; //what opt shall I choose?
+	int opt = 1;
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
 	{
 		std::cerr << "Error while using setsockopt" << std::endl;
@@ -54,7 +56,7 @@ int	ft_bind(int sockfd, const char *port)
 
 	hints.ai_family = AF_UNSPEC; // Allow IPv4 or IPv6
 	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = getprotobyname("TCP")->p_proto; //IPPROTO_TCP?
+	hints.ai_protocol = getprotobyname("TCP")->p_proto;
 	hints.ai_flags = AI_NUMERICHOST | AI_PASSIVE;	
 	hints.ai_canonname = NULL;
 	hints.ai_addr = NULL;
@@ -99,26 +101,31 @@ int	init_server(const char *port)
 	return sockfd;
 }
 
-void accept_new_connections(struct pollfd fds[], int *nfds, int sockfd)
+void accept_new_connections(std::vector<pollfd> fds, int *nfds, int sockfd)
 {
 	while (1)
 	{
 		int new_fd = accept(sockfd, NULL, NULL);
 		if (new_fd == -1)
 			break;
-		fds[*nfds].fd = new_fd;
-		fds[*nfds].events = POLLIN; //shall I use other events?
-		(*nfds)++;
+		std::cout << "Amazing" << std::endl;
+		pollfd tmp;
+		tmp.fd = new_fd;
+		tmp.events = POLLIN | POLLOUT ;
+		fds.push_back(tmp);
 	}
 }
 
+
 int client_interactions(int sockfd)
 {
-	struct pollfd	fds[200];
+	std::vector<pollfd>	fds;
 	int	nfds = 1;
 	int ret = 0;
-
-	fds[0].fd = sockfd;
+	struct pollfd	tmp;
+	tmp.fd = sockfd;
+	tmp.events = POLLIN;
+	fds.push_back(tmp);
 	fds[0].events = POLLIN;
 	//POLLIN -> there is data to read (amazing)
 	//POLLOUT -> writing is now possible!
@@ -128,14 +135,14 @@ int client_interactions(int sockfd)
 	bool end_server = false;
 	while(!end_server)
 	{
-		if (poll(fds, nfds, TIMEOUT) <= 0) //fail or timeout
+		if (poll(fds.data(), nfds, TIMEOUT) <= 0) //fail or timeout ->timeout is not an error, just continue?
 			return -1;
 
-		for (int i = 1; i < nfds; i++)
+		for (int i = 0; i < nfds; i++)
 		{
 			if (fds[i].revents == 0)
 				continue;
-			if (fds[i].revents != POLLIN)
+			if (fds[i].revents != POLLIN)//or else?
 				return -1;
 			if (fds[i].fd == sockfd)
 			{
