@@ -29,7 +29,7 @@ debug: CXXFLAGS += $(DBFLAGS)
 debug: fclean all
 
 test: debug
-	clear && ./ft_irc
+	clear && valgrind ./ft_irc
 
 clean:
 	$(RM) $(OBJS_PATH)
