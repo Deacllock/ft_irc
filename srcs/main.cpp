@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 
-#define TIMEOUT 180000 //3 * 60 *1000 = 3mins
+#define TIMEOUT  10000 //10 * 1000 = 10sec
 
 //allocation statique ou dynamique (pollfd)
 
@@ -99,6 +99,19 @@ int	init_server(const char *port)
 	return sockfd;
 }
 
+void accept_new_connections(struct pollfd fds[], int *nfds, int sockfd)
+{
+	while (1)
+	{
+		int new_fd = accept(sockfd, NULL, NULL);
+		if (new_fd == -1)
+			break;
+		fds[*nfds].fd = new_fd;
+		fds[*nfds].events = POLLIN; //shall I use other events?
+		(*nfds)++;
+	}
+}
+
 int client_interactions(int sockfd)
 {
 	struct pollfd	fds[200];
@@ -112,23 +125,26 @@ int client_interactions(int sockfd)
 	//POLLERR -> error condition
 	//POLLHUB -> peer closed its end of the channel but may have some data to read
 	//POLLNVAL -> fd not open
-
-	while(1)
+	bool end_server = false;
+	while(!end_server)
 	{
 		if (poll(fds, nfds, TIMEOUT) <= 0) //fail or timeout
-			return (-1);
-		//never getting here
-		std::cout << "never" << std::endl;
-		//why adding server on fds?
-		while (1)
-		{
-			int new_fd = accept(sockfd, NULL, NULL);
-			if (new_fd == -1)
-				break;
-			fds[nfds].fd = new_fd;
-			fds[nfds].events = POLLIN; //shall I use other events?
-		}
+			return -1;
 
+		for (int i = 1; i < nfds; i++)
+		{
+			if (fds[i].revents == 0)
+				continue;
+			if (fds[i].revents != POLLIN)
+				return -1;
+			if (fds[i].fd == sockfd)
+			{
+				accept_new_connections(fds, &nfds, sockfd);
+				continue;
+			}
+			//read_parse_and_reply(); //can use boolean to check if I shall update fd
+		}
+		//compress_array();
 		//check new connection on server -> what about max size?
 		//for each matching fd, receive data -> moment to handle commands?
 		//if connection closed make a smart reduction of table (end of loop) + update db?
