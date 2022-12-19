@@ -1,10 +1,42 @@
 #include <arpa/inet.h>
+#include <poll.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <netdb.h>
 #include <iostream>
 
 #include <stdio.h>
+
+#define TIMEOUT 180000 //3 * 60 *1000 = 3mins
+
+//allocation statique ou dynamique (pollfd)
+
+/**
+ * @brief Generate a socket.
+ * 
+ * This function generate a non bloquant, TCP/IP(v4/v6) socket.
+ * Then specify some options to make this socket address and port reusable between two calls.
+ * 
+ * @return int Socket file descriptor value.
+ */
+int ft_socket()
+{
+	int sockfd = socket(AF_INET6, SOCK_STREAM | SOCK_NONBLOCK, 0); //IPPROTO_TCP?
+	if (sockfd == -1)
+	{
+		std::cerr << "Error while using socket" << std::endl;
+		return (-1);
+	}
+	
+	int opt = 1; //what opt shall I choose?
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+	{
+		std::cerr << "Error while using setsockopt" << std::endl;
+		return (-1);
+	}
+	return (sockfd);
+}
 
 /**
  * @brief Binds a socket file descriptor to a specific port.
@@ -47,32 +79,6 @@ int	ft_bind(int sockfd, const char *port)
 }
 
 /**
- * @brief Generate a socket.
- * 
- * This function generate a non bloquant, TCP/IP(v4/v6) socket.
- * Then specify some options to make this socket address and port reusable between two calls.
- * 
- * @return int Socket file descriptor value.
- */
-int ft_socket()
-{
-	int sockfd = socket(AF_INET6, SOCK_STREAM | SOCK_NONBLOCK, 0); //IPPROTO_TCP?
-	if (sockfd == -1)
-	{
-		std::cerr << "Error while using socket" << std::endl;
-		return (-1);
-	}
-	
-	int opt = 1; //what opt shall I choose?
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
-	{
-		std::cerr << "Error while using setsockopt" << std::endl;
-		return (-1);
-	}
-	return (sockfd);
-}
-
-/**
  * @brief Initiate a listening server.
  *
  * This function initiate a listening server using the socket, bind, listen functions.
@@ -93,10 +99,48 @@ int	init_server(const char *port)
 	return sockfd;
 }
 
+int client_interactions(int sockfd)
+{
+	struct pollfd	fds[200];
+	int	nfds = 1;
+	int ret = 0;
+
+	fds[0].fd = sockfd;
+	fds[0].events = POLLIN;
+	//POLLIN -> there is data to read (amazing)
+	//POLLOUT -> writing is now possible!
+	//POLLERR -> error condition
+	//POLLHUB -> peer closed its end of the channel but may have some data to read
+	//POLLNVAL -> fd not open
+
+	while(1)
+	{
+		if (poll(fds, nfds, TIMEOUT) <= 0) //fail or timeout
+			return (-1);
+		//never getting here
+		std::cout << "never" << std::endl;
+		//why adding server on fds?
+		while (1)
+		{
+			int new_fd = accept(sockfd, NULL, NULL);
+			if (new_fd == -1)
+				break;
+			fds[nfds].fd = new_fd;
+			fds[nfds].events = POLLIN; //shall I use other events?
+		}
+
+		//check new connection on server -> what about max size?
+		//for each matching fd, receive data -> moment to handle commands?
+		//if connection closed make a smart reduction of table (end of loop) + update db?
+		
+	}
+	return ret;
+}
+
 int main(void)
 {
 	int sockfd = init_server("6667");
 	if (sockfd == -1)
 		return (1);
-	return 0;
+	return client_interactions(sockfd);
 }
