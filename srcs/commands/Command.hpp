@@ -3,16 +3,18 @@
 
 # include <string>
 # include <vector>
+# include <iostream>
+# include <sstream>
 
 class Command
 {
 	public:
 		/* CONSTRUCTORS */
-		Command() {}
+		Command() : _cmd(0), _params(0) {}
 		Command(std::string &str) {split_str(str);}
 		Command(const Command &rhs)
 		{
-			if (this == &cmd) {return;}
+			if (this == &rhs) {return;}
 			this->_cmd = rhs.getCmd();
 			this->_params = rhs.getParams();
 		}
@@ -20,15 +22,15 @@ class Command
 
 		Command &operator=(const Command &rhs)
 		{
-			if (this == &cmd) {return;}
+			if (this == &rhs) {return *this;}
 			this->_cmd = rhs.getCmd();
 			this->_params = rhs.getParams();
 			return *this;
 		}
 
 		/* GETTER */
-		std::string &getCmd() const {return this->_cmd;}
-		std::vector<std::string> &getParams() const {return this->_params;}
+		std::string getCmd() const {return this->_cmd;}
+		std::vector<std::string> getParams() const {return this->_params;}
 
 		/* SETTER */
 		void	setCmd(std::string &cmd) {this->_cmd = cmd;}
@@ -39,12 +41,32 @@ class Command
 		std::vector<std::string> _params;
 
 		/**
-		 * Split string in command and parameters
-		 * @param {String} str, the full command taken
-		 * @return NULL
+		 * @brief Split string in command and parameters.
+		 *
+		 * @param str The full command taken
+		 * @return VOID
 		 */
-		 void	split_str(std::string &str)
+		 void	split_str(std::string str)
 		 {
+		 	std::istringstream ss(str);
+			std::string elem;
+
+			bool first = true;
+			while (getline(ss, elem, ' '))
+			{
+				if (first)
+					this->_cmd = elem;
+				else
+					this->_params.push_back(elem);
+				first = false;
+			}
+			// TEST
+			//std::cout << "CMD: " << this->_cmd << std::endl;
+			//std::cout << "PARAMS:" << std::endl;
+			//std::vector<std::string>::iterator it = this->_params.begin();
+			//std::vector<std::string>::iterator it_end = this->_params.end();
+			//for (; it < it_end; it++)
+			//	std::cout << "\t" << *it << std::endl;
 		 }
 };
 
