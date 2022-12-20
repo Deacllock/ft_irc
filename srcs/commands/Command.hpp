@@ -54,19 +54,21 @@ class Command
 			bool first = true;
 			while (getline(ss, elem, ' '))
 			{
-				if (first)
+				if (first && elem != "")
+				{
 					this->_cmd = elem;
-				else
+					first = false;
+				}
+				else if (elem != "")
 					this->_params.push_back(elem);
-				first = false;
 			}
 			// TEST
-			//std::cout << "CMD: " << this->_cmd << std::endl;
-			//std::cout << "PARAMS:" << std::endl;
-			//std::vector<std::string>::iterator it = this->_params.begin();
-			//std::vector<std::string>::iterator it_end = this->_params.end();
-			//for (; it < it_end; it++)
-			//	std::cout << "\t" << *it << std::endl;
+			/*std::cout << "CMD: {" << this->_cmd << "}" << std::endl;
+			std::cout << "PARAMS:" << std::endl;
+			std::vector<std::string>::iterator it = this->_params.begin();
+			std::vector<std::string>::iterator it_end = this->_params.end();
+			for (; it < it_end; it++)
+				std::cout << "\t{" << *it << "}" << std::endl;*/
 		 }
 };
 
