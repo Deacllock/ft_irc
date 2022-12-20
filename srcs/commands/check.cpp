@@ -1,3 +1,5 @@
+#include <cctype>
+
 bool	has_prefix(std::string msg, size_t *i)
 {
 	return true;
@@ -5,6 +7,20 @@ bool	has_prefix(std::string msg, size_t *i)
 
 bool	is_good_command(std::string msg, int *i)
 {
+	if (isdigit(msg[0]))
+		if (isdigit(msg[1]) && isdigit(msg[2]) && msg[3] == ' ')
+		{
+			*i += 4;
+			return true;
+		}
+		else
+			return false;
+	int j = 0;
+	for (; msg[j] != ' '; j++)
+		if (!isalpha(msg[j]))
+			return false;
+	*i += j;
+	
 	return true;
 }
 
@@ -15,6 +31,8 @@ bool	has_good_params(std::string msg, int *i)
 
 /**
  * @brief Check if the message has a good parsing.
+ *
+ *	For all the function called in here, check rfc-editor.org/rfc/rfc2812 2.3.1
  *
  * @param msg The extracted message.
  * @return bool
