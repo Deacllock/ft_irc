@@ -10,9 +10,8 @@
 
 #include <vector>
 
-#define TIMEOUT  10000 //10 * 1000 = 10sec
+#define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
 
-//allocation statique ou dynamique (pollfd)
 
 /**
  * @brief Generate a socket.
@@ -101,7 +100,7 @@ int	init_server(const char *port)
 	return sockfd;
 }
 
-void accept_new_connections(std::vector<pollfd> fds, int *nfds, int sockfd)
+void accept_new_connections(std::vector<pollfd> fds, int sockfd)
 {
 	while (1)
 	{
@@ -116,11 +115,9 @@ void accept_new_connections(std::vector<pollfd> fds, int *nfds, int sockfd)
 	}
 }
 
-
 int client_interactions(int sockfd)
 {
 	std::vector<pollfd>	fds;
-	int	nfds = 1;
 	int ret = 0;
 	struct pollfd	tmp;
 	tmp.fd = sockfd;
@@ -135,10 +132,10 @@ int client_interactions(int sockfd)
 	bool end_server = false;
 	while(!end_server)
 	{
-		if (poll(fds.data(), nfds, TIMEOUT) <= 0) //fail or timeout ->timeout is not an error, just continue?
+		if (poll(fds.data(), fds.size(), TIMEOUT) <= 0) //fail or timeout ->timeout is not an error, just continue?
 			return -1;
 
-		for (int i = 0; i < nfds; i++)
+		for (size_t i = 0; i < fds.size(); i++)
 		{
 			if (fds[i].revents == 0)
 				continue;
@@ -146,7 +143,7 @@ int client_interactions(int sockfd)
 				return -1;
 			if (fds[i].fd == sockfd)
 			{
-				accept_new_connections(fds, &nfds, sockfd);
+				accept_new_connections(fds, sockfd);
 				continue;
 			}
 			//read_parse_and_reply(); //can use boolean to check if I shall update fd
