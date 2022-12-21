@@ -1,9 +1,12 @@
 #ifndef SERVER
-#define SERVER
+# define SERVER
 
-#include <exception>
-#include <string>
-#include <vector>
+# define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
+# define BUFFER_SIZE 42
+
+# include <exception>
+# include <string>
+# include <vector>
 
 //#include "User.hpp"
 

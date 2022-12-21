@@ -1,18 +1,9 @@
-#include <arpa/inet.h>
-#include <poll.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <netdb.h>
-#include <iostream>
 
-#include <sstream>
-#include <vector>
+#include <iostream> //TO REMOVE
+#include <netdb.h>
+#include <poll.h>
 
 #include "Server.hpp"
-
-#define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
-#define BUFFER_SIZE 42
 
 /**
  * @brief Generate a socket.
@@ -122,7 +113,7 @@ static void accept_new_connections(std::vector<struct pollfd> *fds, const int so
  */
 static int	read_parse_and_reply(int fd)
 {
-	char	buf[BUFFER_SIZE + 1];
+	char			buf[BUFFER_SIZE + 1];
 	std::string 	msg = "";
 
 	int ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
@@ -170,9 +161,7 @@ int	Server::server_start()
  */
 int Server::client_interactions()
 {	
-	std::cout << "POLLIN " << POLLIN << std::endl;
 	std::vector<pollfd>	fds;
-
 	add_poll_connection(&fds, this->_sockfd, POLLIN);
 
 	while (true)
