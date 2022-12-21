@@ -8,7 +8,7 @@ DBFLAGS = -g
 SRCS_PATH = srcs/
 OBJS_PATH = objs/
 
-SRCS = main.cpp
+SRCS = main.cpp Server.cpp serverUtils.cpp
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
@@ -29,7 +29,7 @@ debug: CXXFLAGS += $(DBFLAGS)
 debug: fclean all
 
 test: debug
-	clear && valgrind ./ft_irc
+	clear && valgrind ./ft_irc "6667" ""
 
 clean:
 	$(RM) $(OBJS_PATH)
