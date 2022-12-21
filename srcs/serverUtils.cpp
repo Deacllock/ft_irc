@@ -124,7 +124,7 @@ static int	read_parse_and_reply(int fd)
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
 	std::cout << msg; //HERE IS PARSING TIME
-	return (0); // What shall I return ? (depends on user leaving server)
+	return (ret);
 }
 
 /**
@@ -180,15 +180,15 @@ int Server::client_interactions()
 			if (fds[i].revents == 0)
 				continue;
 
-			if (!(fds[i].revents & POLLIN) && !(fds[i].revents & POLLOUT) && !(fds[i].revents & POLLHUP))
+			if (!(fds[i].revents & POLLIN) && !(fds[i].revents & POLLOUT))
 			{
 				fds.erase(fds.begin() + (i--));	//update user db
 			}
 			else if (fds[i].fd == this->_sockfd)
 				accept_new_connections(&fds, this->_sockfd);
 
-			else
-				read_parse_and_reply(fds[i].fd); //can use boolean to check if I shall update fd
+			else if	(read_parse_and_reply(fds[i].fd) == 0)
+				fds.erase(fds.begin() + (i--)); //update user db
 		}		
 	}
 	return 0;
