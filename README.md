@@ -15,3 +15,5 @@ nc 127.0.0.1 667
 ```
 -> Shall output "Amazing" on server side
 -> Usable with ::1 as IPv6
+-> Usable with localhost
+-> Usable with network ip

@@ -6,12 +6,14 @@
 #include <netdb.h>
 #include <iostream>
 
+#include <sstream>
 #include <stdio.h>
+
 
 #include <vector>
 
 #define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
-
+#define BUFFER_SIZE 42
 
 /**
  * @brief Generate a socket.
@@ -100,61 +102,93 @@ int	init_server(const char *port)
 	return sockfd;
 }
 
-void accept_new_connections(std::vector<pollfd> fds, int sockfd)
+void	add_poll_connection(std::vector<struct pollfd> *fds, int fd, int events)
+{
+	struct pollfd tmp;
+	tmp.fd = fd;
+	tmp.events = events;
+	tmp.revents = 0;
+	fds->push_back(tmp);
+}
+
+/**
+ * @brief Accepts every connexion incoming on socket.
+ * 
+ * Generate a new file descriptor for any incoming connexion and keep it in memory.
+ * 
+ * @param fds Vector of struct pollfd as defined in man poll. 
+ * @param sockfd Server socket file descriptor.
+ */
+void accept_new_connections(std::vector<struct pollfd> *fds, const int sockfd)
 {
 	while (1)
 	{
-		int new_fd = accept(sockfd, NULL, NULL);
+		int new_fd = accept(sockfd, NULL, NULL); //accept fill other params with user info
+												 //proper time to fill a new user class
 		if (new_fd == -1)
 			break;
-		std::cout << "Amazing" << std::endl;
-		pollfd tmp;
-		tmp.fd = new_fd;
-		tmp.events = POLLIN | POLLOUT ;
-		fds.push_back(tmp);
+		add_poll_connection(fds, new_fd, POLLIN);
 	}
 }
 
-int client_interactions(int sockfd)
+int	read_parse_and_reply(int fd)
 {
+	char	buf[BUFFER_SIZE + 1];
+	std::string 	msg = "";
+
+	int ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
+	while (ret > 0)
+	{
+		buf[ret] = '\0';
+		msg += buf;
+		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
+	}
+	std::cout << msg; //HERE IS PARSING TIME
+	return (0);
+}
+
+int client_interactions(int sockfd)
+{	
 	std::vector<pollfd>	fds;
-	int ret = 0;
-	struct pollfd	tmp;
-	tmp.fd = sockfd;
-	tmp.events = POLLIN;
-	fds.push_back(tmp);
-	fds[0].events = POLLIN;
-	//POLLIN -> there is data to read (amazing)
-	//POLLOUT -> writing is now possible!
-	//POLLERR -> error condition
-	//POLLHUB -> peer closed its end of the channel but may have some data to read
-	//POLLNVAL -> fd not open
+
+	add_poll_connection(&fds, sockfd, POLLIN);
 	bool end_server = false;
+
 	while(!end_server)
 	{
-		if (poll(fds.data(), fds.size(), TIMEOUT) <= 0) //fail or timeout ->timeout is not an error, just continue?
-			return -1;
+		int ret = poll(fds.data(), fds.size(), TIMEOUT);
+		if ( ret < 0 )
+		{
+			end_server = true;
+			continue;
+		}
 
-		for (size_t i = 0; i < fds.size(); i++)
+		if (ret == 0)
+			continue;
+		
+		size_t size = fds.size();
+		for (size_t i = 0; i < size; i++, size = fds.size())
 		{
 			if (fds[i].revents == 0)
 				continue;
-			if (fds[i].revents != POLLIN)//or else?
-				return -1;
-			if (fds[i].fd == sockfd)
+			//on error close link with user or insult it?
+			if (!(fds[i].revents & POLLIN) && !(fds[i].revents & POLLOUT) && !(fds[i].revents & POLLHUP))
 			{
-				accept_new_connections(fds, sockfd);
+				fds.erase(fds.begin() + i);
+				//update user db
+				i--;
 				continue;
 			}
-			//read_parse_and_reply(); //can use boolean to check if I shall update fd
-		}
-		//compress_array();
-		//check new connection on server -> what about max size?
-		//for each matching fd, receive data -> moment to handle commands?
-		//if connection closed make a smart reduction of table (end of loop) + update db?
-		
+			if (fds[i].fd == sockfd)
+			{
+				accept_new_connections(&fds, sockfd);
+				continue;
+			}
+			read_parse_and_reply(fds[i].fd); //can use boolean to check if I shall update fd
+		}		
 	}
-	return ret;
+	//free and return?
+	return 0;
 }
 
 int main(void)
