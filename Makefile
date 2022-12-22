@@ -8,7 +8,7 @@ DBFLAGS = -g
 SRCS_PATH = srcs/
 OBJS_PATH = objs/
 
-SRCS = main.cpp Server.cpp serverUtils.cpp
+SRCS = main.cpp Server.cpp serverUtils.cpp User.cpp
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 

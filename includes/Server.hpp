@@ -5,10 +5,12 @@
 # define BUFFER_SIZE 42
 
 # include <exception>
+# include <ostream>
 # include <string>
+# include <unistd.h>
 # include <vector>
 
-//#include "User.hpp"
+#include "User.hpp"
 
 class Server
 {
@@ -17,8 +19,7 @@ class Server
         std::string             _password; // shall be encoded
         int                     _sockfd;
 
-        // std::vector<User>       _users;
-        // std::vector<User>       _connected_users;
+        std::vector<User>       _users;
         // std::vector<Channel>    _channels;
 
     public:
@@ -34,7 +35,13 @@ class Server
             public:
 				virtual const char *what() const throw();
         };
+
+        std::vector<User> getUsers() const;
+
+        void    addUser( int fd );
+        int removeUserByFd( int fd );
 };
 
+std::ostream &operator<<(std::ostream &o, Server const &rhs);
 
 #endif

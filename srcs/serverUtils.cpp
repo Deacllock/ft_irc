@@ -74,13 +74,13 @@ static int	ft_bind(int sockfd, std::string port)
  * @param fd Fd to add.
  * @param events Event mask to look for in poll function.
  */
-static void	add_poll_connection(std::vector<struct pollfd> *fds, int fd, int events)
+static void	add_poll_connection(std::vector<struct pollfd> &fds, int fd, int events)
 {
 	struct pollfd tmp;
 	tmp.fd = fd;
 	tmp.events = events;
 	tmp.revents = 0;
-	fds->push_back(tmp);
+	fds.push_back(tmp);
 }
 
 /**
@@ -91,15 +91,16 @@ static void	add_poll_connection(std::vector<struct pollfd> *fds, int fd, int eve
  * @param fds pollfd vector as defined in man poll. 
  * @param sockfd Server socket.
  */
-static void accept_new_connections(std::vector<struct pollfd> *fds, const int sockfd)
+static void accept_new_connections(Server &server, std::vector<struct pollfd> &fds, const int sockfd)
 {
-	while (true)
+	while ( true )
 	{
-		int new_fd = accept(sockfd, NULL, NULL); //accept fill other params with user info
-												 //proper time to fill a new user class
+		int new_fd = accept(sockfd, NULL, NULL);
 		if (new_fd == -1)
 			break;
-		add_poll_connection(fds, new_fd, POLLIN);
+		
+		server.addUser(new_fd);
+		add_poll_connection(fds, new_fd, POLLIN | POLLRDHUP);
 	}
 }
 
@@ -162,7 +163,7 @@ int	Server::server_start()
 int Server::client_interactions()
 {	
 	std::vector<pollfd>	fds;
-	add_poll_connection(&fds, this->_sockfd, POLLIN);
+	add_poll_connection(fds, this->_sockfd, POLLIN);
 
 	while (true)
 	{
@@ -173,6 +174,7 @@ int Server::client_interactions()
 		if (ret == 0)
 			continue;
 		
+		std::cout << "-----------------" << std::endl;
 		for (size_t size = fds.size(), i = 0; i < size; i++, size = fds.size())
 		{
 			std::cout << "fd: " << fds[i].fd << std::endl;
@@ -180,16 +182,21 @@ int Server::client_interactions()
 			if (fds[i].revents == 0)
 				continue;
 
-			if (!(fds[i].revents & POLLIN) && !(fds[i].revents & POLLOUT))
+			if (fds[i].revents != POLLIN)
 			{
+				//this->removeUserByFd(fds[i].fd);
 				fds.erase(fds.begin() + (i--));	//update user db
 			}
 			else if (fds[i].fd == this->_sockfd)
-				accept_new_connections(&fds, this->_sockfd);
+				accept_new_connections(*this, fds, this->_sockfd);
 
-			else if	(read_parse_and_reply(fds[i].fd) == 0)
-				fds.erase(fds.begin() + (i--)); //update user db
+			else if (read_parse_and_reply(fds[i].fd) == 0)
+			{
+				//this->removeUserByFd(fds[i].fd);
+				fds.erase(fds.begin() + (i--));
+			}
 		}		
+		std::cout << "-----------------" << std::endl;
 	}
 	return 0;
 }
