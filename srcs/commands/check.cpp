@@ -61,7 +61,7 @@ bool	is_space_middle(std::string msg, int *i)
 	for (; msg[j] && (msg.at(j + 1) == ':' || is_trailing(msg.substr(j + 1), &k)); j++)
 		if (!nospcrlfcl(msg.at(j)) && msg.at(j) != ':')
 			return false;
-	*i += j;
+	*i += j + 1;
 	return true;
 }
 
@@ -80,7 +80,6 @@ bool	has_good_params(std::string msg, int *i)
 
 	if (nb_space_middle > 14)
 		return false;
-	std::cout << "PASS" << std::endl;
 	if (msg.at(n) != ' ')
 		return false;
 	n++;
@@ -88,7 +87,7 @@ bool	has_good_params(std::string msg, int *i)
 		return false;
 	if (msg.at(n) == ':')
 		n++;
-	if (!is_trailing(msg.substr(n), &n))
+	if (!is_trailing(msg, &n))
 		return false;
 	*i += n;
 
@@ -114,10 +113,8 @@ bool	is_good_message(std::string msg)
 	}
 	if (!is_good_command(msg.substr(i), &i))
 		return false;
-	std::cout << "PASS command" << std::endl;
 	if (!has_good_params(msg.substr(i), &i))
 		return false;
-	std::cout << "PASS params" << std::endl;
 	if (msg.at(i) != '\r')
 		return false;
 	if (msg.at(i + 1) != '\n')
