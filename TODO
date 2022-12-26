@@ -1,0 +1,46 @@
+IRC entities (client, servers, channels) are casemapped
+each command handle its own parameter check?
+Ignore empty lines
+Max size = 512 bytes
+
+- ? and * wildcards
+- Add command numeric replies in one single class
+
+
+- PASS (1rs)
+- NICK/ USER (2nd)
+- PING/PONG?
+- OPER
+- QUIT
+
+//CHANNEL OPERATIONS
+- JOIN
+- PART
+- TOPIC
+- NAMES
+- LIST
+- INVITE
+- KICK
+
+//Server Queries and Commands
+- MOTD ?
+- HELP ?
+- INFO ?
+
+//Sending Messages
+- PRIVMSG
+- NOTICE ?
+
+//User-Based Queries
+- WHO ?
+- WHOIS ?
+
+
+//Operator Messages
+- KILL ?
+- REHASH ?
+- RESTART
+- SQUIT
+
+
+
