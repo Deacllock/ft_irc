@@ -1,5 +1,3 @@
-
-#include <iostream> //TO REMOVE
 #include <netdb.h>
 #include <poll.h>
 
@@ -124,7 +122,7 @@ static int	read_parse_and_reply(int fd)
 		msg += buf;
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
-	std::cout << msg; //HERE IS PARSING TIME
+	//std::cout << msg; //HERE IS PARSING TIME
 	return (ret);
 }
 
@@ -142,10 +140,7 @@ int	Server::server_start()
 	if (sockfd == -1 || ft_bind(sockfd, this->_port) == -1)
 		return -1;
 	if (listen(sockfd, 128) == -1)
-	{
-		std::cerr << "Error while using listen" << std::endl;
 		return -1;
-	}
 	this->_sockfd = sockfd;
 	return 0;
 }
@@ -168,35 +163,32 @@ int Server::client_interactions()
 	while (true)
 	{
 		int ret = poll(fds.data(), fds.size(), TIMEOUT);
-		if ( ret < 0 )
+		if ( ret <= 0 )
 			return -1;
 
 		if (ret == 0)
 			continue;
 		
-		std::cout << "-----------------" << std::endl;
 		for (size_t size = fds.size(), i = 0; i < size; i++, size = fds.size())
 		{
-			std::cout << "fd: " << fds[i].fd << std::endl;
-			std::cout << "revent: " << fds[i].revents << std::endl;
 			if (fds[i].revents == 0)
 				continue;
 
 			if (fds[i].revents != POLLIN)
 			{
-				//this->removeUserByFd(fds[i].fd);
-				fds.erase(fds.begin() + (i--));	//update user db
+				this->removeUserByFd(fds[i].fd);
+				fds.erase(fds.begin() + (i--));
 			}
+
 			else if (fds[i].fd == this->_sockfd)
 				accept_new_connections(*this, fds, this->_sockfd);
 
 			else if (read_parse_and_reply(fds[i].fd) == 0)
 			{
-				//this->removeUserByFd(fds[i].fd);
+				this->removeUserByFd(fds[i].fd);
 				fds.erase(fds.begin() + (i--));
 			}
-		}		
-		std::cout << "-----------------" << std::endl;
+		}
 	}
 	return 0;
 }

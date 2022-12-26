@@ -9,5 +9,5 @@ int main(int argc, char *argv[])
 		std::cerr << "Usage: ./ft_irc port password" << std::endl;
 		return (2);
 	}
-	Server(argv[1], argv[2]).client_interactions();
+	Server(argv[1], argv[2]);
 }

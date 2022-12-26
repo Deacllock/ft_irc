@@ -19,12 +19,15 @@ class Server
         std::string             _password; // shall be encoded
         int                     _sockfd;
 
-        std::vector<User>       _users;
+        std::vector<User *>       _users;
         // std::vector<Channel>    _channels;
 
     public:
+   		/*--------------- Constructors ---------------*/
         Server();
-        Server(std::string port, std::string password);
+        Server( std::string port, std::string password );
+        Server( const Server &rhs );
+        Server &operator=( const Server &rhs );
         ~Server();
 
         int	server_start();
@@ -36,10 +39,10 @@ class Server
 				virtual const char *what() const throw();
         };
 
-        std::vector<User> getUsers() const;
+        std::vector<User*> getUsers() const;
 
         void    addUser( int fd );
-        int removeUserByFd( int fd );
+        int     removeUserByFd( int fd );
 };
 
 std::ostream &operator<<(std::ostream &o, Server const &rhs);
