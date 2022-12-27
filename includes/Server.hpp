@@ -43,6 +43,7 @@ class Server
 
         void    addUser( int fd );
         int     removeUserByFd( int fd );
+        bool    checkPassword( std::string pwd );
 };
 
 std::ostream &operator<<(std::ostream &o, Server const &rhs);
