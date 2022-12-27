@@ -61,6 +61,11 @@ int Server::removeUserByFd( int fd )
 
 std::vector<User *> Server::getUsers() const	{ return this->_users; };
 
+bool    Server::checkPassword( std::string pwd )
+{
+	return (pwd.compare(this->_password) == 0);
+}
+
 std::ostream & operator<<(std::ostream &o, Server const &rhs)
 {
 	std::vector<User *> users = rhs.getUsers();

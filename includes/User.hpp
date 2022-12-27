@@ -32,6 +32,7 @@ class User
 		/*--------------- Setters ---------------*/
 		//setNickname;
 		//setUsername;
+		void	setIsConnected();
 };
 
 std::ostream &operator<<(std::ostream &o, User const &rhs);

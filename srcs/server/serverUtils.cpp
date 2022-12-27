@@ -1,6 +1,7 @@
 #include <netdb.h>
 #include <poll.h>
 
+#include "Command.hpp"
 #include "Server.hpp"
 
 /**
@@ -110,7 +111,7 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
  * @param fd User fd.
  * @return int 
  */
-static int	read_parse_and_reply(int fd)
+static int	read_parse_and_reply(Server *server, int fd)
 {
 	char			buf[BUFFER_SIZE + 1];
 	std::string 	msg = "";
@@ -122,7 +123,9 @@ static int	read_parse_and_reply(int fd)
 		msg += buf;
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
-	//std::cout << msg; //HERE IS PARSING TIME
+	std::string srv_rep = handle_input(server->, msg).getOutput();
+	if (!srv_rep.empty())
+		send(fd, srv_rep.c_str(), srv_rep.length(), MSG_DONTWAIT);
 	return (ret);
 }
 
@@ -183,7 +186,7 @@ int Server::client_interactions()
 			else if (fds[i].fd == this->_sockfd)
 				accept_new_connections(*this, fds, this->_sockfd);
 
-			else if (read_parse_and_reply(fds[i].fd) == 0)
+			else if (read_parse_and_reply(this, fds[i].fd) == 0)
 			{
 				this->removeUserByFd(fds[i].fd);
 				fds.erase(fds.begin() + (i--));

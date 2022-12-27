@@ -44,6 +44,7 @@ class Command
 
 };
 
-void instanciateCommand(Server	*server);
+void 	instanciateCommand(Server	*server);
+Command	handle_input(User *user, std::string user_input);
 
 #endif

@@ -1,4 +1,3 @@
-#include "Command.hpp"
 #include "commandHandlers.hpp"
 
 /* STATIC INSTANCIATION */
@@ -8,13 +7,7 @@ std::map<std::string, typename Command::handler_type> Command::_cmd_map;
 void instanciateCommand(Server	*server)
 {
 	Command::_server = server;
-
-	std::map<std::string, typename Command::handler_type>	cmd_map;
-	cmd_map["PASS"] = pass;
-	/* ... */
-
-	Command::_cmd_map = cmd_map;
-
+	Command::_cmd_map["PASS"] = pass;
 }
 
 /* CONSTRUCTORS */
@@ -72,4 +65,12 @@ void	Command::split_str(std::string str)
 		else if (elem != "")
 			this->_params.push_back(elem);
 	}
+}
+
+Command	handle_input(std::string user_input)
+{
+	Command c(user_input);
+	//make check;
+	c->getHandler()(c);
+	return (c);
 }

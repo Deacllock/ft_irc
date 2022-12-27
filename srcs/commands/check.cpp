@@ -38,7 +38,7 @@ bool	is_servername(std::string msg, int *i)
 	return true;
 }
 
-bool	is_other_prefix(msg, i)
+bool	is_other_prefix(std::string msg, int *i)
 {
 	//int	j = 0;
 	(void) msg;
@@ -166,3 +166,4 @@ bool	is_good_message(std::string msg)
 		return false;
 	return true;
 }
+
