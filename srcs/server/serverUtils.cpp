@@ -179,7 +179,7 @@ int Server::client_interactions()
 
 			if (fds[i].revents != POLLIN)
 			{
-				this->removeUserByFd(fds[i].fd);
+				this->removeUser(this->searchUserByFd(fds[i].fd));
 				fds.erase(fds.begin() + (i--));
 			}
 
@@ -188,7 +188,7 @@ int Server::client_interactions()
 
 			else if (read_parse_and_reply(this, fds[i].fd) == 0)
 			{
-				this->removeUserByFd(fds[i].fd);
+				this->removeUser(this->searchUserByFd(fds[i].fd));
 				fds.erase(fds.begin() + (i--));
 			}
 		}

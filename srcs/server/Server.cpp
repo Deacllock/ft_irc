@@ -45,11 +45,20 @@ void Server::addUser( int fd )
 	this->_users.push_back(new User(fd));
 }
 
-int Server::removeUserByFd( int fd )
+User    *Server::searchUserByFd( int fd )
+{
+	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
+		if ((*it)->getFd() == fd)
+			return *it;
+	return NULL;
+
+}
+
+int     Server::removeUser( User *user )
 {
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
 	{
-		if ((*it)->getFd() == fd)
+		if ((*it) == user)
 		{
 			delete *it;
 			this->_users.erase(it);
