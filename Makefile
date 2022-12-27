@@ -10,7 +10,9 @@ OBJS_PATH = objs/
 FOLDER_TO_CREATE = server commands commands/connection
 
 SRCS = main.cpp User.cpp \
-		$(addprefix server/, Server.cpp serverUtils.cpp)
+		$(addprefix server/, Server.cpp serverUtils.cpp) \
+		$(addprefix commands/, check.cpp Command.cpp \
+		$(addprefix connection/, pass.cpp))
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
@@ -34,7 +36,7 @@ debug: CXXFLAGS += $(DBFLAGS)
 debug: fclean all
 
 test: debug
-	valgrind ./ft_irc "6667" ""
+	valgrind ./ft_irc "6667" "plop"
 
 clear:
 	clear

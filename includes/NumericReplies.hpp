@@ -11,5 +11,4 @@
 # define _464(client) ERR_PASSWDMISMATCH(client)
 
 # define ERROR(data) "Error: " data
-
 #endif

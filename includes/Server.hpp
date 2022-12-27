@@ -10,7 +10,10 @@
 # include <unistd.h>
 # include <vector>
 
+#include "Command.hpp"
 #include "User.hpp"
+
+class Command;
 
 class Server
 {

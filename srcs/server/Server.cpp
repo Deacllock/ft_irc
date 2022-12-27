@@ -2,6 +2,7 @@
 
 Server::Server(): _port("6667"), _password("")
 {
+	instanciateCommand(this);
 	if (this->server_start())
 		throw CannotStartServer();
 	this->client_interactions();
@@ -9,6 +10,7 @@ Server::Server(): _port("6667"), _password("")
 
 Server::Server(std::string port, std::string password): _port(port), _password(password)
 {
+	instanciateCommand(this);
 	if (this->server_start())
 		throw CannotStartServer();
 	this->client_interactions();

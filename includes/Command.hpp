@@ -7,6 +7,8 @@
 # include "Server.hpp"
 # include "User.hpp"
 
+class Server;
+
 class Command
 {
 	public:
@@ -44,7 +46,7 @@ class Command
 
 };
 
-void 	instanciateCommand(Server	*server);
-Command	handle_input(User *user, std::string user_input);
+void 	instanciateCommand( Server *server );
+Command	handle_input( User *user, std::string user_input );
 
 #endif

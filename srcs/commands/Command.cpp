@@ -11,8 +11,8 @@ void instanciateCommand(Server	*server)
 }
 
 /* CONSTRUCTORS */
-Command::Command(): _cmd(0), _params(0), _user(0), _handler(0), _output(0) {}
-Command::Command( User *user, std::string &str ): _user(user), _output(0)
+Command::Command() {}
+Command::Command( User *user, std::string &str ): _user(user), _output("")
 { 
 	split_str(str);
 	this->_handler = this->_cmd_map[this->_cmd]; //what if not here?
@@ -67,10 +67,11 @@ void	Command::split_str(std::string str)
 	}
 }
 
-Command	handle_input(std::string user_input)
+Command	handle_input(User *user, std::string user_input)
 {
-	Command c(user_input);
+	Command c(user, user_input);
 	//make check;
-	c->getHandler()(c);
+	if (c.getHandler())
+		c.getHandler()(c);
 	return (c);
 }
