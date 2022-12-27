@@ -42,7 +42,8 @@ class Server
         std::vector<User*> getUsers() const;
 
         void    addUser( int fd );
-        int     removeUserByFd( int fd );
+        User    *searchUserByFd( int fd );
+        int     removeUser( User *user );
         bool    checkPassword( std::string pwd );
 };
 
