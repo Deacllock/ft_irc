@@ -7,18 +7,25 @@ DBFLAGS = -g
 
 SRCS_PATH = srcs/
 OBJS_PATH = objs/
+FOLDER_TO_CREATE = server commands commands/connection
 
-SRCS = main.cpp
+SRCS = main.cpp User.cpp \
+		$(addprefix server/, Server.cpp serverUtils.cpp) \
+		$(addprefix commands/, check.cpp Command.cpp \
+		$(addprefix connection/, pass.cpp))
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
 RM = rm -rf
 
-all: $(NAME)
+all: clear create_objdirs $(NAME)
 
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.cpp
-	mkdir -p $(OBJS_PATH)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+create_objdirs:
+	mkdir -p $(OBJS_PATH)
+	mkdir -p $(addprefix $(OBJS_PATH), $(FOLDER_TO_CREATE))
 
 $(NAME): $(OBJS)
 	$(CXX) $^ -o $@
@@ -29,7 +36,10 @@ debug: CXXFLAGS += $(DBFLAGS)
 debug: fclean all
 
 test: debug
-	clear && valgrind ./ft_irc
+	valgrind ./ft_irc "6667" ""
+
+clear:
+	clear
 
 clean:
 	$(RM) $(OBJS_PATH)
@@ -39,4 +49,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all debug test clean fclean re
+.PHONY: all debug clean clear create_objdirs fclean re test

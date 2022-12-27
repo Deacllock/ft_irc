@@ -1,10 +1,14 @@
-# include "commands/Command.hpp"
+#include <iostream>
 
-int main(void)
+#include "Command.hpp"
+
+int main(int argc, char *argv[])
 {
-	std::string s = "JOIN this test channel";
-	std::string s2 = "     JOIN        this test channel    ";
-	Command c(s);
-	Command c1(s2);
-	return 0;
+	if (argc != 3)
+	{
+		std::cerr << "Usage: ./ft_irc port password" << std::endl;
+		return (2);
+	}
+	Server	srv(argv[1], argv[2]);
+	instanciateCommand(&srv);
 }
