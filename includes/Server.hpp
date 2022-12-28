@@ -3,6 +3,7 @@
 
 # define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
 # define BUFFER_SIZE 42
+# define NICK_DELAY 259200 // 3 days in seconds
 
 # include <exception>
 # include <ostream>
@@ -10,8 +11,9 @@
 # include <unistd.h>
 # include <vector>
 
-#include "Command.hpp"
-#include "User.hpp"
+# include "Command.hpp"
+# include "User.hpp"
+
 
 class Command;
 

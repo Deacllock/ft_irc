@@ -166,7 +166,7 @@ int Server::client_interactions()
 	while (true)
 	{
 		int ret = poll(fds.data(), fds.size(), TIMEOUT);
-		if ( ret <= 0 )
+		if ( ret < 0 )
 			return -1;
 
 		if (ret == 0)

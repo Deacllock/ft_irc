@@ -11,8 +11,8 @@ FOLDER_TO_CREATE = server commands commands/connection
 
 SRCS = main.cpp User.cpp \
 		$(addprefix server/, Server.cpp serverUtils.cpp) \
-		$(addprefix commands/, check.cpp Command.cpp \
-		$(addprefix connection/, pass.cpp))
+		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp \
+		$(addprefix connection/, pass.cpp nick.cpp))
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 

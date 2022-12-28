@@ -1,13 +1,14 @@
 #include "commandHandlers.hpp"
 
 /* STATIC INSTANCIATION */
-Server *Command::_server;
-std::map<std::string, typename Command::handler_type> Command::_cmd_map;
+Server *Command::server;
+std::map<std::string, typename Command::handler_type> Command::cmd_map;
 
 void instanciateCommand(Server	*server)
 {
-	Command::_server = server;
-	Command::_cmd_map["PASS"] = pass;
+	Command::server = server;
+	Command::cmd_map["PASS"] = pass;
+	Command::cmd_map["NICK"] = nick;
 }
 
 /* CONSTRUCTORS */
@@ -15,7 +16,7 @@ Command::Command() {}
 Command::Command( User *user, std::string &str ): _user(user), _output("")
 { 
 	split_str(str);
-	this->_handler = this->_cmd_map[this->_cmd]; //what if not here?
+	this->_handler = this->cmd_map[this->_cmd]; //what if not here?
 }
 
 Command::Command( const Command &rhs ) { *this = rhs; }
@@ -51,7 +52,7 @@ void	Command::setOutput( std::string output )	{ this->_output = output; }
  */
 void	Command::split_str(std::string str)
 {
-	std::istringstream ss(str);
+	std::istringstream ss(str.substr(0, str.length() - 2));
 	std::string elem;
 
 	bool first = true;

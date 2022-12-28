@@ -13,8 +13,8 @@ class Command
 {
 	public:
 		typedef void (*handler_type)(Command &);
-		static Server *								_server;
-		static std::map<std::string, handler_type>	_cmd_map;
+		static Server *								server;
+		static std::map<std::string, handler_type>	cmd_map;
 
 	private:		
 		std::string 				_cmd;

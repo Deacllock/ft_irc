@@ -1,6 +1,7 @@
 #ifndef USER
 # define USER
 
+#include <ctime>
 #include <ostream>
 #include <string>
 
@@ -14,6 +15,7 @@ class User
 		bool					_isConnected;
 		std::string 			_username;
 		std::string				_nickname;
+		time_t					_lastNickChange;
 	
 	public:
 		/*--------------- Constructors ---------------*/
@@ -28,11 +30,13 @@ class User
 		bool			getIsConnected() const;
 		std::string     getUsername() const;
 		std::string     getNickname() const;
+		time_t			getLastNickChange() const;
 
 		/*--------------- Setters ---------------*/
-		//setNickname;
-		//setUsername;
-		void	setIsConnected();
+		void	setIsConnected( bool val );
+		void    setUsername( std::string user );
+		void    setNickname( std::string nick );
+		void	setLastNickChange( time_t new_time );
 };
 
 std::ostream &operator<<(std::ostream &o, User const &rhs);
