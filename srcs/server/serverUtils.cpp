@@ -128,7 +128,6 @@ static int	read_parse_and_reply(Server *server, int fd)
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
 	
-	std::cout << "My message : " << msg << std::endl;
 	if (msg.substr(0, msg.length() - 2) == "") //shall be handled later in parsing
 		return ret;
 	#ifdef DEBUG

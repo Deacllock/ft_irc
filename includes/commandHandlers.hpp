@@ -8,5 +8,6 @@ void	pass( Command &cmd );
 void	greetNewComer( Command &cmd );
 void	nick( Command &cmd );
 void	user( Command &cmd );
+void	cap(Command &cmd);
 
 #endif

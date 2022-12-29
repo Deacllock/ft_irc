@@ -10,6 +10,7 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["PASS"] = pass;
 	Command::cmd_map["NICK"] = nick;
 	Command::cmd_map["USER"] = user;
+	Command::cmd_map["CAP"] = cap;
 }
 
 /* CONSTRUCTORS */
