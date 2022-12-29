@@ -8,7 +8,7 @@ std::string rpl_created( std::string date ) { return "This server was created " 
 std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ) { return servername + " " + version + " " + user_modes + " " + channel_modes; }
 
 
-std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic };
+std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; };
 
 
 std::string err_nosuchchannel( std::string channel ) { return channel + " :No such channel"; }

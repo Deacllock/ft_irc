@@ -123,12 +123,12 @@ static int	read_parse_and_reply(Server *server, int fd)
 		msg += buf;
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
-	std::vector<std::string> srv_reps = handle_input(server->searchUserByFd(fd), msg).getOutput();
+	std::vector<std::string> srv_reps = handle_input(server->searchUserByFd(fd), msg).getOutputs();
 
 	std::vector<std::string>::iterator it = srv_reps.begin();
 	std::vector<std::string>::iterator it_end = srv_reps.end();
 	for (; it < it_end; it++)
-		send(fd, *it, *it.length(), MSG_DONTWAIT);
+		send(fd, (*it).c_str(), (*it).length(), MSG_DONTWAIT);
 	return (ret);
 }
 

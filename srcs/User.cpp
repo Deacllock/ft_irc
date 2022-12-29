@@ -4,7 +4,7 @@
 /*--------------- Constructors ---------------*/
 unsigned long	User::_ids = 0;
 
-User::User( int fd, unsigned long limit ): _fd(fd), _userId(User::_ids), _isConnected(false), _username("") , _nickname(""), _limit(limit), _joinedChan(NULL) { User::_ids++; }
+User::User( int fd, unsigned long limit ): _fd(fd), _userId(User::_ids), _isConnected(false), _username("") , _nickname(""), _limit(limit) { User::_ids++; }
 User::User( const User &rhs ): _fd(rhs._fd), _userId(rhs._userId), _username(rhs._username) { *this = rhs; }
 User::~User()
 {
@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &o, User const &rhs)
     return o;
 }
 
-bool	operator==(const User &u1, const User u2)
+bool	operator==(const User &u1, const User &u2)
 {
 	return u1.getFd() == u2.getFd() && u1.getUserId() == u2.getUserId() && u1.getUsername() == u2.getUsername() && u1.getNickname() == u2.getNickname();
 }

@@ -4,8 +4,8 @@
 /*--------------- Constructors ---------------*/
 unsigned long	Channel::_ids = 0;
 
-Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids), _name(name), _topic(topic), _limit(limit) { Channel::_ids++; this->_banned = NULL; }
-Channel::Channel( const Channel &rhs ): _id(rhs._id), _name(rhs._name), _topic(rhs._topic), _limit(rhs._limit), _banned(rhs.banned) { *this = rhs; }
+Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids), _name(name), _topic(topic), _limit(limit) { Channel::_ids++; }
+Channel::Channel( const Channel &rhs ): _id(rhs._id), _name(rhs._name), _topic(rhs._topic), _limit(rhs._limit), _banned(rhs._banned) { *this = rhs; }
 Channel::~Channel() {}
 
 Channel & Channel::operator=( const Channel &rhs )
@@ -27,12 +27,12 @@ std::vector<User>	Channel::getBanned() const		{ return this->_banned; }
 /*--------------- Setters ---------------*/
 void    Channel::setName( std::string name )       { this->_name = name; }
 void    Channel::setTopic( std::string topic )       { this->_topic = topic; }
-void	Channel::setLimit( unisgned long limit )	{ this->_limit = limit; }
+void	Channel::setLimit( unsigned long limit )	{ this->_limit = limit; }
 void	Channel::addBannedUser( User u ) {
 	std::vector<User>::iterator	it = this->_banned.begin();
 	std::vector<User>::iterator	it_end = this->_banned.end();
 	
-	for (; it < it_end; it++;)
+	for (; it < it_end; it++)
 		if (u == *it)
 			return;
 	

@@ -49,17 +49,17 @@ static bool isNicknameInUse( std::vector<User *> users, std::string nickname)
 void	nick(Command &cmd)
 {
 	if (cmd.getParams().size() < 1)
-		return cmd.setOutput(err_nonicknamegiven());
+		return cmd.addOutput(err_nonicknamegiven());
 
 	std::string nickname = cmd.getParams()[0];
 	if (!isNicknameValid(nickname))
-		cmd.setOutput(err_erroneusnickname(nickname));
+		cmd.addOutput(err_erroneusnickname(nickname));
 	
 	else if (isNicknameInUse(cmd.server->getUsers(), nickname))
-		cmd.setOutput(err_nicknameinuse(nickname));
+		cmd.addOutput(err_nicknameinuse(nickname));
 
 	else if (difftime(time(0),cmd.getUser()->getLastNickChange()) <= NICK_DELAY )
-		cmd.setOutput(err_unavailableresource(nickname));
+		cmd.addOutput(err_unavailableresource(nickname));
 
 	//ERR_RESTRICTED
 	//Sent by the server to a user upon connection to indicate

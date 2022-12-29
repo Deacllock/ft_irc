@@ -13,7 +13,7 @@ void instanciateCommand(Server	*server)
 
 /* CONSTRUCTORS */
 Command::Command() {}
-Command::Command( User *user, std::string &str ): _user(user), _outputs(NULL)
+Command::Command( User *user, std::string &str ): _user(user)
 { 
 	split_str(str);
 	this->_handler = this->cmd_map[this->_cmd]; //what if not here?

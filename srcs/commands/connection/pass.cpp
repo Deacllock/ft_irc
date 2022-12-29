@@ -14,9 +14,9 @@ void	pass(Command &cmd)
 	const char	*username = cmd.getUser()->getUsername().c_str();
 
 	if (cmd.getUser()->getUsername() != "") //what is a registred user?
-	 	cmd.setOutput(err_alreadyregistered(cmd.getUser()->getUsername().c_str()));
+	 	cmd.addOutput(err_alreadyregistered(cmd.getUser()->getUsername().c_str()));
 	else if (cmd.getParams().size() < 1)
-		cmd.setOutput(err_needmoreparams(username, "PASS"));
+		cmd.addOutput(err_needmoreparams(username, "PASS"));
 	else if (Command::server->checkPassword(cmd.getParams()[0]))
 	 	cmd.getUser()->setIsConnected(true);
 	else

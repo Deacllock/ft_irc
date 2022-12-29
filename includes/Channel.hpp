@@ -4,6 +4,7 @@
 # include <ctime>
 # include <ostream>
 # include <string>
+# include <vector>
 
 # include "User.hpp"
 class User;
@@ -30,7 +31,7 @@ class Channel
 
 		/*--------------- Getters ---------------*/
 		unsigned long		getId() const;
-		std::string			getname() const;
+		std::string			getName() const;
 		std::string			getTopic() const;
 		unsigned long		getLimit() const;
 		std::vector<User>	getBanned() const;
