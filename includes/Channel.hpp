@@ -6,6 +6,7 @@
 # include <string>
 
 # include "User.hpp"
+class User;
 
 class Channel
 {
@@ -43,6 +44,7 @@ class Channel
 };
 
 std::ostream &operator<<(std::ostream &o, Channel const &rhs);
+bool	operator==(const Channel &c1, const Channel &c2);
 
 
 #endif

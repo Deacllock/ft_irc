@@ -44,8 +44,13 @@ void	Channel::removeBannedUser( User u ) {
 	std::vector<User>::iterator	it_end = this->_banned.end();
 	
 	for (; it < it_end; it++)
+	{
 		if (u == *it)
+		{
 			this->_banned.erase(it);
+			break;
+		}
+	}
 }
 
 /*------------- Others --------------*/
@@ -88,3 +93,7 @@ std::ostream &operator<<(std::ostream &o, Channel const &rhs)
     return o;
 }
 
+bool	operator==(const Channel &c1, const Channel &c2)
+{
+	return c1.getId() == c2.getId() && c1.getName() == c2.getName() && c1.getTopic() == c2.getTopic() && c1.getLimit() == c2.getLimit();
+}
