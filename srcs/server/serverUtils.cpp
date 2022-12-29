@@ -1,6 +1,8 @@
 #include <netdb.h>
 #include <poll.h>
 
+#include <iostream>
+
 #include "Command.hpp"
 #include "Server.hpp"
 
@@ -97,7 +99,9 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
 		int new_fd = accept(sockfd, NULL, NULL);
 		if (new_fd == -1)
 			break;
-		
+		#ifdef DEBUG
+			std::cout << "New user landed in " + server.getName() << std::endl; //debug
+		#endif
 		server.addUser(new_fd);
 		add_poll_connection(fds, new_fd, POLLIN | POLLRDHUP);
 	}
@@ -123,9 +127,22 @@ static int	read_parse_and_reply(Server *server, int fd)
 		msg += buf;
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
+	
+	std::cout << "My message : " << msg << std::endl;
+	if (msg.substr(0, msg.length() - 2) == "") //shall be handled later in parsing
+		return ret;
+	#ifdef DEBUG
+		std::cout << fd << " < " << msg; //debug
+	#endif
+	
 	std::string srv_rep = handle_input(server->searchUserByFd(fd), msg).getOutput();
 	if (!srv_rep.empty())
-		send(fd, srv_rep.c_str(), srv_rep.length(), MSG_DONTWAIT);
+	{
+		#ifdef DEBUG
+			send(fd, srv_rep.c_str(), srv_rep.length(), MSG_DONTWAIT);
+		#endif
+		std::cout << fd << " > " << srv_rep; //debug
+	}
 	return (ret);
 }
 

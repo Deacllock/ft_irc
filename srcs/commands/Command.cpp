@@ -43,7 +43,7 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 std::string	Command::getOutput() const 				{ return this->_output; };
 
 /* SETTER */
-void	Command::setOutput( std::string output )	{ this->_output = ":" + this->server->getName() + " " + output; }
+void	Command::setOutput( std::string output )	{ this->_output = ":" + this->server->getName() + " " + output + "\n"; } //shall it be \r\n?
 
 /**
  * @brief Split string in command and parameters.
@@ -75,5 +75,7 @@ Command	handle_input(User *user, std::string user_input)
 	//make check;
 	if (c.getHandler())
 		c.getHandler()(c);
+	else
+		c.setOutput(error(c.getCmd() + " :Cannot find command"));
 	return (c);
 }
