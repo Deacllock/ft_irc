@@ -38,7 +38,6 @@ void	Channel::addBannedUser( User u ) {
 	
 	this->_banned.push_back(u);
 }
-
 void	Channel::removeBannedUser( User u ) {
 	std::vector<User>::iterator	it = this->_banned.begin();
 	std::vector<User>::iterator	it_end = this->_banned.end();
@@ -54,6 +53,17 @@ void	Channel::removeBannedUser( User u ) {
 }
 
 /*------------- Others --------------*/
+bool	Channel::isUserBanned(User u)
+{
+	std::vector<User>::iterator it = this->_banned.begin();
+	std::vector<User>::iterator it_end = this->_banned.end();
+
+	for (; it < it_end; it++)
+		if (u == *it)
+			return true;
+	return false;
+}
+
 static bool	isChanstring(char c)
 {
 	if (c == 0 || c == '\a' || c == '\r' || c == '\n' || c == ' ' || c == ',' || c == ':')

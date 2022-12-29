@@ -41,6 +41,9 @@ class Channel
 		void	setLimit( unsigned long limit);
 		void	addBannedUser( User u );
 		void	removeBannedUser( User u );
+
+		/*-------------- Others ----------------*/
+		bool	isUserBanned( User u );
 };
 
 std::ostream &operator<<(std::ostream &o, Channel const &rhs);
