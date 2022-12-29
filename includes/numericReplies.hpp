@@ -9,6 +9,8 @@ std::string	rpl_yourhost( std::string servername, std::string version ); //002
 std::string rpl_created( std::string date ); //003
 std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ); //004
 
+std::string	rpl_topic( std::string channel, std::string topic ); //332
+
 std::string err_nosuchchannel( std::string channel ); //403
 std::string err_toomanychannels( std::string channel ); //405
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ); //407

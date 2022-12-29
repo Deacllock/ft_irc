@@ -8,6 +8,9 @@ std::string rpl_created( std::string date ) { return "This server was created " 
 std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ) { return servername + " " + version + " " + user_modes + " " + channel_modes; }
 
 
+std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic };
+
+
 std::string err_nosuchchannel( std::string channel ) { return channel + " :No such channel"; }
 std::string err_toomanychannels( std::string channel ) { return channel + " :You have joined too many channels"; }
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ) { return target + " :" + error_code + " recipients. " + abort_mess; }
