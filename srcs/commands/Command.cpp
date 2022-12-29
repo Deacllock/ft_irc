@@ -11,11 +11,12 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["NICK"] = nick;
 	Command::cmd_map["USER"] = user;
 	Command::cmd_map["CAP"] = cap;
+	Command::cmd_map["JOIN"] = join;
 }
 
 /* CONSTRUCTORS */
 Command::Command() {}
-Command::Command( User *user, std::string &str ): _user(user), _output("")
+Command::Command( User *user, std::string &str ): _user(user)
 { 
 	split_str(str);
 	this->_handler = this->cmd_map[this->_cmd]; //what if not here?
@@ -30,21 +31,31 @@ Command & Command::operator=(const Command &rhs)
 	this->_params = rhs._params;
 	this->_user = rhs._user;
 	this->_handler = rhs._handler;
-	this->_output = rhs._output;
+	this->_outputs = rhs._outputs;
 	return *this;
 }
 
 Command::~Command() {}
 
 /* GETTER */
-std::string Command::getCmd() const 				{ return this->_cmd; }
-std::vector<std::string> Command::getParams() const	{ return this->_params; }
-User * Command::getUser() const 					{ return this->_user; }
-Command::handler_type Command::getHandler() const	{ return this->_handler; }
-std::string	Command::getOutput() const 				{ return this->_output; };
+std::string Command::getCmd() const 						{ return this->_cmd; }
+std::vector<std::string> Command::getParams() const			{ return this->_params; }
+User * Command::getUser() const 							{ return this->_user; }
+Command::handler_type Command::getHandler() const			{ return this->_handler; }
+std::vector<std::string>	Command::getOutputs() const 	{ return this->_outputs; };
 
 /* SETTER */
-void	Command::setOutput( std::string output )	{ this->_output = ":" + this->server->getName() + " " + output + "\n"; } //shall it be \r\n?
+void	Command::addOutput( std::string output )
+{
+	std::vector<std::string>::iterator it = this->_outputs.begin();
+	std::vector<std::string>::iterator it_end = this->_outputs.end();
+
+	for (; it < it_end; it++)
+		if (output == *it)
+			return;
+
+	this->_outputs.push_back(":" + this->server->getName() + " " + output + "\n");
+}
 
 /**
  * @brief Split string in command and parameters.
@@ -77,6 +88,6 @@ Command	handle_input(User *user, std::string user_input)
 	if (c.getHandler())
 		c.getHandler()(c);
 	else
-		c.setOutput(error(c.getCmd() + " :Cannot find command"));
+		c.addOutput(error(c.getCmd() + " :Cannot find command"));
 	return (c);
 }

@@ -1,9 +1,13 @@
 #ifndef USER
 # define USER
 
-#include <ctime>
-#include <ostream>
-#include <string>
+# include <ctime>
+# include <ostream>
+# include <string>
+
+# include "Channel.hpp"
+
+class Channel;
 
 enum mode_flags
 {
@@ -31,27 +35,30 @@ class User
 		time_t					_lastNickChange;
 		char					_mode;
 		std::string				_realName;
+		unsigned long			_limit;
+		std::vector<Channel>	_joinedChan;
 
-		//channel list
-		User &operator=( const User &rhs );
+
 	
 	public:
 		/*--------------- Constructors ---------------*/
-		User( int fd = -1, bool isCo = false );
+		User( int fd = -1, bool isCo = false, unsigned long limit = -1 );
 		User( const User &rhs);
 		~User();
+		User &operator=( const User &rhs );
 
 		/*--------------- Getters ---------------*/
-		int				getFd() const;
-		unsigned long	getUserId() const;
-		bool			getIsConnected() const;
-		std::string     getUsername() const;
-		std::string     getNickname() const;
-		time_t			getLastNickChange() const;
-		char			getMode() const;
-		bool            getIsRegistered() const;
-		std::string     getRealName() const;
-
+		int						getFd() const;
+		unsigned long			getUserId() const;
+		bool					getIsConnected() const;
+		std::string   		 	getUsername() const;
+		std::string     		getNickname() const;
+		time_t					getLastNickChange() const;
+		char					getMode() const;
+		bool            		getIsRegistered() const;
+		std::string     		getRealName() const;
+		unsigned long			getLimit() const;
+		std::vector<Channel>	getJoinedChan() const;
 
 		/*--------------- Setters ---------------*/
 		void	setIsConnected( bool val );
@@ -61,10 +68,15 @@ class User
 		void	setMode( char mode );
 		void    setIsRegistered(bool val);
 		void    setRealName( std::string name );
+		void	setLimit( unsigned long limit );
+		void	addJoinedChan( Channel c );
+		void	removeJoinedChan( Channel c );
 };
 
-/*--------------- Printing ---------------*/
+/*---------------- Non-member functions ----------------*/
 std::ostream &operator<<(std::ostream &o, User const &rhs);
+
+bool	operator==(const User &u1, const User &u2);
 
 
 #endif

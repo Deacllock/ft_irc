@@ -13,10 +13,10 @@ void	pass(Command &cmd)
 	std::string	username = cmd.getUser()->getUsername();
 
 	if (cmd.getUser()->getIsRegistered())
-	 	cmd.setOutput(err_alreadyregistered(username));
+	 	cmd.addOutput(err_alreadyregistered(username));
 
 	else if (cmd.getParams().size() < 1)
-		cmd.setOutput(err_needmoreparams(username, "PASS"));
+		cmd.addOutput(err_needmoreparams(username, "PASS"));
 
 	else
 		cmd.getUser()->setIsConnected(Command::server->checkPassword(cmd.getParams()[0]));

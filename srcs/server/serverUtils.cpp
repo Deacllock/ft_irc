@@ -127,6 +127,8 @@ static int	read_parse_and_reply(Server *server, int fd)
 		msg += buf;
 		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
+
+	
 	
 	if (msg.substr(0, msg.length() - 2) == "") //shall be handled later in parsing
 		return ret;
@@ -134,13 +136,15 @@ static int	read_parse_and_reply(Server *server, int fd)
 		std::cout << fd << " < " << msg; //debug
 	#endif
 	
-	std::string srv_rep = handle_input(server->searchUserByFd(fd), msg).getOutput();
-	if (!srv_rep.empty())
+	std::vector<std::string> srv_reps = handle_input(server->searchUserByFd(fd), msg).getOutputs();
+	std::vector<std::string>::iterator it = srv_reps.begin();
+	std::vector<std::string>::iterator it_end = srv_reps.end();
+	for (; it < it_end; it++)
 	{
+		send(fd, (*it).c_str(), (*it).length(), MSG_DONTWAIT); //keep send output?
 		#ifdef DEBUG
-			send(fd, srv_rep.c_str(), srv_rep.length(), MSG_DONTWAIT);
+			std::cout << fd << " > " << *it; //debug
 		#endif
-		std::cout << fd << " > " << srv_rep; //debug
 	}
 	return (ret);
 }

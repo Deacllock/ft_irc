@@ -16,5 +16,16 @@ std::string	err_alreadyregistered( std::string client ) { return "462 * " + clie
 std::string err_restricted() { return "484 * :Your connection is restricted!"; }
 
 
+std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; };
+
+std::string err_nosuchchannel( std::string channel ) { return channel + " :No such channel"; }
+std::string err_toomanychannels( std::string channel ) { return channel + " :You have joined too many channels"; }
+std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ) { return target + " :" + error_code + " recipients. " + abort_mess; }
+std::string err_channelisfull(std::string channel) { return channel + " :Cannot join channel (+l)"; }
+std::string err_inviteonlychan(std::string channel) { return channel + " :Cannot join channel (+i)"; } // what is +i
+std::string err_bannedformchan(std::string channel) { return channel + " :Cannot join channel (+b)"; }
+std::string err_badchannelkey( std::string channel ) { return channel + " :Cannot join channel (+k)"; }
+std::string err_bedchanmask( std::string channel ) { return channel + " :Bad Channel Mask"; }
+
 std::string error( std::string data ) { return  "Error: " + data; }
 

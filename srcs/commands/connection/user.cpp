@@ -6,7 +6,7 @@ void greetNewComer( Command &cmd )
 	if (!usr->getIsRegistered() && usr->getIsConnected() && usr->getNickname() != "" && usr->getUsername() != "")
 	{
 		usr->setIsRegistered(true);
-		cmd.setOutput(rpl_welcome(usr->getNickname(), usr->getUsername(), cmd.server->getName()));
+		cmd.addOutput(rpl_welcome(usr->getNickname(), usr->getUsername(), cmd.server->getName()));
 	}
 }
 
@@ -24,9 +24,9 @@ void	user( Command &cmd )
 	std::vector <std::string> params = cmd.getParams();
 
 	if (usr->getIsRegistered())
-		cmd.setOutput(err_alreadyregistered(usr->getUsername()));
+		cmd.addOutput(err_alreadyregistered(usr->getUsername()));
 	else if (params.size() < 4)
-		cmd.setOutput(err_needmoreparams(usr->getUsername(), "USER"));
+		cmd.addOutput(err_needmoreparams(usr->getUsername(), "USER"));
 	else
 	{
 		usr->setUsername(params[0]);

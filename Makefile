@@ -7,12 +7,13 @@ DBFLAGS = -DDEBUG -g
 
 SRCS_PATH = srcs/
 OBJS_PATH = objs/
-FOLDER_TO_CREATE = server commands commands/connection
+FOLDER_TO_CREATE = server commands commands/connection commands/channel
 
-SRCS = main.cpp User.cpp \
+SRCS = main.cpp User.cpp Channel.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp) \
 		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp \
-		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp))
+		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp) \
+		$(addprefix channel/, join.cpp))
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
@@ -33,7 +34,7 @@ $(NAME): $(OBJS)
 -include $(DEPS)
 
 debug: CXXFLAGS += $(DBFLAGS)
-debug: fclean all
+debug: all
 
 test: debug
 	valgrind ./ft_irc "6667" "plop"

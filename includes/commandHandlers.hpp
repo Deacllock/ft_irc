@@ -9,5 +9,6 @@ void	greetNewComer( Command &cmd );
 void	nick( Command &cmd );
 void	user( Command &cmd );
 void	cap(Command &cmd);
+void	join(Command &cmd);
 
 #endif
