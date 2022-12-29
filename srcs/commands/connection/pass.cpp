@@ -8,10 +8,9 @@
  * 
  * @param cmd Command class containing parameters, user and connection state to use
  */
-
 void	pass(Command &cmd)
 {
-	const char	*username = cmd.getUser()->getUsername().c_str();
+	std::string	username = cmd.getUser()->getUsername();
 
 	if (cmd.getUser()->getUsername() != "") //what is a registred user?
 	 	cmd.setOutput(err_alreadyregistered(cmd.getUser()->getUsername().c_str()));
@@ -22,3 +21,5 @@ void	pass(Command &cmd)
 	else
 	 	cmd.getUser()->setIsConnected(false);
 }
+
+//password is optional

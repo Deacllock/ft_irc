@@ -49,6 +49,7 @@ class Server
         void    addUser( int fd );
         User    *searchUserByFd( int fd );
         int     removeUser( User *user );
+
         bool    checkPassword( std::string pwd );
 };
 

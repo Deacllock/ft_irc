@@ -65,7 +65,6 @@ void	nick(Command &cmd)
 	//Sent by the server to a user upon connection to indicate
     //the restricted nature of the connection (user mode "+r").
 
-
 	else
 		cmd.getUser()->setUsername(cmd.getParams()[0]);
 }

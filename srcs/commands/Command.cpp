@@ -2,7 +2,7 @@
 
 /* STATIC INSTANCIATION */
 Server *Command::server;
-std::map<std::string, typename Command::handler_type> Command::cmd_map;
+std::map<std::string, Command::handler_type> Command::cmd_map;
 
 void instanciateCommand(Server	*server)
 {
@@ -35,11 +35,11 @@ Command & Command::operator=(const Command &rhs)
 Command::~Command() {}
 
 /* GETTER */
-std::string Command::getCmd() const 						{ return this->_cmd; }
-std::vector<std::string> Command::getParams() const			{ return this->_params; }
-User * Command::getUser() const 							{ return this->_user; }
-typename Command::handler_type Command::getHandler() const	{ return this->_handler; }
-std::string	Command::getOutput() const 						{ return this->_output; };
+std::string Command::getCmd() const 				{ return this->_cmd; }
+std::vector<std::string> Command::getParams() const	{ return this->_params; }
+User * Command::getUser() const 					{ return this->_user; }
+Command::handler_type Command::getHandler() const	{ return this->_handler; }
+std::string	Command::getOutput() const 				{ return this->_output; };
 
 /* SETTER */
 void	Command::setOutput( std::string output )	{ this->_output = output; }
