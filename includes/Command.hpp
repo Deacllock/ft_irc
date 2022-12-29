@@ -3,6 +3,7 @@
 
 # include <map>
 # include <sstream>
+# include <vector>
 
 # include "Server.hpp"
 # include "User.hpp"
@@ -22,7 +23,7 @@ class Command
 
 		User *						_user;
 		handler_type				_handler;
-		std::string					_output;
+		std::vector<std::string>	_outputs;
 
 		void	split_str(std::string str);
 
@@ -39,10 +40,10 @@ class Command
 		std::vector<std::string>	getParams() const;
 		User *						getUser() const;
 		handler_type				getHandler() const;
-		std::string					getOutput() const;
+		std::vector<std::string>	getOutputs() const;
 
 		/* SETTER */
-		void	setOutput( std::string output );
+		void	addOutput( std::string output );
 
 };
 
