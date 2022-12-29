@@ -195,6 +195,9 @@ int Server::client_interactions()
 
 			if (fds[i].revents != POLLIN)
 			{
+				#ifdef DEBUG
+					std::cout << "User has left " + this->_name << std::endl;
+				#endif
 				this->removeUser(this->searchUserByFd(fds[i].fd));
 				fds.erase(fds.begin() + (i--));
 			}
@@ -204,6 +207,9 @@ int Server::client_interactions()
 
 			else if (read_parse_and_reply(this, fds[i].fd) == 0)
 			{
+				#ifdef DEBUG
+					std::cout << "User has left " + this->_name << std::endl;
+				#endif
 				this->removeUser(this->searchUserByFd(fds[i].fd));
 				fds.erase(fds.begin() + (i--));
 			}
