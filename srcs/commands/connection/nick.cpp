@@ -18,8 +18,8 @@ static bool isspecial(int c) { return (c == '[' || c == ']' || c == '\\' || c ==
  * digit      =  %x30-39                 ; 0-9
  * special    =  %x5B-60 / %x7B-7D; "[", "]", "\", "`", "_", "^", "{", "|", "}"
  * 
- * @param nick Nickname to check
- * @return bool true if nickname is valid, false otherwise
+ * @param nick Nickname to check.
+ * @return bool true if nickname is valid, false otherwise.
  */
 static bool isNicknameValid( std::string nick )
 {
@@ -33,14 +33,15 @@ static bool isNicknameValid( std::string nick )
 	return true;
 }
 
-static bool isNicknameInUse( std::vector<User *> users, std::string nickname)
+static User *isNicknameInUse( std::vector<User *> users, std::string nickname)
 {
 	for (size_t i = 0; i < users.size(); i++)
 		if (users[i]->getNickname() == nickname)
-			return (true);
-	return (false);
+			return (users[i]);
+	return (NULL);
 }
 
+#include <iostream>
 /**
  * @brief NICK command is used to give user a nickname or change the existing one.
  * 
@@ -48,23 +49,28 @@ static bool isNicknameInUse( std::vector<User *> users, std::string nickname)
  */
 void	nick(Command &cmd)
 {
+	User *usr = cmd.getUser();
 	if (cmd.getParams().size() < 1)
 		return cmd.setOutput(err_nonicknamegiven());
 
 	std::string nickname = cmd.getParams()[0];
 	if (!isNicknameValid(nickname))
-		cmd.setOutput(err_erroneusnickname(nickname));
+		return cmd.setOutput(err_erroneusnickname(nickname));
 	
-	else if (isNicknameInUse(cmd.server->getUsers(), nickname))
+	User *usrWithSameNick = isNicknameInUse(cmd.server->getUsers(), nickname);
+	if (usrWithSameNick != NULL && usrWithSameNick != usr)
 		cmd.setOutput(err_nicknameinuse(nickname));
 
-	else if (difftime(time(0),cmd.getUser()->getLastNickChange()) <= NICK_DELAY )
+	else if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY ) //can be problematic with irssi
 		cmd.setOutput(err_unavailableresource(nickname));
 
-	//ERR_RESTRICTED
-	//Sent by the server to a user upon connection to indicate
-    //the restricted nature of the connection (user mode "+r").
+	// else if (usr->getIsRestricted())
+	// 	cmd.setOutput(err_restricted());
 
 	else
-		cmd.getUser()->setUsername(cmd.getParams()[0]);
+	{
+		usr->setNickname(cmd.getParams()[0]);
+		greetNewComer(cmd);
+	}
+
 }

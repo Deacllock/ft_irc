@@ -3,7 +3,7 @@
 
 # define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
 # define BUFFER_SIZE 42
-# define NICK_DELAY 259200 // 3 days in seconds
+# define NICK_DELAY 60 // 1 minute
 
 # include <exception>
 # include <ostream>
@@ -20,8 +20,9 @@ class Command;
 class Server
 {
     private:
+        std::string             _name;
         std::string             _port;
-        std::string             _password; // shall be encoded
+        std::string             _password; // shall be encoded?
         int                     _sockfd;
 
         std::vector<User *>       _users;
@@ -35,21 +36,26 @@ class Server
         Server &operator=( const Server &rhs );
         ~Server();
 
-        int	server_start();
-        int client_interactions();
-
         class CannotStartServer : public std::exception
         {
             public:
 				virtual const char *what() const throw();
         };
 
-        std::vector<User*> getUsers() const;
+        /*--------------- Server instantiation ---------------*/
+        int	server_start();
+        int client_interactions();
 
-        void    addUser( int fd );
+        /*--------------- Getters ---------------*/
+        std::vector<User*>  getUsers() const;
+        std::string         getName() const;
+
+        /*--------------- Users ---------------*/
         User    *searchUserByFd( int fd );
+        void    addUser( int fd );
         int     removeUser( User *user );
 
+        /*--------------- Password ---------------*/
         bool    checkPassword( std::string pwd );
 };
 

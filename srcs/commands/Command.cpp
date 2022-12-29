@@ -9,6 +9,7 @@ void instanciateCommand(Server	*server)
 	Command::server = server;
 	Command::cmd_map["PASS"] = pass;
 	Command::cmd_map["NICK"] = nick;
+	Command::cmd_map["USER"] = user;
 }
 
 /* CONSTRUCTORS */
@@ -42,7 +43,7 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 std::string	Command::getOutput() const 				{ return this->_output; };
 
 /* SETTER */
-void	Command::setOutput( std::string output )	{ this->_output = output; }
+void	Command::setOutput( std::string output )	{ this->_output = ":" + this->server->getName() + " " + output; }
 
 /**
  * @brief Split string in command and parameters.

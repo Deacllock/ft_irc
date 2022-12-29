@@ -5,6 +5,8 @@
 # include "numericReplies.hpp"
 
 void	pass( Command &cmd );
+void	greetNewComer( Command &cmd );
 void	nick( Command &cmd );
+void	user( Command &cmd );
 
 #endif

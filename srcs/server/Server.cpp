@@ -1,6 +1,7 @@
 #include "Server.hpp"
 
-Server::Server(): _port("6667"), _password("")
+/*--------------- Constructors ---------------*/
+Server::Server(): _name("ft_irc"), _port("6667"), _password("")
 {
 	instanciateCommand(this);
 	if (this->server_start())
@@ -8,7 +9,7 @@ Server::Server(): _port("6667"), _password("")
 	this->client_interactions();
 }
 
-Server::Server(std::string port, std::string password): _port(port), _password(password)
+Server::Server(std::string port, std::string password): _name("ft_irc"), _port(port), _password(password)
 {
 	instanciateCommand(this);
 	if (this->server_start())
@@ -42,11 +43,11 @@ const char *Server::CannotStartServer::what() const throw()
 	return "Error: Impossible to start the server";
 }
 
-void Server::addUser( int fd )
-{
-	this->_users.push_back(new User(fd));
-}
+/*--------------- Getters ---------------*/
+std::vector<User *> Server::getUsers() const	{ return this->_users; };
+std::string	Server::getName() const				{ return this->_name; };
 
+/*--------------- Users ---------------*/
 User    *Server::searchUserByFd( int fd )
 {
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
@@ -55,6 +56,8 @@ User    *Server::searchUserByFd( int fd )
 	return NULL;
 
 }
+
+void Server::addUser( int fd ) { this->_users.push_back(new User(fd, this->_password == "")); }
 
 int     Server::removeUser( User *user )
 {
@@ -70,8 +73,7 @@ int     Server::removeUser( User *user )
 	return (-1);
 }
 
-std::vector<User *> Server::getUsers() const	{ return this->_users; };
-
+/*--------------- Password ---------------*/
 bool    Server::checkPassword( std::string pwd )
 {
 	return (this->_password == "" || pwd.compare(this->_password) == 0);

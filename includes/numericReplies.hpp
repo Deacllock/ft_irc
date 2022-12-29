@@ -17,4 +17,7 @@ std::string	err_needmoreparams( std::string client, std::string command ); //461
 std::string	err_alreadyregistered( std::string client ); //462
 std::string err_restricted(); //484 
 
+std::string error( std::string data );
+
+
 #endif
