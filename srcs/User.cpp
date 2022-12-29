@@ -32,6 +32,7 @@ void    User::setNickname( std::string nick )       { this->_nickname = nick; }
 void    User::setUsername( std::string user )       { this->_username = user; }
 void	User::setLastNickChange( time_t new_time ) { this->_lastNickChange = new_time; }
 
+/*---------------- Non-member functions ----------------*/
 std::ostream &operator<<(std::ostream &o, User const &rhs)
 {
     o << "\tunique identifier : " << rhs.getUserId() << std::endl;
@@ -39,4 +40,11 @@ std::ostream &operator<<(std::ostream &o, User const &rhs)
     o << "\tunique identifier : " << rhs.getNickname() << std::endl;
     o << "\tuser fd : " << rhs.getFd() << std::endl;
     return o;
+}
+
+bool	operator==(const User &u1, const User u2)
+{
+	if (u1.getFd() == u2.getFd() && u1.getUserId() == u2.getUserId() && u1.getUsername() == u2.getUsername() && u1.getNickname() == u2.getNickname())
+		return true;
+	return false;
 }

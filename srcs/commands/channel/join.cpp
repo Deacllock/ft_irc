@@ -17,5 +17,4 @@ void	join(Command &cmd)
 
 	if (cmd.getParams().size() < 1)
 		cmd.setOutput(err_needmoreparams(username, "JOIN"));
-
 }

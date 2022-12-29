@@ -40,6 +40,7 @@ class User
 };
 
 std::ostream &operator<<(std::ostream &o, User const &rhs);
+bool	operator==(const User &u1, const User &u2);
 
 
 #endif
