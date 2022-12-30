@@ -48,8 +48,9 @@ class Channel
 		void	removeUser( User u );
 
 		/*-------------- Others ----------------*/
-		bool	isUserBanned( User u );
+		bool	isBannedUser( User u );
 		bool	isJoinedUser( User u );
+		bool	isChannelFull();
 };
 
 std::ostream &operator<<(std::ostream &o, Channel const &rhs);

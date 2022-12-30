@@ -77,7 +77,7 @@ void	Channel::removeUser( User u ) {
 }
 
 /*------------- Others --------------*/
-bool	Channel::isUserBanned(User u)
+bool	Channel::isBannedUser(User u)
 {
 	std::vector<User>::iterator it = this->_banned.begin();
 	std::vector<User>::iterator it_end = this->_banned.end();
@@ -98,6 +98,8 @@ bool	Channel::isJoinedUser(User u)
 			return true;
 	return false;
 }
+
+bool	Channel::isChannelFull() { return this->_limit == this->_users.size(); }
 
 static bool	isChanstring(char c)
 {
