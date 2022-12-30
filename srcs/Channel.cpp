@@ -23,6 +23,7 @@ std::string     	Channel::getName() const       { return this->_name; }
 std::string     	Channel::getTopic() const       { return this->_topic; }
 unsigned long		Channel::getLimit() const		{ return this->_limit; }
 std::vector<User>	Channel::getBanned() const		{ return this->_banned; }
+std::vector<User>	Channel::getUsers() const		{ return this->_users; }
 
 /*--------------- Setters ---------------*/
 void    Channel::setName( std::string name )       { this->_name = name; }
@@ -51,12 +52,46 @@ void	Channel::removeBannedUser( User u ) {
 		}
 	}
 }
+void	Channel::addUser( User u ) {
+	std::vector<User>::iterator	it = this->_users.begin();
+	std::vector<User>::iterator	it_end = this->_users.end();
+	
+	for (; it < it_end; it++)
+		if (u == *it)
+			return;
+	
+	this->_users.push_back(u);
+}
+void	Channel::removeUser( User u ) {
+	std::vector<User>::iterator	it = this->_users.begin();
+	std::vector<User>::iterator	it_end = this->_users.end();
+	
+	for (; it < it_end; it++)
+	{
+		if (u == *it)
+		{
+			this->_users.erase(it);
+			break;
+		}
+	}
+}
 
 /*------------- Others --------------*/
 bool	Channel::isUserBanned(User u)
 {
 	std::vector<User>::iterator it = this->_banned.begin();
 	std::vector<User>::iterator it_end = this->_banned.end();
+
+	for (; it < it_end; it++)
+		if (u == *it)
+			return true;
+	return false;
+}
+
+bool	Channel::isJoinedUser(User u)
+{
+	std::vector<User>::iterator it = this->_users.begin();
+	std::vector<User>::iterator it_end = this->_users.end();
 
 	for (; it < it_end; it++)
 		if (u == *it)

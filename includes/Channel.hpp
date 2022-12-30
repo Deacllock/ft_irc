@@ -19,6 +19,7 @@ class Channel
 		std::string				_topic;
 		unsigned long			_limit;
 		std::vector<User>		_banned;
+		std::vector<User>		_users;
 
 		bool	checkChannelName( std::string name );
 	
@@ -35,6 +36,7 @@ class Channel
 		std::string			getTopic() const;
 		unsigned long		getLimit() const;
 		std::vector<User>	getBanned() const;
+		std::vector<User>	getUsers() const;
 
 		/*--------------- Setters ---------------*/
 		void    setName( std::string user );
@@ -42,9 +44,12 @@ class Channel
 		void	setLimit( unsigned long limit);
 		void	addBannedUser( User u );
 		void	removeBannedUser( User u );
+		void	addUser( User u );
+		void	removeUser( User u );
 
 		/*-------------- Others ----------------*/
 		bool	isUserBanned( User u );
+		bool	isJoinedUser( User u );
 };
 
 std::ostream &operator<<(std::ostream &o, Channel const &rhs);

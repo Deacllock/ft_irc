@@ -71,6 +71,7 @@ class User
 		void	setLimit( unsigned long limit );
 		void	addJoinedChan( Channel c );
 		void	removeJoinedChan( Channel c );
+		void	quitAllChan();
 };
 
 /*---------------- Non-member functions ----------------*/

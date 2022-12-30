@@ -26,7 +26,7 @@ class Server
         int                     _sockfd;
 
         std::vector<User *>       _users;
-        // std::vector<Channel>    _channels;
+        std::vector<Channel *>    _channels;
 
     public:
    		/*--------------- Constructors ---------------*/
@@ -54,6 +54,8 @@ class Server
         User    *searchUserByFd( int fd );
         void    addUser( int fd );
         int     removeUser( User *user );
+        void    addChannel( Channel *chan );
+        int     removeChannel( Channel *chan );
 
         /*--------------- Password ---------------*/
         bool    checkPassword( std::string pwd );

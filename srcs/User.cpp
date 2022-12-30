@@ -85,6 +85,10 @@ void	User::removeJoinedChan( Channel c )
 		}
 	}
 }
+void	User::quitAllChan()
+{
+	this->_joinedChan.clear();	
+}
 
 /*---------------- Non-member functions ----------------*/
 

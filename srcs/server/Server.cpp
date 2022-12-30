@@ -45,6 +45,7 @@ const char *Server::CannotStartServer::what() const throw()
 
 /*--------------- Getters ---------------*/
 std::vector<User *> Server::getUsers() const	{ return this->_users; };
+std::vector<Channel *> Server::getChannels() const	{ return this->_channels; };
 std::string	Server::getName() const				{ return this->_name; };
 
 /*--------------- Users ---------------*/
@@ -67,6 +68,32 @@ int     Server::removeUser( User *user )
 		{
 			delete *it;
 			this->_users.erase(it);
+			return 0;
+		}
+	}
+	return (-1);
+}
+
+void	User::addChannel( Channel *chan )
+{
+	std::vector<Channel>::iterator it = this->_channels.begin();
+	std::vector<Channel>::iterator it_end = this->_channels.end();
+
+	for (; it < it_end; it++)
+		if (chan == *it)
+			return;
+	
+	this->_channels.push_back(chan);
+}
+
+int		Server::removeChannel( Channel *chan )
+{
+	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); it++)
+	{
+		if ((*it) == chan)
+		{
+			delete *it;
+			this->_channels.erase(it);
 			return 0;
 		}
 	}
