@@ -85,10 +85,10 @@ void	User::removeJoinedChan( Channel c )
 		}
 	}
 }
-void	User::quitAllChan()
-{
-	this->_joinedChan.clear();	
-}
+void	User::quitAllChan() { this->_joinedChan.clear(); }
+
+/*--------------- Others ---------------*/
+bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.size(); }
 
 /*---------------- Non-member functions ----------------*/
 

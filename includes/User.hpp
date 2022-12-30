@@ -72,6 +72,9 @@ class User
 		void	addJoinedChan( Channel c );
 		void	removeJoinedChan( Channel c );
 		void	quitAllChan();
+
+		/*-------------- Others --------------*/
+		bool	tooManyChanJoined() const;
 };
 
 /*---------------- Non-member functions ----------------*/
