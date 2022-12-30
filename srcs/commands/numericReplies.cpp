@@ -23,7 +23,7 @@ std::string err_toomanychannels( std::string channel ) { return channel + " :You
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ) { return target + " :" + error_code + " recipients. " + abort_mess; }
 std::string err_channelisfull(std::string channel) { return channel + " :Cannot join channel (+l)"; }
 std::string err_inviteonlychan(std::string channel) { return channel + " :Cannot join channel (+i)"; } // what is +i
-std::string err_bannedformchan(std::string channel) { return channel + " :Cannot join channel (+b)"; }
+std::string err_bannedfromchan(std::string channel) { return channel + " :Cannot join channel (+b)"; }
 std::string err_badchannelkey( std::string channel ) { return channel + " :Cannot join channel (+k)"; }
 std::string err_bedchanmask( std::string channel ) { return channel + " :Bad Channel Mask"; }
 
