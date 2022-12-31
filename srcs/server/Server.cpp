@@ -74,10 +74,11 @@ int     Server::removeUser( User *user )
 	return (-1);
 }
 
-void	User::addChannel( Channel *chan )
+/*--------------- Channels ---------------*/
+void	Server::addChannel( Channel *chan )
 {
-	std::vector<Channel>::iterator it = this->_channels.begin();
-	std::vector<Channel>::iterator it_end = this->_channels.end();
+	std::vector<Channel *>::iterator it = this->_channels.begin();
+	std::vector<Channel *>::iterator it_end = this->_channels.end();
 
 	for (; it < it_end; it++)
 		if (chan == *it)
@@ -98,6 +99,30 @@ int		Server::removeChannel( Channel *chan )
 		}
 	}
 	return (-1);
+}
+
+bool	Server::isExistingChannelByName( std::string name )
+{
+std::vector<Channel *>::iterator	it = this->_channels.begin();
+	std::vector<Channel *>::iterator	it_end = this->_channels.end();
+
+	for (; it < it_end; it++)
+		if ((*it)->getName() == name)
+			return true;
+
+	return false;
+}
+
+Channel	*Server::getChannelByName( std::string name )
+{
+	std::vector<Channel *>::iterator	it = this->_channels.begin();
+	std::vector<Channel *>::iterator	it_end = this->_channels.end();
+
+	for (; it < it_end; it++)
+		if ((*it)->getName() == name)
+			return *it;
+
+	return NULL;
 }
 
 /*--------------- Password ---------------*/
