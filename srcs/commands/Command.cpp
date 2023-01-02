@@ -12,6 +12,7 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["USER"] = user;
 	Command::cmd_map["CAP"] = cap;
 	Command::cmd_map["JOIN"] = join;
+	Command::cmd_map["PART"] = part;
 }
 
 /* CONSTRUCTORS */

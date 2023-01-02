@@ -13,7 +13,7 @@ SRCS = main.cpp User.cpp Channel.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp) \
 		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp \
 		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp) \
-		$(addprefix channel/, join.cpp))
+		$(addprefix channel/, join.cpp part.cpp))
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 

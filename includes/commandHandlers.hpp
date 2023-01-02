@@ -10,5 +10,6 @@ void	nick( Command &cmd );
 void	user( Command &cmd );
 void	cap(Command &cmd);
 void	join(Command &cmd);
+void	part(Command &cmd);
 
 #endif
