@@ -9,11 +9,12 @@ Max size = 512 bytes
 Part 1
 ---------------------
 //CONNECTION MESSAGE (Victoria)
-- [1] PASS (1rs)
-- [1] NICK/ USER (2nd)
+- [TO TEST][1] PASS
+- [TO TEST][1] NICK
+- [TO TEST][1] USER
 - [3] PING/PONG?
-- [1] OPER
-- [1] QUIT
+- [WIP][1] OPER
+- [WIP][1] QUIT
 - [2] MODE
 
 //CHANNEL (Romane)
@@ -25,8 +26,6 @@ Part 1
 - [2/3] LIST
 
 --------------------
-
-
 
 //Sending Messages
 - [1] PRIVMSG

@@ -47,8 +47,7 @@ class Channel
 		bool	isUserBanned( User u );
 };
 
-std::ostream &operator<<(std::ostream &o, Channel const &rhs);
-bool	operator==(const Channel &c1, const Channel &c2);
-
+std::ostream	&operator<<( std::ostream &o, Channel const &rhs );
+bool			operator==( const Channel &c1, const Channel &c2 );
 
 #endif

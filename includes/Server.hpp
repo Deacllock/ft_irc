@@ -24,6 +24,7 @@ class Server
         std::string             _port;
         std::string             _password; // shall be encoded?
         int                     _sockfd;
+        std::string             _opeCredential[2];
 
         std::vector<User *>       _users;
         // std::vector<Channel>    _channels;
@@ -57,6 +58,7 @@ class Server
 
         /*--------------- Password ---------------*/
         bool    checkPassword( std::string pwd );
+        bool    checkOpeCredentials( std::string username, std::string pwd );
 };
 
 std::ostream &operator<<(std::ostream &o, Server const &rhs);

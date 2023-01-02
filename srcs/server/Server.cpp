@@ -3,6 +3,8 @@
 /*--------------- Constructors ---------------*/
 Server::Server(): _name("ft_irc"), _port("6667"), _password("")
 {
+	this->_opeCredential[0] = "admin";
+	this->_opeCredential[1] = "admin";
 	instanciateCommand(this);
 	if (this->server_start())
 		throw CannotStartServer();
@@ -11,6 +13,8 @@ Server::Server(): _name("ft_irc"), _port("6667"), _password("")
 
 Server::Server(std::string port, std::string password): _name("ft_irc"), _port(port), _password(password)
 {
+	this->_opeCredential[0] = "admin";
+	this->_opeCredential[1] = "admin";
 	instanciateCommand(this);
 	if (this->server_start())
 		throw CannotStartServer();
@@ -61,6 +65,7 @@ void Server::addUser( int fd ) { this->_users.push_back(new User(fd, this->_pass
 
 int     Server::removeUser( User *user )
 {
+	//delete user in every channel it belongs to
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
 	{
 		if ((*it) == user)
@@ -78,6 +83,12 @@ bool    Server::checkPassword( std::string pwd )
 {
 	return (this->_password == "" || pwd.compare(this->_password) == 0);
 }
+
+bool    Server::checkOpeCredentials( std::string username, std::string pwd )
+{
+	return (this->_opeCredential[0].compare(username) == 0 && this->_opeCredential[0].compare(pwd) == 0);
+}
+
 
 std::ostream & operator<<(std::ostream &o, Server const &rhs)
 {

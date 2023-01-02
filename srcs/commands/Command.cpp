@@ -11,6 +11,8 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["NICK"] = nick;
 	Command::cmd_map["USER"] = user;
 	Command::cmd_map["CAP"] = cap;
+	Command::cmd_map["OPER"] = join;
+	Command::cmd_map["QUIT"] = quit;
 	Command::cmd_map["JOIN"] = join;
 }
 
@@ -91,3 +93,16 @@ Command	handle_input(User *user, std::string user_input)
 		c.addOutput(error(c.getCmd() + " :Cannot find command"));
 	return (c);
 }
+
+std::string		getColonMsg( std::vector<std::string> params, size_t pos )
+{
+	std::string ret = params[pos]; //idk?
+	if (pos < params.size() && params[pos][0] == ':')
+	{
+		ret = params[pos].substr(1, params[pos].length());
+		for (size_t i = pos + 1; i < params.size(); i++)
+			ret = ret + " " + params[i];
+	}
+	return ret;	
+}
+

@@ -7,12 +7,16 @@ std::string	rpl_yourhost( std::string servername, std::string version ) { return
 std::string rpl_created( std::string date ) { return "This server was created " + date; }
 std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ) { return "004 * " + servername + " " + version + " " + user_modes + " " + channel_modes; }
 
+std::string rpl_umodeis( std::string user_mode ) {return "221 * " + user_mode; }
+std::string rpl_youreoper() { return "381 * :You are now an IRC operator"; }
+
 std::string err_nonicknamegiven() { return "431 * :No nickname given"; }
 std::string err_erroneusnickname( std::string nick ) { return "432 *" + nick + " :Erroneous nickname"; }
 std::string err_nicknameinuse( std::string nick ) { return "433 * " + nick + " :Nickname is already in use"; }
 std::string err_unavailableresource( std::string name ) { return "437 * " + name + " :Nick/channel is temporarily unavailable"; }
 std::string	err_needmoreparams( std::string client, std::string command ) { return "461 * " + client + " " + command + ": Not enough parameters"; }
 std::string	err_alreadyregistered( std::string client ) { return "462 * " + client + " :You may not reregister"; }
+std::string err_passwordmismatch() { return "464 * :Password incorrect"; }
 std::string err_restricted() { return "484 * :Your connection is restricted!"; }
 
 

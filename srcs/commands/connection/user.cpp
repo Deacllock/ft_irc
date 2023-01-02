@@ -30,11 +30,7 @@ void	user( Command &cmd )
 	else
 	{
 		usr->setUsername(params[0]);
-		std::string realName = params[3].substr(1, params[3].length()); // shall have : -> shall I check?
-
-		for (size_t i = 4; i < params.size(); i++)
-			realName = realName + " " + params[i];
-		usr->setRealName(realName);
+		usr->setRealName(getColonMsg(params, 3));
 		greetNewComer(cmd);
 	}
 }
