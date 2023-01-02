@@ -17,8 +17,8 @@ Part 1
 - [2] MODE
 
 //CHANNEL (Romane)
-- [1] JOIN
-- [1] PART
+- [1] JOIN		WIP
+- [1] PART		GOOD
 - [1] INVITE
 - [2/3] TOPIC
 - [2] NAMES
