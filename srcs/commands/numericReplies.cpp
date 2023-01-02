@@ -11,8 +11,12 @@ std::string rpl_created( std::string date ) { return "This server was created " 
 //004
 std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ) { return "004 * " + servername + " " + version + " " + user_modes + " " + channel_modes; }
 
+//301
+std::string	rpl_away( std::string nick, std::string awayMess ) { return nick + " :" + awayMess; }
 //332
-std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; }; //332
+std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; };
+//341
+std::string	rpl_inviting( std::string channel, std::string nick ) { return channel + " " + nick; }
 
 //401
 std::string	err_nosuchnick( std::string nickname ) { return "401 * " + nickname + " :No such nick/channel"; }

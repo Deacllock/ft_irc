@@ -9,7 +9,9 @@ std::string	rpl_yourhost( std::string servername, std::string version ); //002
 std::string rpl_created( std::string date ); //003
 std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ); //004
 
+std::string	rpl_away( std::string nick, std::string awayMess ); //301
 std::string	rpl_topic( std::string channel, std::string topic ); //332
+std::string	rpl_inviting( std::string channel, std::string nick ); //341
 
 std::string	err_nosuchnick( std::string nickname ); //401
 std::string err_nosuchchannel( std::string channel ); //403
