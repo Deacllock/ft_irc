@@ -6,22 +6,27 @@
 // ERR_BADCHANNELKEY
 // ERR_UNVAILRESOURCE
 
+static std::vector<std::string>	splitByComma(std::string str)
+{
+	std::vector<std::string> vec;
+
+	std::string elem;
+	std::istringstream ss(str);
+	while (getline(ss, elem, ','))
+		vec.push_back(elem);
+	
+	return vec;
+}
+
 void	join(Command &cmd)
 {
 	User	*user = cmd.getUser();
-	std::vector<std::string> channels;
-	std::vector<std::string> keys;
 
 	if (cmd.getParams().size() < 1 || cmd.getParams().size() > 2) // how we do when more params ?
 		return cmd.addOutput(err_needmoreparams(user->getUsername().c_str(), "JOIN"));
 	
-	std::string elem;
-	std::istringstream ss(cmd.getParams()[0]);
-	while (getline(ss, elem, ','))
-		channels.push_back(elem);
-	std::istringstream ss1(cmd.getParams()[1]);
-	while (getline(ss1, elem, ','))
-		keys.push_back(elem);
+	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
+	std::vector<std::string> keys = splitByComma(cmd.getParams()[1]);
 
 	if (channels.size() < keys.size()) //what do we do?
 	{
