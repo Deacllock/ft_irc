@@ -12,13 +12,16 @@ std::string err_erroneusnickname( std::string nick ) { return "432 *" + nick + "
 std::string err_nicknameinuse( std::string nick ) { return "433 * " + nick + " :Nickname is already in use"; }
 std::string err_unavailableresource( std::string name ) { return "437 * " + name + " :Nick/channel is temporarily unavailable"; }
 std::string	err_notonchannel( std::string channel ) { return "442 * " + channel + " :You're not on that channel"; }
+std::string	err_useronchannel( std::string user, std::string channel ) { return "443 * " + user + " " + channel + " :is already on channel"; }
 std::string	err_needmoreparams( std::string client, std::string command ) { return "461 * " + client + " " + command + ": Not enough parameters"; }
 std::string	err_alreadyregistered( std::string client ) { return "462 * " + client + " :You may not reregister"; }
+std::string err_chanoprivsneeded( std::string channel ) { return "482 * " + channel + " :You're not channel operator"; }
 std::string err_restricted() { return "484 * :Your connection is restricted!"; }
 
 
 std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; };
 
+std::string	err_nosuchnick( std::string nickname ) { return "401 * " + nickname + " :No such nick/channel"; }
 std::string err_nosuchchannel( std::string channel ) { return channel + " :No such channel"; }
 std::string err_toomanychannels( std::string channel ) { return channel + " :You have joined too many channels"; }
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ) { return target + " :" + error_code + " recipients. " + abort_mess; }
