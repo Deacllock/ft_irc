@@ -54,6 +54,8 @@ class Server
         User    *searchUserByFd( int fd );
         void    addUser( int fd );
         int     removeUser( User *user );
+		bool	isExistingUserByName( std::string name );
+		User	*getUserByName( std::string name );
 
 		/*--------------- Channels --------------*/
         void    addChannel( Channel *chan );

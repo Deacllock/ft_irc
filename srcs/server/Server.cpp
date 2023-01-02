@@ -74,6 +74,30 @@ int     Server::removeUser( User *user )
 	return (-1);
 }
 
+bool	Server::isExistingUserByName( std::string name )
+{
+	std::vector<User *>::iterator it = this->_users.begin();
+	std::vector<User *>::iterator it_end = this->_users.end();
+
+	for (; it < it_end; it++)
+		if (name == (*it)->getName())
+			return true;
+
+	return false;
+}
+
+User	*Server::getUserByName( std::string name )
+{
+	std::vector<User *>::iterator	it = this->_users.begin();
+	std::vector<User *>::iterator	it_end = this->_users.end();
+
+	for (; it < it_end; it++)
+		if ((*it)->getName() == name)
+			return *it;
+
+	return NULL;
+}
+
 /*--------------- Channels ---------------*/
 void	Server::addChannel( Channel *chan )
 {
@@ -103,7 +127,7 @@ int		Server::removeChannel( Channel *chan )
 
 bool	Server::isExistingChannelByName( std::string name )
 {
-std::vector<Channel *>::iterator	it = this->_channels.begin();
+	std::vector<Channel *>::iterator	it = this->_channels.begin();
 	std::vector<Channel *>::iterator	it_end = this->_channels.end();
 
 	for (; it < it_end; it++)
