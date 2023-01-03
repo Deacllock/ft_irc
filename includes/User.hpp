@@ -20,6 +20,13 @@ enum mode_flags
 	notice_serv //64
 };
 
+enum status
+{
+	CONNECTED,
+	REGISTERED,
+	DISCONNECTED
+};
+
 class User
 {
 	private:
@@ -28,8 +35,7 @@ class User
 		const int				_fd;
 		const unsigned long		_userId;
 	
-		bool					_isConnected;
-		bool					_isRegistered;
+		enum status				_status
 		std::string 			_username;
 		std::string				_nickname;
 		time_t					_lastNickChange;
@@ -38,8 +44,6 @@ class User
 		unsigned long			_limit;
 		std::vector<Channel>	_joinedChan;
 
-
-	
 	public:
 		/*--------------- Constructors ---------------*/
 		User( int fd = -1, bool isCo = false, unsigned long limit = -1 );

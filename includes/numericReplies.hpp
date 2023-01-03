@@ -22,6 +22,7 @@ std::string err_nonicknamegiven(); //431
 std::string err_erroneusnickname( std::string nick ); //432
 std::string err_nicknameinuse( std::string nick ); //433
 std::string err_unavailableresource( std::string name ); //437
+std::string err_notregistered(); //451
 std::string	err_needmoreparams( std::string client, std::string command ); //461
 std::string	err_alreadyregistered( std::string client ); //462
 std::string err_passwordmismatch(); //464

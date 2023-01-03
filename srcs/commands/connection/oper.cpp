@@ -8,7 +8,9 @@
 void	oper(Command &cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
-	if (params.size() < 2)
+	if (!cmd.getUser()->getIsRegistered())
+		cmd.addOutput(err_notregistered());
+	else if (params.size() < 2)
 		cmd.addOutput(err_needmoreparams(cmd.getUser()->getNickname(), "OPER"));
 	else if (!cmd.server->checkOpeCredentials(params[0], params[1]))
 		cmd.addOutput(err_passwordmismatch());

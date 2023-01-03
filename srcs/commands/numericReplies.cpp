@@ -16,6 +16,7 @@ std::string err_nonicknamegiven() { return "431 * :No nickname given"; }
 std::string err_erroneusnickname( std::string nick ) { return "432 *" + nick + " :Erroneous nickname"; }
 std::string err_nicknameinuse( std::string nick ) { return "433 * " + nick + " :Nickname is already in use"; }
 std::string err_unavailableresource( std::string name ) { return "437 * " + name + " :Nick/channel is temporarily unavailable"; }
+std::string err_notregistered() { return "451 * :You have not registered"; }
 std::string	err_needmoreparams( std::string client, std::string command ) { return "461 * " + client + " " + command + ": Not enough parameters"; }
 std::string	err_alreadyregistered( std::string client ) { return "462 * " + client + " :You may not reregister"; }
 std::string err_passwordmismatch() { return "464 * :Password incorrect"; }
