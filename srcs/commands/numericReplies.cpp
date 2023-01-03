@@ -10,6 +10,8 @@ std::string rpl_myinfo( std::string servername, std::string version, std::string
 std::string rpl_umodeis( std::string user_mode ) {return "221 * " + user_mode; }
 std::string rpl_youreoper() { return "381 * :You are now an IRC operator"; }
 
+std::string err_nosuchserver( std::string server ) {return "402 * " + server + " :No such server";} //402
+std::string err_noorigin() { return "409 * : No origin specified"; }
 std::string err_nonicknamegiven() { return "431 * :No nickname given"; }
 std::string err_erroneusnickname( std::string nick ) { return "432 *" + nick + " :Erroneous nickname"; }
 std::string err_nicknameinuse( std::string nick ) { return "433 * " + nick + " :Nickname is already in use"; }

@@ -142,9 +142,11 @@ static int	read_parse_and_reply(Server *server, int fd)
 	for (; it < it_end; it++)
 	{
 		send(fd, (*it).c_str(), (*it).length(), MSG_DONTWAIT); //keep send output?
+
 		#ifdef DEBUG
 			std::cout << fd << " > " << *it; //debug
 		#endif
+				//pop
 	}
 	return (ret);
 }
