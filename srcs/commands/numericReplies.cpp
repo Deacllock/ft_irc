@@ -13,6 +13,8 @@ std::string rpl_myinfo( std::string servername, std::string version, std::string
 
 //301
 std::string	rpl_away( std::string nick, std::string awayMess ) { return nick + " :" + awayMess; }
+//331
+std::string	rpl_notopic( std::string channel ) { return channel + " :No topic is set"; };
 //332
 std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; };
 //341
