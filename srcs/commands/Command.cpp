@@ -16,6 +16,7 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["INVITE"] = invite;
 	Command::cmd_map["TOPIC"] = topic;
 	Command::cmd_map["LIST"] = list;
+	Command::cmd_map["NAMES"] = names;
 }
 
 /* CONSTRUCTORS */
