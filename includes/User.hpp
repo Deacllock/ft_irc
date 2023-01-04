@@ -75,6 +75,7 @@ class User
 
 		/*-------------- Others --------------*/
 		bool	tooManyChanJoined() const;
+		bool	isOnChan( std::string name ) const;
 };
 
 /*---------------- Non-member functions ----------------*/

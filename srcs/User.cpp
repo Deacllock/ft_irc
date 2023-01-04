@@ -89,6 +89,17 @@ void	User::quitAllChan() { this->_joinedChan.clear(); }
 
 /*--------------- Others ---------------*/
 bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.size(); }
+bool	User::isOnChan( std::string name ) const
+{
+	std::vector<Channel>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel>::iterator it_end = this->_joinedChan.end();
+
+	for (; it < it_end; it++)
+		if ((*it).getName() == name)
+			return true;
+
+	return false;
+}
 
 /*---------------- Non-member functions ----------------*/
 
