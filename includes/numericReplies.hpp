@@ -15,6 +15,8 @@ std::string	rpl_listend(); //323
 std::string	rpl_notopic( std::string channel ); //331
 std::string	rpl_topic( std::string channel, std::string topic ); //332
 std::string	rpl_inviting( std::string channel, std::string nick ); //341
+std::string	rpl_namreply( std::string channel, std::vector<std::string> nick ); //353 //VISIBILITY ????
+std::strubg	rpl_endofnames( std::string channel ); //366
 
 std::string	err_nosuchnick( std::string nickname ); //401
 std::string err_nosuchchannel( std::string channel ); //403

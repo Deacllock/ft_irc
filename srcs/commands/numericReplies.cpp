@@ -23,6 +23,22 @@ std::string	rpl_notopic( std::string channel ) { return channel + " :No topic is
 std::string	rpl_topic( std::string channel, std::string topic ) { return channel + " :" + topic; };
 //341
 std::string	rpl_inviting( std::string channel, std::string nick ) { return channel + " " + nick; }
+//353
+std::string	rpl_namreply( std::string channel, std::vector<std::string> nick )
+{
+	std::string ret = channel + " :"
+	std::vector<std::string>::iterator it = nick.begin();
+	std::vector<std::string>::iterator it_end = nick.end();
+	for (; it < it_end; it++)
+	{
+		ret += *it;
+		if (it + 1 < it_end)
+			ret += " ";
+	}
+	return ret;
+}
+//366
+std::strubg	rpl_endofnames( std::string channel ) { return channel + " :End of NAMES list"; }
 
 //401
 std::string	err_nosuchnick( std::string nickname ) { return "401 * " + nickname + " :No such nick/channel"; }
