@@ -2,9 +2,6 @@
 
 #include <iostream>
 
-//RPL_INVITING
-//RPL_AWAY
-
 void	invite(Command &cmd)
 {
 	User	*user = cmd.getUser();
@@ -25,4 +22,6 @@ void	invite(Command &cmd)
 	if (chan->isJoinedUser(*userToInvite))
 		return cmd.addOutput(err_userinchannel(nickname, channel));
 	// INVITE
+	cmd.addOutput(rpl_inviting(channel, nickname));
+	//RPL_AWAY
 }
