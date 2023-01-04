@@ -15,7 +15,7 @@ void	topic(Command &cmd)
 	bool		hasTopic = cmd.getParams().size() > 1 && cmd.getParams()[1].at(0) == ':';
 	std::string	topic = "";
 	if (hasTopic && cmd.getParams()[1].size() > 1)
-		topic = cmd.getParams()[1].substr(1, str.size() - 1);
+		topic = cmd.getParams()[1].substr(1, cmd.getParams()[1].size() - 1);
 
 	if (!user->isOnChan(channel))
 		return cmd.addOutput(err_notonchannel(channel));
