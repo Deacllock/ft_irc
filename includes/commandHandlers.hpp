@@ -12,5 +12,6 @@ void	cap(Command &cmd);
 void	join(Command &cmd);
 void	part(Command &cmd);
 void	invite(Command &cmd);
+void	topic(Command &cmd);
 
 #endif
