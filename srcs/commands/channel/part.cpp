@@ -38,7 +38,7 @@ void	part(Command &cmd)
 			cmd.addOutput(err_notonchannel(chan->getName()));
 			continue;
 		}
-		chan->removeUser(*user);
-		user->removeJoinedChan(*chan);
+		chan->removeUser(user);
+		user->removeJoinedChan(chan);
 	}
 }

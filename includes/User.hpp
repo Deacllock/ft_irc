@@ -36,7 +36,7 @@ class User
 		char					_mode;
 		std::string				_realName;
 		unsigned long			_limit;
-		std::vector<Channel>	_joinedChan;
+		std::vector<Channel *>	_joinedChan;
 
 
 	
@@ -58,7 +58,7 @@ class User
 		bool            		getIsRegistered() const;
 		std::string     		getRealName() const;
 		unsigned long			getLimit() const;
-		std::vector<Channel>	getJoinedChan() const;
+		std::vector<Channel *>	getJoinedChan() const;
 
 		/*--------------- Setters ---------------*/
 		void	setIsConnected( bool val );
@@ -69,13 +69,13 @@ class User
 		void    setIsRegistered(bool val);
 		void    setRealName( std::string name );
 		void	setLimit( unsigned long limit );
-		void	addJoinedChan( Channel c );
-		void	removeJoinedChan( Channel c );
+		void	addJoinedChan( Channel *c );
+		void	removeJoinedChan( Channel *c );
 		void	quitAllChan();
 
 		/*-------------- Others --------------*/
 		bool	tooManyChanJoined() const;
-		bool	isOnChan( std::string name ) const;
+		bool	isOnChan( std::string name );
 };
 
 /*---------------- Non-member functions ----------------*/

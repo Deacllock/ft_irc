@@ -30,17 +30,19 @@ User & User::operator=( const User &rhs )
     this->_mode = rhs._mode;
     this->_realName = rhs._realName;
     this->_limit = rhs._limit;
+	this->_joinedChan = rhs._joinedChan;
     return *this;
 }
 
 /*--------------- Getters ---------------*/
-int				User::getFd() const             { return this->_fd; }
-unsigned long	User::getUserId() const         { return this->_userId; }
-bool			User::getIsConnected() const    { return this->_isConnected; }
-bool			User::getIsRegistered() const   { return this->_isRegistered; }
-std::string     User::getUsername() const       { return this->_username; }
-std::string     User::getNickname() const       { return this->_nickname; }
-time_t      	User::getLastNickChange() const { return this->_lastNickChange; }
+int						User::getFd() const             { return this->_fd; }
+unsigned long			User::getUserId() const         { return this->_userId; }
+bool					User::getIsConnected() const    { return this->_isConnected; }
+bool					User::getIsRegistered() const   { return this->_isRegistered; }
+std::string     		User::getUsername() const       { return this->_username; }
+std::string     		User::getNickname() const       { return this->_nickname; }
+time_t      			User::getLastNickChange() const { return this->_lastNickChange; }
+std::vector<Channel *>	User::getJoinedChan() const		{ return this->_joinedChan; }
 
 /*--------------- Setters ---------------*/
 void	User::setIsConnected( bool val )            { this->_isConnected = val; }
@@ -60,10 +62,10 @@ void    User::setRealName( std::string name )       { this->_realName = name; }
 void	User::setLimit( unsigned long limit )		{ this->_limit = limit; }
 
 
-void	User::addJoinedChan( Channel c )
+void	User::addJoinedChan( Channel *c )
 {
-	std::vector<Channel>::iterator it = this->_joinedChan.begin();
-	std::vector<Channel>::iterator it_end = this->_joinedChan.end();
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
 
 	for (; it < it_end; it++)
 		if (c == *it)
@@ -71,10 +73,10 @@ void	User::addJoinedChan( Channel c )
 	
 	this->_joinedChan.push_back(c);
 }
-void	User::removeJoinedChan( Channel c )
+void	User::removeJoinedChan( Channel *c )
 {
-	std::vector<Channel>::iterator it = this->_joinedChan.begin();
-	std::vector<Channel>::iterator it_end = this->_joinedChan.end();
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
 
 	for (; it < it_end; it++)
 	{
@@ -89,13 +91,13 @@ void	User::quitAllChan() { this->_joinedChan.clear(); }
 
 /*--------------- Others ---------------*/
 bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.size(); }
-bool	User::isOnChan( std::string name ) const
+bool	User::isOnChan( std::string name )
 {
-	std::vector<Channel>::iterator it = this->_joinedChan.begin();
-	std::vector<Channel>::iterator it_end = this->_joinedChan.end();
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
 
 	for (; it < it_end; it++)
-		if ((*it).getName() == name)
+		if ((*it)->getName() == name)
 			return true;
 
 	return false;
