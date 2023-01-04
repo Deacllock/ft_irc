@@ -13,6 +13,10 @@ std::string rpl_myinfo( std::string servername, std::string version, std::string
 
 //301
 std::string	rpl_away( std::string nick, std::string awayMess ) { return nick + " :" + awayMess; }
+//322
+std::string	rpl_list( std::string channel, std::string visible, std::string topic ) { return channel + " " + visible + " :" + topic; }
+//323
+std::string	rpl_listend() { return ":End of LIST"; }
 //331
 std::string	rpl_notopic( std::string channel ) { return channel + " :No topic is set"; };
 //332
