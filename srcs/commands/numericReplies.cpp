@@ -1,5 +1,4 @@
-
-#include <string>
+#include "numericReplies.hpp"
 
 /* The server sends Replies 001 to 004 to a user upon successful registration */
 //001
@@ -26,7 +25,7 @@ std::string	rpl_inviting( std::string channel, std::string nick ) { return chann
 //353
 std::string	rpl_namreply( std::string channel, std::vector<std::string> nick )
 {
-	std::string ret = channel + " :"
+	std::string ret = channel + " :";
 	std::vector<std::string>::iterator it = nick.begin();
 	std::vector<std::string>::iterator it_end = nick.end();
 	for (; it < it_end; it++)
@@ -38,7 +37,7 @@ std::string	rpl_namreply( std::string channel, std::vector<std::string> nick )
 	return ret;
 }
 //366
-std::strubg	rpl_endofnames( std::string channel ) { return channel + " :End of NAMES list"; }
+std::string	rpl_endofnames( std::string channel ) { return channel + " :End of NAMES list"; }
 
 //401
 std::string	err_nosuchnick( std::string nickname ) { return "401 * " + nickname + " :No such nick/channel"; }
