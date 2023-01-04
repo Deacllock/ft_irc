@@ -18,6 +18,6 @@ void	pass(Command &cmd)
 	else if (cmd.getParams().size() < 1)
 		cmd.addOutput(err_needmoreparams(username, "PASS"));
 
-	else
-		cmd.getUser()->setIsConnected(Command::server->checkPassword(cmd.getParams()[0]));
+	else if (Command::server->checkPassword(cmd.getParams()[0]))
+		cmd.getUser()->setStatus(CONNECTED);
 }

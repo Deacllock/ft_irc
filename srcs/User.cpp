@@ -4,10 +4,9 @@
 /*--------------- Constructors ---------------*/
 unsigned long	User::_ids = 0;
 
-User::User( int fd, bool isCo, unsigned long limit ): _fd(fd), _userId(User::_ids++)
+User::User( int fd, bool status, unsigned long limit ): _fd(fd), _userId(User::_ids++)
 {
-    this->_isConnected = isCo;
-    this->_isRegistered = false;
+    this->_status = (enum status)status;
     this->_username = "";
     this->_nickname = "";
     this->_lastNickChange = 0;
@@ -22,8 +21,7 @@ User::~User() { close(this->_fd); }
 
 User & User::operator=( const User &rhs )
 {
-    this->_isConnected = rhs._isConnected;
-    this->_isRegistered = rhs._isRegistered;
+    this->_status = rhs._status;
     this->_username = rhs._username;
     this->_nickname = rhs._nickname;
     this->_lastNickChange = rhs._lastNickChange;
@@ -36,20 +34,19 @@ User & User::operator=( const User &rhs )
 /*--------------- Getters ---------------*/
 int				User::getFd() const             { return this->_fd; }
 unsigned long	User::getUserId() const         { return this->_userId; }
-bool			User::getIsConnected() const    { return this->_isConnected; }
-bool			User::getIsRegistered() const   { return this->_isRegistered; }
+bool			User::getIsConnected() const    { return this->_status == CONNECTED; }
+bool			User::getIsRegistered() const   { return this->_status == REGISTERED; }
 std::string     User::getUsername() const       { return this->_username; }
 std::string     User::getNickname() const       { return this->_nickname; }
 time_t      	User::getLastNickChange() const { return this->_lastNickChange; }
 
 /*--------------- Setters ---------------*/
-void	User::setIsConnected( bool val )            { this->_isConnected = val; }
-void	User::setIsRegistered( bool val )           { this->_isRegistered = val; }
+void	User::setStatus( enum status val )            { this->_status = val; }
 
 void    User::setNickname( std::string nick )
 {
     this->_nickname = nick;
-    if (this->_isRegistered)
+    if (this->_status == REGISTERED)
         this->_lastNickChange = time(0);
 }
 

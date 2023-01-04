@@ -3,9 +3,9 @@
 void greetNewComer( Command &cmd )
 {
 	User *usr = cmd.getUser();
-	if (!usr->getIsRegistered() && usr->getIsConnected() && usr->getNickname() != "" && usr->getUsername() != "")
+	if (usr->getIsConnected() && usr->getNickname() != "" && usr->getUsername() != "")
 	{
-		usr->setIsRegistered(true);
+		usr->setStatus(REGISTERED);
 		cmd.addOutput(rpl_welcome(usr->getNickname(), usr->getUsername(), cmd.server->getName()));
 	}
 }

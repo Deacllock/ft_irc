@@ -22,9 +22,9 @@ enum mode_flags
 
 enum status
 {
+	DISCONNECTED,
 	CONNECTED,
-	REGISTERED,
-	DISCONNECTED
+	REGISTERED
 };
 
 class User
@@ -35,7 +35,7 @@ class User
 		const int				_fd;
 		const unsigned long		_userId;
 	
-		enum status				_status
+		enum status				_status;
 		std::string 			_username;
 		std::string				_nickname;
 		time_t					_lastNickChange;
@@ -46,7 +46,7 @@ class User
 
 	public:
 		/*--------------- Constructors ---------------*/
-		User( int fd = -1, bool isCo = false, unsigned long limit = -1 );
+		User( int fd = -1, bool status = false, unsigned long limit = -1 );
 		User( const User &rhs);
 		~User();
 		User &operator=( const User &rhs );
@@ -65,12 +65,11 @@ class User
 		std::vector<Channel>	getJoinedChan() const;
 
 		/*--------------- Setters ---------------*/
-		void	setIsConnected( bool val );
+		void	setStatus( enum status val );
 		void    setUsername( std::string user );
 		void    setNickname( std::string nick );
 		void	setLastNickChange( time_t new_time );
 		void	setMode( char mode );
-		void    setIsRegistered(bool val);
 		void    setRealName( std::string name );
 		void	setLimit( unsigned long limit );
 		void	addJoinedChan( Channel c );
