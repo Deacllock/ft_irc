@@ -20,7 +20,7 @@ void	invite(Command &cmd)
 		return cmd.addOutput(err_nosuchnick(nickname));
 	User	*userToInvite = Command::server->getUserByName(nickname);
 	if (chan->isJoinedUser(*userToInvite))
-		return cmd.addOutput(err_userinchannel(nickname, channel));
+		return cmd.addOutput(err_useronchannel(nickname, channel));
 	// INVITE
 	cmd.addOutput(rpl_inviting(channel, nickname));
 	//RPL_AWAY
