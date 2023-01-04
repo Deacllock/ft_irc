@@ -107,6 +107,28 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
 	}
 }
 
+int	reply(User *usr)
+{
+	int ret;
+	while (usr->getReplies().size())
+	{
+		std::string reply = usr->getReplies().front();
+		ret = send(usr->getFd(), reply.c_str(), reply.length(), MSG_DONTWAIT);
+		#ifdef DEBUG
+			std::cout << usr->getFd() << " > " << reply; //debug
+		#endif
+		if (ret >= 0 && static_cast<size_t>(ret) == reply.length())
+			usr->getReplies().pop();
+		else
+		{
+			if ( ret >= 0)
+				usr->getReplies().front() = reply.substr(ret, reply.length());
+			break;
+		}
+	}
+	return usr->getIsConnected() || usr->getIsRegistered();
+}
+
 /**
  * @brief Read user input, parse it and reply.
  * 
@@ -133,17 +155,11 @@ static int	read_parse_and_reply(Server *server, int fd)
 	#ifdef DEBUG
 		std::cout << fd << " < " << msg; //debug
 	#endif
-	
-	std::vector<std::string> srv_reps = handle_input(server->searchUserByFd(fd), msg).getOutputs();
-	while (srv_reps.size())
-	{
-		send(fd, srv_reps[0].c_str(), srv_reps[0].length(), MSG_DONTWAIT);
-		#ifdef DEBUG
-			std::cout << fd << " > " << srv_reps[0]; //debug
-		#endif
-		srv_reps.erase(srv_reps.begin());
-	}
-	return (ret);
+
+	User *usr = server->searchUserByFd(fd);
+	handle_input(usr, msg);
+
+	return (reply(usr) || ret);
 }
 
 /**

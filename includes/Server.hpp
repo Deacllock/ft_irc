@@ -14,7 +14,6 @@
 # include "Command.hpp"
 # include "User.hpp"
 
-
 class Command;
 
 class Server
@@ -22,7 +21,7 @@ class Server
     private:
         std::string             _name;
         std::string             _port;
-        std::string             _password; // shall be encoded?
+        std::string             _password; // shall it be encoded?
         int                     _sockfd;
         std::string             _opeCredential[2];
 

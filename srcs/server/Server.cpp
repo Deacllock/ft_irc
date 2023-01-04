@@ -58,7 +58,6 @@ User    *Server::searchUserByFd( int fd )
 		if ((*it)->getFd() == fd)
 			return *it;
 	return NULL;
-
 }
 
 void Server::addUser( int fd ) { this->_users.push_back(new User(fd, this->_password == "")); }

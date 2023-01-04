@@ -32,30 +32,32 @@ User & User::operator=( const User &rhs )
 }
 
 /*--------------- Getters ---------------*/
-int				User::getFd() const             { return this->_fd; }
-unsigned long	User::getUserId() const         { return this->_userId; }
-bool			User::getIsConnected() const    { return this->_status == CONNECTED; }
-bool			User::getIsRegistered() const   { return this->_status == REGISTERED; }
-std::string     User::getUsername() const       { return this->_username; }
-std::string     User::getNickname() const       { return this->_nickname; }
-time_t      	User::getLastNickChange() const { return this->_lastNickChange; }
+int				User::getFd() const             	{ return this->_fd; }
+unsigned long	User::getUserId() const         	{ return this->_userId; }
+
+bool			User::getIsConnected() const    	{ return this->_status == CONNECTED; }
+bool			User::getIsRegistered() const  	 	{ return this->_status == REGISTERED; }
+
+std::string     User::getUsername() const       	{ return this->_username; }
+std::string     User::getNickname() const       	{ return this->_nickname; }
+time_t      	User::getLastNickChange() const 	{ return this->_lastNickChange; }
+
+std::queue<std::string>	User::getReplies() const	{ return this->_replies; }
 
 /*--------------- Setters ---------------*/
 void	User::setStatus( enum status val )            { this->_status = val; }
 
+void    User::setUsername( std::string user )       { this->_username = user; }
 void    User::setNickname( std::string nick )
 {
     this->_nickname = nick;
     if (this->_status == REGISTERED)
         this->_lastNickChange = time(0);
 }
-
-void    User::setUsername( std::string user )       { this->_username = user; }
-void	User::setLastNickChange( time_t new_time )  { this->_lastNickChange = new_time; }
-void	User::setMode( char mode )                  { this->_mode = mode; }
 void    User::setRealName( std::string name )       { this->_realName = name; }
-void	User::setLimit( unsigned long limit )		{ this->_limit = limit; }
 
+void	User::setMode( char mode )                  { this->_mode = mode; }
+void	User::setLimit( unsigned long limit )		{ this->_limit = limit; }
 
 void	User::addJoinedChan( Channel c )
 {
@@ -68,6 +70,7 @@ void	User::addJoinedChan( Channel c )
 	
 	this->_joinedChan.push_back(c);
 }
+
 void	User::removeJoinedChan( Channel c )
 {
 	std::vector<Channel>::iterator it = this->_joinedChan.begin();
@@ -83,6 +86,9 @@ void	User::removeJoinedChan( Channel c )
 	}
 }
 
+void	User::pushReply( std::string reply ) { this->_replies.push(reply); }
+void	User::popReply() { this->_replies.pop(); }
+
 /*---------------- Non-member functions ----------------*/
 
 std::ostream &operator<<(std::ostream &o, User const &rhs)
@@ -96,5 +102,5 @@ std::ostream &operator<<(std::ostream &o, User const &rhs)
 
 bool	operator==(const User &u1, const User &u2)
 {
-	return u1.getFd() == u2.getFd() && u1.getUserId() == u2.getUserId() && u1.getUsername() == u2.getUsername() && u1.getNickname() == u2.getNickname();
+	return u1.getUserId() == u2.getUserId();
 }

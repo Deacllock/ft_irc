@@ -21,33 +21,32 @@ class Command
 		std::string 				_cmd;
 		std::vector<std::string>	_params;
 
-		User *						_user;
+		User *				_user;
 		handler_type				_handler;
-		std::vector<std::string>	_outputs;
 
 		void	split_str(std::string str);
 
 	public:
-		/* CONSTRUCTORS */
+		/*---------------- Constructors ----------------*/
 		Command();
 		Command( User *user, std::string &usr_input );
 		Command( const Command &rhs );
 		Command &operator=( const Command &rhs );
 		~Command();
 
-		/* GETTER */
+		/*---------------- Getters ----------------*/
 		std::string 				getCmd() const;
 		std::vector<std::string>	getParams() const;
 		User *						getUser() const;
 		handler_type				getHandler() const;
-		std::vector<std::string>	getOutputs() const;
 
-		/* SETTER */
+		/*---------------- Setters ----------------*/
 		void	addOutput( std::string output );
 };
 
+/*---------------- Non-member functions ----------------*/
 void 			instanciateCommand( Server *server );
-Command			handle_input( User *user, std::string user_input );
+void			handle_input( User *user, std::string user_input );
 std::string		getColonMsg( std::vector<std::string> params, size_t pos );
 
 

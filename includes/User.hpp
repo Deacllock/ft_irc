@@ -3,6 +3,7 @@
 
 # include <ctime>
 # include <ostream>
+# include <queue>
 # include <string>
 
 # include "Channel.hpp"
@@ -42,6 +43,8 @@ class User
 		char					_mode;
 		std::string				_realName;
 		unsigned long			_limit;
+
+		std::queue<std::string>	_replies;
 		std::vector<Channel>	_joinedChan;
 
 	public:
@@ -54,31 +57,42 @@ class User
 		/*--------------- Getters ---------------*/
 		int						getFd() const;
 		unsigned long			getUserId() const;
+
 		bool					getIsConnected() const;
+		bool            		getIsRegistered() const;
+
 		std::string   		 	getUsername() const;
 		std::string     		getNickname() const;
 		time_t					getLastNickChange() const;
-		char					getMode() const;
-		bool            		getIsRegistered() const;
 		std::string     		getRealName() const;
+
+		char					getMode() const;
 		unsigned long			getLimit() const;
-		std::vector<Channel>	getJoinedChan() const;
+
+		std::vector<Channel>	getJoinedChan();
+		std::queue<std::string>	getReplies() const;
 
 		/*--------------- Setters ---------------*/
 		void	setStatus( enum status val );
+
 		void    setUsername( std::string user );
 		void    setNickname( std::string nick );
-		void	setLastNickChange( time_t new_time );
-		void	setMode( char mode );
 		void    setRealName( std::string name );
+
+		void	setMode( char mode );
 		void	setLimit( unsigned long limit );
+
 		void	addJoinedChan( Channel c );
 		void	removeJoinedChan( Channel c );
+
+		void	pushReply( std::string reply );
+		void	popReply();
+
 };
 
-/*---------------- Non-member functions ----------------*/
-std::ostream &operator<<(std::ostream &o, User const &rhs);
+/*---------------- operators ----------------*/
 
+std::ostream &operator<<(std::ostream &o, User const &rhs);
 bool	operator==(const User &u1, const User &u2);
 
 

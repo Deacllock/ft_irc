@@ -33,12 +33,12 @@ static bool isNicknameValid( std::string nick )
 	return true;
 }
 
-static User *isNicknameInUse( std::vector<User *> users, std::string nickname)
+static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string nickname)
 {
 	for (size_t i = 0; i < users.size(); i++)
-		if (users[i]->getNickname() == nickname)
-			return (users[i]);
-	return (NULL);
+		if (users[i] != usr && users[i]->getNickname().compare(nickname) == 0)
+			return true;
+	return false;
 }
 
 #include <iostream>
@@ -54,23 +54,21 @@ void	nick(Command &cmd)
 		return cmd.addOutput(err_nonicknamegiven());
 
 	std::string nickname = cmd.getParams()[0];
-	if (!isNicknameValid(nickname))
-		return cmd.addOutput(err_erroneusnickname(nickname));
-	
-	User *usrWithSameNick = isNicknameInUse(cmd.server->getUsers(), nickname);
-	if (usrWithSameNick != NULL && usrWithSameNick != usr)
-		cmd.addOutput(err_nicknameinuse(nickname));
-
-	else if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY ) //can be problematic with irssi
-		cmd.addOutput(err_unavailableresource(nickname));
-
 	// else if (usr->getIsRestricted())
 	// 	cmd.addOutput(err_restricted());
+	
+	if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY ) //can be problematic with irssi
+		cmd.addOutput(err_unavailableresource(nickname));
+
+	else if (!isNicknameValid(nickname))
+		cmd.addOutput(err_erroneusnickname(nickname));
+	
+	else if (isNicknameInUse(cmd.server->getUsers(), usr, nickname))
+		cmd.addOutput(err_nicknameinuse(nickname));
 
 	else
 	{
 		usr->setNickname(cmd.getParams()[0]);
 		greetNewComer(cmd);
 	}
-
 }
