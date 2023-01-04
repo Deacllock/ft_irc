@@ -13,6 +13,7 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["CAP"] = cap;
 	Command::cmd_map["JOIN"] = join;
 	Command::cmd_map["PART"] = part;
+	Command::cmd_map["INVITE"] = invite;
 }
 
 /* CONSTRUCTORS */
