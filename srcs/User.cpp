@@ -14,6 +14,7 @@ User::User(): _fd(-1), _userId(User::_ids++)
     this->_mode = 0;
     this->_realName = "";
     this->_limit = -1;
+    this->_replies = std::queue<std::string>();
 }
 
 User::User( std::string hostname, int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
@@ -26,6 +27,7 @@ User::User( std::string hostname, int fd, enum status val, unsigned long limit )
     this->_mode = 0;
     this->_realName = "";
     this->_limit = limit;
+    this->_replies = std::queue<std::string>();
 }
 
 User::User( const User &rhs): _fd(rhs._fd), _userId(rhs._userId) { *this = rhs; }
