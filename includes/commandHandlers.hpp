@@ -15,5 +15,10 @@ void	quit(Command &cmd);
 
 /*---------------- Channel ----------------*/
 void	join(Command &cmd);
+void	part(Command &cmd);
+void	invite(Command &cmd);
+void	topic(Command &cmd);
+void	list(Command &cmd);
+void	names(Command &cmd);
 
 #endif

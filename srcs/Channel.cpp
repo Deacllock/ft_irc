@@ -5,7 +5,7 @@
 unsigned long	Channel::_ids = 0;
 
 Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids), _name(name), _topic(topic), _limit(limit) { Channel::_ids++; }
-Channel::Channel( const Channel &rhs ): _id(rhs._id), _name(rhs._name), _topic(rhs._topic), _limit(rhs._limit), _banned(rhs._banned) { *this = rhs; }
+Channel::Channel( const Channel &rhs ): _id(rhs._id), _name(rhs._name), _topic(rhs._topic), _limit(rhs._limit), _banned(rhs._banned), _users(rhs._users) { *this = rhs; }
 Channel::~Channel() {}
 
 Channel & Channel::operator=( const Channel &rhs )
@@ -14,6 +14,7 @@ Channel & Channel::operator=( const Channel &rhs )
     this->_topic = rhs._topic;
     this->_limit = rhs._limit;
     this->_banned = rhs._banned;
+    this->_users = rhs._users;
     return *this;
 }
 
@@ -22,15 +23,16 @@ unsigned long		Channel::getId() const         { return this->_id; }
 std::string     	Channel::getName() const       { return this->_name; }
 std::string     	Channel::getTopic() const       { return this->_topic; }
 unsigned long		Channel::getLimit() const		{ return this->_limit; }
-std::vector<User>	Channel::getBanned() const		{ return this->_banned; }
+std::vector<User *>	Channel::getBanned() const		{ return this->_banned; }
+std::vector<User *>	Channel::getUsers() const		{ return this->_users; }
 
 /*--------------- Setters ---------------*/
 void    Channel::setName( std::string name )       { this->_name = name; }
 void    Channel::setTopic( std::string topic )       { this->_topic = topic; }
 void	Channel::setLimit( unsigned long limit )	{ this->_limit = limit; }
-void	Channel::addBannedUser( User u ) {
-	std::vector<User>::iterator	it = this->_banned.begin();
-	std::vector<User>::iterator	it_end = this->_banned.end();
+void	Channel::addBannedUser( User *u ) {
+	std::vector<User *>::iterator	it = this->_banned.begin();
+	std::vector<User *>::iterator	it_end = this->_banned.end();
 	
 	for (; it < it_end; it++)
 		if (u == *it)
@@ -38,9 +40,9 @@ void	Channel::addBannedUser( User u ) {
 	
 	this->_banned.push_back(u);
 }
-void	Channel::removeBannedUser( User u ) {
-	std::vector<User>::iterator	it = this->_banned.begin();
-	std::vector<User>::iterator	it_end = this->_banned.end();
+void	Channel::removeBannedUser( User *u ) {
+	std::vector<User *>::iterator	it = this->_banned.begin();
+	std::vector<User *>::iterator	it_end = this->_banned.end();
 	
 	for (; it < it_end; it++)
 	{
@@ -51,18 +53,76 @@ void	Channel::removeBannedUser( User u ) {
 		}
 	}
 }
+void	Channel::addUser( User *u ) {
+	std::vector<User *>::iterator	it = this->_users.begin();
+	std::vector<User *>::iterator	it_end = this->_users.end();
+	
+	for (; it < it_end; it++)
+		if (u == *it)
+			return;
+	
+	this->_users.push_back(u);
+}
+void	Channel::removeUser( User *u ) {
+	std::vector<User *>::iterator	it = this->_users.begin();
+	std::vector<User *>::iterator	it_end = this->_users.end();
+	
+	for (; it < it_end; it++)
+	{
+		if (u == *it)
+		{
+			this->_users.erase(it);
+			break;
+		}
+	}
+}
 
 /*------------- Others --------------*/
-bool	Channel::isUserBanned(User u)
+bool	Channel::isBannedUser(User u)
 {
-	std::vector<User>::iterator it = this->_banned.begin();
-	std::vector<User>::iterator it_end = this->_banned.end();
+	std::vector<User *>::iterator it = this->_banned.begin();
+	std::vector<User *>::iterator it_end = this->_banned.end();
+
+	for (; it < it_end; it++)
+		if (u == *(*it))
+			return true;
+	return false;
+}
+
+bool	Channel::isJoinedUser(User u)
+{
+	std::vector<User *>::iterator it = this->_users.begin();
+	std::vector<User *>::iterator it_end = this->_users.end();
+
+	for (; it < it_end; it++)
+		if (u == *(*it))
+			return true;
+	return false;
+}
+
+bool	Channel::isBannedUser(User *u)
+{
+	std::vector<User *>::iterator it = this->_banned.begin();
+	std::vector<User *>::iterator it_end = this->_banned.end();
 
 	for (; it < it_end; it++)
 		if (u == *it)
 			return true;
 	return false;
 }
+
+bool	Channel::isJoinedUser(User *u)
+{
+	std::vector<User *>::iterator it = this->_users.begin();
+	std::vector<User *>::iterator it_end = this->_users.end();
+
+	for (; it < it_end; it++)
+		if (u == *it)
+			return true;
+	return false;
+}
+
+bool	Channel::isChannelFull() { return this->_limit == this->_users.size(); }
 
 static bool	isChanstring(char c)
 {

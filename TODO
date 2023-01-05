@@ -18,12 +18,12 @@ Part 1
 - [2] MODE
 
 //CHANNEL (Romane)
-- [1] JOIN
-- [1] PART
-- [1] INVITE
-- [2/3] TOPIC
-- [2] NAMES
-- [2/3] LIST
+- [1] JOIN		WIP
+- [1] PART		GOOD
+- [1] INVITE	WIP
+- [2/3] TOPIC	WIP
+- [2] NAMES		WIP
+- [2/3] LIST	WIP
 
 --------------------
 

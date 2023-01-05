@@ -12,8 +12,8 @@ FOLDER_TO_CREATE = server commands commands/connection commands/channel
 SRCS = main.cpp User.cpp Channel.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp) \
 		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp \
-		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp oper.cpp ) \
-		$(addprefix channel/, join.cpp))
+		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp oper.cpp) \
+		$(addprefix channel/, join.cpp part.cpp invite.cpp topic.cpp list.cpp names.cpp))
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 

@@ -43,6 +43,7 @@ User & User::operator=( const User &rhs )
     this->_mode = rhs._mode;
     this->_realName = rhs._realName;
     this->_limit = rhs._limit;
+	this->_joinedChan = rhs._joinedChan;
     return *this;
 }
 
@@ -77,10 +78,10 @@ void    User::setRealName( std::string name )       { this->_realName = name; }
 void	User::setMode( char mode )                  { this->_mode = mode; }
 void	User::setLimit( unsigned long limit )		{ this->_limit = limit; }
 
-void	User::addJoinedChan( Channel c )
+void	User::addJoinedChan( Channel *c )
 {
-	std::vector<Channel>::iterator it = this->_joinedChan.begin();
-	std::vector<Channel>::iterator it_end = this->_joinedChan.end();
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
 
 	for (; it < it_end; it++)
 		if (c == *it)
@@ -88,11 +89,10 @@ void	User::addJoinedChan( Channel c )
 	
 	this->_joinedChan.push_back(c);
 }
-
-void	User::removeJoinedChan( Channel c )
+void	User::removeJoinedChan( Channel *c )
 {
-	std::vector<Channel>::iterator it = this->_joinedChan.begin();
-	std::vector<Channel>::iterator it_end = this->_joinedChan.end();
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
 
 	for (; it < it_end; it++)
 	{
@@ -102,6 +102,21 @@ void	User::removeJoinedChan( Channel c )
 			break;
 		}
 	}
+}
+void	User::quitAllChan() { this->_joinedChan.clear(); }
+
+/*--------------- Others ---------------*/
+bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.size(); }
+bool	User::isOnChan( std::string name )
+{
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
+
+	for (; it < it_end; it++)
+		if ((*it)->getName() == name)
+			return true;
+
+	return false;
 }
 
 void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->_hostname + " " + reply + "\r\n"); }

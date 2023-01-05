@@ -26,7 +26,7 @@ class Server
         std::string             _opeCredential[2];
 
         std::vector<User *>       _users;
-        // std::vector<Channel>    _channels;
+        std::vector<Channel *>    _channels;
 
     public:
    		/*--------------- Constructors ---------------*/
@@ -49,11 +49,20 @@ class Server
         /*--------------- Getters ---------------*/
         std::vector<User*>  getUsers() const;
         std::string         getName() const;
+		std::vector<Channel *>	getChannels() const;
 
         /*--------------- Users ---------------*/
         User    *searchUserByFd( int fd );
         void    addUser( int fd );
         int     removeUser( User *user );
+		bool	isExistingUserByName( std::string name );
+		User	*getUserByName( std::string name );
+
+		/*--------------- Channels --------------*/
+        void    addChannel( Channel *chan );
+        int     removeChannel( Channel *chan );
+		bool	isExistingChannelByName( std::string name );
+		Channel	*getChannelByName( std::string name );
 
         /*--------------- Password ---------------*/
         bool    checkPassword( std::string pwd );

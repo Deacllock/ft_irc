@@ -47,7 +47,7 @@ class User
 		unsigned long			_limit;
 
 		std::queue<std::string>	_replies;
-		std::vector<Channel>	_joinedChan;
+		std::vector<Channel * >	_joinedChan;
 
 	public:
 		/*--------------- Constructors ---------------*/
@@ -77,7 +77,7 @@ class User
 		unsigned long			getLimit() const;
 
 		// CHANNEL //
-		std::vector<Channel>	getJoinedChan();
+		std::vector<Channel *>	getJoinedChan() const;
 		std::queue<std::string>	getReplies() const;
 
 		/*--------------- Setters ---------------*/
@@ -92,8 +92,11 @@ class User
 		void	setMode( char mode );
 		void	setLimit( unsigned long limit );
 
-		void	addJoinedChan( Channel c );
-		void	removeJoinedChan( Channel c );
+		void	addJoinedChan( Channel *c );
+		void	removeJoinedChan( Channel *c );
+		void	quitAllChan();
+		bool	tooManyChanJoined() const;
+		bool    isOnChan( std::string name );
 
 		void	pushReply( std::string reply );
 		void	popReply();
