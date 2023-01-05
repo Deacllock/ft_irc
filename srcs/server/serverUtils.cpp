@@ -106,8 +106,13 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
 		add_poll_connection(fds, new_fd, POLLIN | POLLRDHUP);
 	}
 }
-
-int	reply(User *usr)
+/**
+ * @brief Send to the user the message queue for them.
+ * 
+ * @param usr User to send message to.
+ * @return int Indicator to tell if the connection shall be closed after communication. 
+ */
+static int	reply(User *usr)
 {
 	int ret;
 	while (usr->getReplies().size())
@@ -118,7 +123,7 @@ int	reply(User *usr)
 			std::cout << usr->getFd() << " > " << reply; //debug
 		#endif
 		if (ret >= 0 && static_cast<size_t>(ret) == reply.length())
-			usr->getReplies().pop();
+			usr->popReply();
 		else
 		{
 			if ( ret >= 0)
@@ -126,7 +131,7 @@ int	reply(User *usr)
 			break;
 		}
 	}
-	return usr->getIsConnected() || usr->getIsRegistered();
+	return usr->getIsDisconnected();
 }
 
 /**
@@ -137,29 +142,30 @@ int	reply(User *usr)
  * @param fd User fd.
  * @return int 
  */
-static int	read_parse_and_reply(Server *server, int fd)
+static int	read_parse_and_reply(User *user)
 {
+	if (!user) //gnn
+		return (1);
+
 	char			buf[BUFFER_SIZE + 1];
 	std::string 	msg = "";
 
-	int ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
+	int ret = recv(user->getFd(), buf, BUFFER_SIZE, MSG_DONTWAIT);
 	while (ret > 0)
 	{
 		buf[ret] = '\0';
 		msg += buf;
-		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
+		ret = recv(user->getFd(), buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
 	
 	if (msg.substr(0, msg.length() - 2) == "") //shall be handled later in parsing
 		return ret;
 	#ifdef DEBUG
-		std::cout << fd << " < " << msg; //debug
+		std::cout << user->getFd() << " < " << msg; //debug
 	#endif
 
-	User *usr = server->searchUserByFd(fd);
-	handle_input(usr, msg);
-
-	return (reply(usr) || ret);
+	handle_input(user, msg);
+	return (!reply(user) && ret);
 }
 
 /**
@@ -210,24 +216,25 @@ int Server::client_interactions()
 			if (fds[i].revents == 0)
 				continue;
 
+			User *user = this->searchUserByFd(fds[i].fd);
 			if (fds[i].revents != POLLIN)
 			{
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;
 				#endif
-				this->removeUser(this->searchUserByFd(fds[i].fd));
+				this->removeUser(user);
 				fds.erase(fds.begin() + (i--));
 			}
 
 			else if (fds[i].fd == this->_sockfd)
 				accept_new_connections(*this, fds, this->_sockfd);
 
-			else if (read_parse_and_reply(this, fds[i].fd) == 0)
+			else if (read_parse_and_reply(user) == 0)
 			{
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;
 				#endif
-				this->removeUser(this->searchUserByFd(fds[i].fd));
+				this->removeUser(user);
 				fds.erase(fds.begin() + (i--));
 			}
 		}

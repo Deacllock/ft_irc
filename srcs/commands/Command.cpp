@@ -47,7 +47,7 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 /*---------------- Setter ----------------*/
 void	Command::addOutput( std::string output)
 {
-	this->_user->pushReply(":" + this->server->getName() + " " + output + "\n");
+	this->_user->pushReply(":" + this->server->getName() + " " + output + "\r\n");
 }
 
 
@@ -61,7 +61,11 @@ void	Command::addOutput( std::string output)
  */
 void	Command::split_str(std::string str)
 {
-	std::istringstream ss(str.substr(0, str.length() - 2)); //shall be prevented by using proper parsing
+	if (str[str.length() - 1] == '\n' && str[str.length() - 2] == '\r')
+		str = str.substr(0, str.length() - 2); //shall be prevented by using proper parsing
+
+	std::istringstream ss(str);
+
 	std::string elem;
 
 	bool first = true;

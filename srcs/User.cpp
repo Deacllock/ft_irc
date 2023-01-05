@@ -4,9 +4,9 @@
 /*--------------- Constructors ---------------*/
 unsigned long	User::_ids = 0;
 
-User::User( int fd, bool status, unsigned long limit ): _fd(fd), _userId(User::_ids++)
+User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
 {
-    this->_status = (enum status)status;
+    this->_status = val;
     this->_username = "";
     this->_nickname = "";
     this->_lastNickChange = 0;
@@ -37,6 +37,8 @@ unsigned long	User::getUserId() const         	{ return this->_userId; }
 
 bool			User::getIsConnected() const    	{ return this->_status == CONNECTED; }
 bool			User::getIsRegistered() const  	 	{ return this->_status == REGISTERED; }
+bool			User::getIsDisconnected() const     { return this->_status == DISCONNECTED; }
+
 
 std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }

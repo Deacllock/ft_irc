@@ -8,6 +8,6 @@
 void	quit(Command &cmd)
 {
 	cmd.addOutput(error(getColonMsg(cmd.getParams(), 0)));
-	cmd.server->removeUser(cmd.getUser());
-	//shall output to all that a user has left
+	//shall output to all that a user has left ->request to all channel the user belongs to to send info to everyone except them
+	cmd.getUser()->setStatus(DISCONNECTED);
 }

@@ -60,7 +60,13 @@ User    *Server::searchUserByFd( int fd )
 	return NULL;
 }
 
-void Server::addUser( int fd ) { this->_users.push_back(new User(fd, this->_password == "")); }
+void Server::addUser( int fd )
+{
+	enum status status = STARTING;
+	if (this->_password == "")
+		status = CONNECTED;
+	this->_users.push_back(new User(fd, status));
+}
 
 int     Server::removeUser( User *user )
 {
@@ -93,6 +99,7 @@ std::ostream & operator<<(std::ostream &o, Server const &rhs)
 {
 	std::vector<User *> users = rhs.getUsers();
 	o << "-----------------------" << std::endl;
+	o << "Nb users : " << users.size() << std::endl;
 	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); it++)
 		o << **it << std::endl;
 	o << "-----------------------" << std::endl;

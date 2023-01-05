@@ -24,6 +24,7 @@ enum mode_flags
 enum status
 {
 	DISCONNECTED,
+	STARTING,
 	CONNECTED,
 	REGISTERED
 };
@@ -49,7 +50,7 @@ class User
 
 	public:
 		/*--------------- Constructors ---------------*/
-		User( int fd = -1, bool status = false, unsigned long limit = -1 );
+		User( int fd = -1, enum status val = STARTING, unsigned long limit = -1 );
 		User( const User &rhs);
 		~User();
 		User &operator=( const User &rhs );
@@ -58,8 +59,10 @@ class User
 		int						getFd() const;
 		unsigned long			getUserId() const;
 
+		// STATUS //
 		bool					getIsConnected() const;
 		bool            		getIsRegistered() const;
+		bool					getIsDisconnected() const;
 
 		std::string   		 	getUsername() const;
 		std::string     		getNickname() const;
@@ -69,6 +72,7 @@ class User
 		char					getMode() const;
 		unsigned long			getLimit() const;
 
+		// CHANNEL //
 		std::vector<Channel>	getJoinedChan();
 		std::queue<std::string>	getReplies() const;
 

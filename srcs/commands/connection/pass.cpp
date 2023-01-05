@@ -20,4 +20,8 @@ void	pass(Command &cmd)
 
 	else if (Command::server->checkPassword(cmd.getParams()[0]))
 		cmd.getUser()->setStatus(CONNECTED);
+
+	else
+		cmd.getUser()->setStatus(STARTING);
+
 }
