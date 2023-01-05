@@ -7,7 +7,7 @@
  */
 void	quit(Command &cmd)
 {
-	cmd.addOutput(error(getColonMsg(cmd.getParams(), 0)));
+	cmd.getUser()->pushReply(error(getColonMsg(cmd.getParams(), 0)));
 	//shall output to all that a user has left ->request to all channel the user belongs to to send info to everyone except them
 	cmd.getUser()->setStatus(DISCONNECTED);
 }

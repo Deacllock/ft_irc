@@ -16,7 +16,7 @@ void	join(Command &cmd)
 	std::vector<std::string> keys;
 
 	if (cmd.getParams().size() < 1 || cmd.getParams().size() > 2) // how we do when more params ?
-		cmd.addOutput(err_needmoreparams(user->getUsername().c_str(), "JOIN"));
+		user->pushReply(err_needmoreparams(user->getUsername().c_str(), "JOIN"));
 	
 	std::string elem;
 	std::istringstream ss(cmd.getParams()[0]);

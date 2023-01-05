@@ -44,13 +44,6 @@ std::vector<std::string> Command::getParams() const	{ return this->_params; }
 User * Command::getUser() const						{ return this->_user; }
 Command::handler_type Command::getHandler() const	{ return this->_handler; }
 
-/*---------------- Setter ----------------*/
-void	Command::addOutput( std::string output)
-{
-	this->_user->pushReply(":" + this->server->getName() + " " + output + "\r\n");
-}
-
-
 /*---------------- Non-member functions ----------------*/
 
 /**
@@ -87,7 +80,7 @@ void	handle_input(User *user, std::string user_input)
 	if (c.getHandler())
 		c.getHandler()(c);
 	else
-		c.addOutput(error(c.getCmd() + " :Cannot find command"));
+		user->pushReply(error(c.getCmd() + " :Cannot find command"));
 }
 
 std::string		getColonMsg( std::vector<std::string> params, size_t pos )

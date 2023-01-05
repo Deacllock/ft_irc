@@ -4,8 +4,21 @@
 /*--------------- Constructors ---------------*/
 unsigned long	User::_ids = 0;
 
-User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
+User::User(): _fd(-1), _userId(User::_ids++)
 {
+    this->_hostname = "";
+    this->_status = STARTING;
+    this->_username = "";
+    this->_nickname = "";
+    this->_lastNickChange = 0;
+    this->_mode = 0;
+    this->_realName = "";
+    this->_limit = -1;
+}
+
+User::User( std::string hostname, int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
+{
+    this->_hostname = hostname;
     this->_status = val;
     this->_username = "";
     this->_nickname = "";
@@ -39,6 +52,7 @@ bool			User::getIsConnected() const    	{ return this->_status == CONNECTED; }
 bool			User::getIsRegistered() const  	 	{ return this->_status == REGISTERED; }
 bool			User::getIsDisconnected() const     { return this->_status == DISCONNECTED; }
 
+bool            User::getIsOperator() const         { return this->_mode | OPERATOR; }
 
 std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }
@@ -88,7 +102,7 @@ void	User::removeJoinedChan( Channel c )
 	}
 }
 
-void	User::pushReply( std::string reply ) { this->_replies.push(reply); }
+void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->_hostname + " " + reply + "\r\n"); }
 void	User::popReply() { this->_replies.pop(); }
 
 /*---------------- Non-member functions ----------------*/

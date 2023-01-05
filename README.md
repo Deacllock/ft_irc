@@ -19,3 +19,6 @@ nc -N 127.0.0.1 667
 -> Usable with network ip
 
 -N : close fd when using ctrl+d
+
+
+//nc -C -N ircnet.clue.be 6667

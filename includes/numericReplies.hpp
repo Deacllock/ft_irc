@@ -32,6 +32,8 @@ std::string err_bannedfromchan( std::string channel ); //474
 std::string err_badchannelkey( std::string channel ); //475
 std::string err_bedchanmask( std::string channel ); //476
 std::string err_restricted(); //484 
+std::string err_umodeunknownflag(); //501
+std::string err_usersdontmatch(); //502
 
 
 std::string error( std::string data );

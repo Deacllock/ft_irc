@@ -103,7 +103,7 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
 			std::cout << "New user landed in " + server.getName() << std::endl; //debug
 		#endif
 		server.addUser(new_fd);
-		add_poll_connection(fds, new_fd, POLLIN | POLLRDHUP);
+		add_poll_connection(fds, new_fd, POLLIN | POLLOUT | POLLRDHUP);
 	}
 }
 /**
@@ -217,7 +217,7 @@ int Server::client_interactions()
 				continue;
 
 			User *user = this->searchUserByFd(fds[i].fd);
-			if (fds[i].revents != POLLIN)
+			if (!(fds[i].revents | POLLIN) && !(fds[i].revents | POLLOUT))
 			{
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;

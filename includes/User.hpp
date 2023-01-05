@@ -12,13 +12,13 @@ class Channel;
 
 enum mode_flags
 {
-	away, //1
-	invisible, //2
-	wallops, //4
-	restricted, //8
-	op, //16
-	local_op, //32
-	notice_serv //64
+	AWAY, //1
+	INVISIBLE, //2
+	WALLOPS, //4
+	RESTRICTED, //8
+	OPERATOR = 16, //16
+	LOCAL_OPERATOR, //32
+	NOTICE //64
 };
 
 enum status
@@ -32,6 +32,7 @@ enum status
 class User
 {
 	private:
+		std::string				_hostname;
 		static	unsigned long	_ids;
 
 		const int				_fd;
@@ -50,7 +51,8 @@ class User
 
 	public:
 		/*--------------- Constructors ---------------*/
-		User( int fd = -1, enum status val = STARTING, unsigned long limit = -1 );
+		User();
+		User( std::string hostname, int fd, enum status val, unsigned long limit );
 		User( const User &rhs);
 		~User();
 		User &operator=( const User &rhs );
@@ -69,6 +71,8 @@ class User
 		time_t					getLastNickChange() const;
 		std::string     		getRealName() const;
 
+		// MODE //
+		bool					getIsOperator() const;
 		char					getMode() const;
 		unsigned long			getLimit() const;
 
@@ -83,6 +87,8 @@ class User
 		void    setNickname( std::string nick );
 		void    setRealName( std::string name );
 
+		// MODE //
+		void	setOperator();
 		void	setMode( char mode );
 		void	setLimit( unsigned long limit );
 

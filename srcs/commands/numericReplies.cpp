@@ -30,11 +30,9 @@ std::string err_inviteonlychan(std::string channel) { return "473 * " + channel 
 std::string err_bannedformchan(std::string channel) { return "474 * " + channel + " :Cannot join channel (+b)"; }
 std::string err_badchannelkey( std::string channel ) { return "475 * " + channel + " :Cannot join channel (+k)"; }
 std::string err_bedchanmask( std::string channel ) { return "476 * " + channel + " :Bad Channel Mask"; }
-
 std::string err_restricted() { return "484 * :Your connection is restricted!"; }
-
-
-
+std::string err_umodeunknownflag() { return "501 * :Unknown MODE flag"; }
+std::string err_usersdontmatch() { return "502 * :Cannot change mode for other users"; }
 
 std::string error( std::string data ) { return  "Error: " + data; }
 

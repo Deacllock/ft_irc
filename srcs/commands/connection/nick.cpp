@@ -51,20 +51,18 @@ void	nick(Command &cmd)
 {
 	User *usr = cmd.getUser();
 	if (cmd.getParams().size() < 1)
-		return cmd.addOutput(err_nonicknamegiven());
+		return usr->pushReply(err_nonicknamegiven());
 
 	std::string nickname = cmd.getParams()[0];
-	// else if (usr->getIsRestricted())
-	// 	cmd.addOutput(err_restricted());
 	
-	if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY ) //can be problematic with irssi
-		cmd.addOutput(err_unavailableresource(nickname));
+	if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY )
+		usr->pushReply(err_unavailableresource(nickname));
 
 	else if (!isNicknameValid(nickname))
-		cmd.addOutput(err_erroneusnickname(nickname));
+		usr->pushReply(err_erroneusnickname(nickname));
 	
 	else if (isNicknameInUse(cmd.server->getUsers(), usr, nickname))
-		cmd.addOutput(err_nicknameinuse(nickname));
+		usr->pushReply(err_nicknameinuse(nickname));
 
 	else
 	{

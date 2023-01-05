@@ -1,3 +1,4 @@
+#include "Command.hpp"
 #include "Server.hpp"
 
 /*--------------- Constructors ---------------*/
@@ -65,7 +66,7 @@ void Server::addUser( int fd )
 	enum status status = STARTING;
 	if (this->_password == "")
 		status = CONNECTED;
-	this->_users.push_back(new User(fd, status));
+	this->_users.push_back(new User(this->_name, fd, status, -1));
 }
 
 int     Server::removeUser( User *user )

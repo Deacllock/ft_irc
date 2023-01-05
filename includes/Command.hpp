@@ -39,9 +39,6 @@ class Command
 		std::vector<std::string>	getParams() const;
 		User *						getUser() const;
 		handler_type				getHandler() const;
-
-		/*---------------- Setters ----------------*/
-		void	addOutput( std::string output );
 };
 
 /*---------------- Non-member functions ----------------*/

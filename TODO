@@ -13,8 +13,8 @@ Part 1
 - [TO TEST][1] NICK
 - [TO TEST][1] USER
 - [3] PING/PONG?
-- [WIP][1] OPER
-- [WIP][1] QUIT
+- [TO TEST][1] OPER
+- [TO TEST][1] QUIT
 - [2] MODE
 
 //CHANNEL (Romane)
@@ -33,7 +33,7 @@ Part 1
 
 // CHANNEL OPERATOR
 - [1/2] KICK
-- [2] MODE
+- [1] MODE
 
 //Server Queries and Commands
 - [3] MOTD ?
