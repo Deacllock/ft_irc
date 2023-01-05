@@ -112,7 +112,7 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
  * @param usr User to send message to.
  * @return int Indicator to tell if the connection shall be closed after communication. 
  */
-static int	reply(User usr)
+static int	reply(User *usr)
 {
 	int ret;
 	while (usr->getReplies().size())
