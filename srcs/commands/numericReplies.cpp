@@ -44,7 +44,7 @@ std::string	err_nosuchnick( std::string nickname ) { return "401 * " + nickname 
 //403
 std::string err_nosuchchannel( std::string channel ) { return "403 * " + channel + " :No such channel"; }
 //404
-std::string	err_cannotsendtochan( std::string cahnnel ) { return "404 * " + channel + " :Cannot send to channel"; }
+std::string	err_cannotsendtochan( std::string channel ) { return "404 * " + channel + " :Cannot send to channel"; }
 //405
 std::string err_toomanychannels( std::string channel ) { return "405 * " + channel + " :You have joined too many channels"; }
 //407

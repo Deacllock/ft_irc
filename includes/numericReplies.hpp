@@ -21,7 +21,7 @@ std::string	rpl_endofnames( std::string channel ); //366
 
 std::string	err_nosuchnick( std::string nickname ); //401
 std::string err_nosuchchannel( std::string channel ); //403
-std::string	err_cannotsendtochan( std::string cahnnel ); //404
+std::string	err_cannotsendtochan( std::string channel ); //404
 std::string err_toomanychannels( std::string channel ); //405
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ); //407
 std::string	err_norecipient( std::string command ); //411
