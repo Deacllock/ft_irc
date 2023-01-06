@@ -86,6 +86,18 @@ bool	Server::isExistingUserByName( std::string name )
 	return false;
 }
 
+bool	Server::isExistingUserByNickname( std::string name )
+{
+	std::vector<User *>::iterator it = this->_users.begin();
+	std::vector<User *>::iterator it_end = this->_users.end();
+
+	for (; it < it_end; it++)
+		if (name == (*it)->getNickname())
+			return true;
+
+	return false;
+}
+
 User	*Server::getUserByName( std::string name )
 {
 	std::vector<User *>::iterator	it = this->_users.begin();
