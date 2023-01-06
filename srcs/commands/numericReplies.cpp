@@ -43,10 +43,20 @@ std::string	rpl_endofnames( std::string channel ) { return channel + " :End of N
 std::string	err_nosuchnick( std::string nickname ) { return "401 * " + nickname + " :No such nick/channel"; }
 //403
 std::string err_nosuchchannel( std::string channel ) { return "403 * " + channel + " :No such channel"; }
+//404
+std::string	err_cannotsendtochan( std::string cahnnel ) { return "404 * " + channel + " :Cannot send to channel"; }
 //405
 std::string err_toomanychannels( std::string channel ) { return "405 * " + channel + " :You have joined too many channels"; }
 //407
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ) { return "407 * " + target + " :" + error_code + " recipients. " + abort_mess; }
+//411
+std::string	err_norecipient( std::string command ) { return "411 * :No recipient given (" + command + ")"; }
+//412
+std::string	err_notexttosend() { return "412 * :No text to send"; }
+//413
+std::string	err_notoplevel( std::string mask ) { return "413 * :" + mask + " :No toplevel domain specified"; }
+//414
+std::string	err_wildtoplevel( std::string mask ) { return "414 * :" + mask + "Wildcard in toplevel domain"; }
 //431
 std::string err_nonicknamegiven() { return "431 * :No nickname given"; }
 //432
