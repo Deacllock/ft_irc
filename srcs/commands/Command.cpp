@@ -17,6 +17,7 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["TOPIC"] = topic;
 	Command::cmd_map["LIST"] = list;
 	Command::cmd_map["NAMES"] = names;
+	Command::cmd_map["PRIVMSG"] = privmsg;
 }
 
 /* CONSTRUCTORS */

@@ -15,5 +15,6 @@ void	invite(Command &cmd);
 void	topic(Command &cmd);
 void	list(Command &cmd);
 void	names(Command &cmd);
+void	privmsg(Command &cmd);
 
 #endif
