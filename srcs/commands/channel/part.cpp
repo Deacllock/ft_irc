@@ -18,7 +18,7 @@ void	part(Command &cmd)
 {
 	User	*user = cmd.getUser();
 
-	if (cmd.getParams().size() != 1)
+	if (cmd.getParams().size() < 1)
 		return cmd.addOutput(err_needmoreparams(user->getUsername().c_str(), "PART"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
