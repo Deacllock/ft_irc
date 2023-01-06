@@ -3,12 +3,7 @@
 
 #include "Server.hpp"
 
-void	ctrl_c(int signum)
-{
-	(void)signum;
-	std::cout << "In ctrl C" << std::endl;
-	// delete server; 
-}
+void	ctrl_c(int signum) { (void)signum; }
 
 int main(int argc, char *argv[])
 {
