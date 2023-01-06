@@ -7,7 +7,7 @@ DBFLAGS = -DDEBUG -g
 
 SRCS_PATH = srcs/
 OBJS_PATH = objs/
-FOLDER_TO_CREATE = server commands commands/connection commands/channel
+FOLDER_TO_CREATE = server commands commands/connection commands/channel commands/message
 
 SRCS = main.cpp User.cpp Channel.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp) \

@@ -18,18 +18,20 @@ void	privmsg(Command &cmd)
 	std::string target = cmd.getParams()[0];
 	std::string text = cmd.getParams()[1];
 
-	if (Command::server->isExistingChannel(target))
+	if (Command::server->isExistingChannelByName(target))
 	{
-		Channel	*chan = getChannelByName(target);
+		Channel	*chan = Command::server->getChannelByName(target);
 		if (!user->isOnChan(target)) // CHECK MODE
 			return cmd.addOutput(err_cannotsendtochan(target));
 		// SEND MESSAGE TO CHAN
+		(void) chan;
 	}
 	else
 	{
-		if (!isExistingUserByName(target))
+		if (!Command::server->isExistingUserByName(target))
 			return cmd.addOutput(err_nosuchnick(target));
-		User *userTarget = getUserByNickname(target);
+		User *userTarget = Command::server->getUserByNickname(target);
 		// SEND MESSAGE TO USER
+		(void) userTarget;
 	}
 }
