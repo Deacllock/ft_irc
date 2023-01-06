@@ -41,7 +41,6 @@ static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string n
 	return false;
 }
 
-#include <iostream>
 /**
  * @brief NICK command is used to give user a nickname or change the existing one.
  * 

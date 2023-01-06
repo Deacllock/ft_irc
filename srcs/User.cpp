@@ -61,6 +61,9 @@ std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }
 time_t      	User::getLastNickChange() const 	{ return this->_lastNickChange; }
 
+std::vector<Channel *>	User::getJoinedChan() const { return this->_joinedChan; }
+
+
 std::queue<std::string>	User::getReplies() const	{ return this->_replies; }
 
 /*--------------- Setters ---------------*/

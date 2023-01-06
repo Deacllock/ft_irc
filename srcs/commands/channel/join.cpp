@@ -51,7 +51,7 @@ void	join(Command &cmd)
 		// if to many chan with this name	ERR_TOOMANYTARGETS
 		// if bad mask						ERR_BADCHANMASK
 		Channel	*chan = Command::server->getChannelByName(*it);
-		if (chan->isBannedUser(*user))
+		if (chan->isBannedUser(user))
 		{
 			user->pushReply(err_bannedfromchan(chan->getName()));
 			continue;

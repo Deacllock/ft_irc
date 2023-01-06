@@ -54,7 +54,7 @@ class Server
         /*--------------- Users ---------------*/
         User    *searchUserByFd( int fd );
         void    addUser( int fd );
-        int     removeUser( User *user );
+        void    removeUser( User *user );
 		bool	isExistingUserByName( std::string name );
 		User	*getUserByName( std::string name );
 

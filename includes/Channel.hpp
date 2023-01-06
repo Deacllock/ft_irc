@@ -18,10 +18,10 @@ class Channel
 		std::string 			_name;
 		std::string				_topic;
 		unsigned long			_limit;
-		std::vector<User *>		_banned;
-		std::vector<User *>		_users;
 
-		bool	checkChannelName( std::string name );
+		std::vector<User *>		_users;
+		std::vector<User *>		_banned;
+		std::vector<User *>		_operators;
 	
 	public:
 		/*--------------- Constructors ---------------*/
@@ -35,24 +35,30 @@ class Channel
 		std::string			getName() const;
 		std::string			getTopic() const;
 		unsigned long		getLimit() const;
+
 		std::vector<User *>	getBanned() const;
 		std::vector<User *>	getUsers() const;
+		std::vector<User *>	getOperators() const;
 
 		/*--------------- Setters ---------------*/
 		void    setName( std::string user );
 		void	setTopic( std::string topic );
 		void	setLimit( unsigned long limit);
+
 		void	addBannedUser( User *u );
 		void	removeBannedUser( User *u );
+
 		void	addUser( User *u );
 		void	removeUser( User *u );
 
+		void	addOperator( User *u );
+		void	removeOperator( User *u );
+
 		/*-------------- Others ----------------*/
-		bool	isBannedUser( User u );
-		bool	isJoinedUser( User u );
-		bool	isBannedUser( User *u );
-		bool	isJoinedUser( User *u );
-		bool	isChannelFull();
+		bool	isBannedUser( const User *u ) const;
+		bool	isJoinedUser( const User *u ) const;
+		bool	isOperatorUser( const User *u ) const;
+		bool	isChannelFull() const;
 };
 
 std::ostream	&operator<<( std::ostream &o, Channel const &rhs );

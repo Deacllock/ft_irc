@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Command.hpp"
 #include "Server.hpp"
 
@@ -33,13 +35,11 @@ Server & Server::operator=( const Server &rhs )
 	return (*this);
 }
 
+ 
 Server::~Server()
 {
 	while (this->_users.size())
-	{
-		delete this->_users[0];
-		this->_users.erase(this->_users.begin());
-	}
+		removeUser(_users[0]);
 	close (this->_sockfd);
 }
 
@@ -49,9 +49,9 @@ const char *Server::CannotStartServer::what() const throw()
 }
 
 /*--------------- Getters ---------------*/
-std::vector<User *> Server::getUsers() const	{ return this->_users; };
+std::vector<User *> Server::getUsers() const		{ return this->_users; };
 std::vector<Channel *> Server::getChannels() const	{ return this->_channels; };
-std::string	Server::getName() const				{ return this->_name; };
+std::string	Server::getName() const					{ return this->_name; };
 
 /*--------------- Users ---------------*/
 User    *Server::searchUserByFd( int fd )
@@ -70,19 +70,22 @@ void Server::addUser( int fd )
 	this->_users.push_back(new User(this->_name, fd, status, -1));
 }
 
-int     Server::removeUser( User *user )
+void     Server::removeUser( User *user )
 {
-	//delete user in every channel it belongs to
-	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
+	std::vector<User *>::iterator it = std::find(this->_users.begin(), this->_users.end(), user);
+	if (user != NULL || it == this->_users.end())
+		abort();
+	
+	this->_users.erase(it);
+
+	for (std::vector<Channel *>::iterator it = user->getJoinedChan().begin();
+		it != user->getJoinedChan().end(); it++)
 	{
-		if ((*it) == user)
-		{
-			delete *it;
-			this->_users.erase(it);
-			return 0;
-		}
+		(*it)->removeBannedUser(user);
+		(*it)->removeUser(user);
+		(*it)->removeOperator(user);
 	}
-	return (-1);
+	delete user;
 }
 
 bool	Server::isExistingUserByName( std::string name )

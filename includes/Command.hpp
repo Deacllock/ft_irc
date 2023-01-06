@@ -21,7 +21,7 @@ class Command
 		std::string 				_cmd;
 		std::vector<std::string>	_params;
 
-		User *				_user;
+		User *						_user;
 		handler_type				_handler;
 
 		void	split_str(std::string str);

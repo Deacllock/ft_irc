@@ -33,7 +33,7 @@ void	part(Command &cmd)
 			continue;
 		}
 		Channel	*chan = Command::server->getChannelByName(*it);
-		if (!chan->isJoinedUser(*user))
+		if (!chan->isJoinedUser(user))
 		{
 			user->pushReply(err_notonchannel(chan->getName()));
 			continue;
