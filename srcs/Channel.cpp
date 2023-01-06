@@ -22,6 +22,7 @@ Channel & Channel::operator=( const Channel &rhs )
 unsigned long		Channel::getId() const         { return this->_id; }
 std::string     	Channel::getName() const       { return this->_name; }
 std::string     	Channel::getTopic() const       { return this->_topic; }
+std::string			Channel::getKey() const			{ return this->_key; }
 unsigned long		Channel::getLimit() const		{ return this->_limit; }
 std::vector<User *>	Channel::getBanned() const		{ return this->_banned; }
 std::vector<User *>	Channel::getUsers() const		{ return this->_users; }
@@ -29,6 +30,7 @@ std::vector<User *>	Channel::getUsers() const		{ return this->_users; }
 /*--------------- Setters ---------------*/
 void    Channel::setName( std::string name )       { this->_name = name; }
 void    Channel::setTopic( std::string topic )       { this->_topic = topic; }
+void	Channel::setKey( std::string key )			{ this->_key = key; }
 void	Channel::setLimit( unsigned long limit )	{ this->_limit = limit; }
 void	Channel::addBannedUser( User *u ) {
 	std::vector<User *>::iterator	it = this->_banned.begin();

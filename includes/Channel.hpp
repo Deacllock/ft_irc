@@ -17,6 +17,7 @@ class Channel
 		const unsigned long		_id;
 		std::string 			_name;
 		std::string				_topic;
+		std::string				_key;
 		unsigned long			_limit;
 		std::vector<User *>		_banned;
 		std::vector<User *>		_users;
@@ -34,6 +35,7 @@ class Channel
 		unsigned long		getId() const;
 		std::string			getName() const;
 		std::string			getTopic() const;
+		std::string			getKey() const;
 		unsigned long		getLimit() const;
 		std::vector<User *>	getBanned() const;
 		std::vector<User *>	getUsers() const;
@@ -41,6 +43,7 @@ class Channel
 		/*--------------- Setters ---------------*/
 		void    setName( std::string user );
 		void	setTopic( std::string topic );
+		void	setKey( std::string key );
 		void	setLimit( unsigned long limit);
 		void	addBannedUser( User *u );
 		void	removeBannedUser( User *u );
