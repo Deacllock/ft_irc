@@ -110,6 +110,18 @@ User	*Server::getUserByName( std::string name )
 	return NULL;
 }
 
+User	*Server::getUserByNickname( std::string name )
+{
+	std::vector<User *>::iterator	it = this->_users.begin();
+	std::vector<User *>::iterator	it_end = this->_users.end();
+
+	for (; it < it_end; it++)
+		if ((*it)->getNickname() == name)
+			return *it;
+
+	return NULL;
+}
+
 /*--------------- Channels ---------------*/
 void	Server::addChannel( Channel *chan )
 {

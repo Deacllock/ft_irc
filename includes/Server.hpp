@@ -57,6 +57,7 @@ class Server
 		bool	isExistingUserByName( std::string name );
 		bool	isExistingUserByNickname( std::string name );
 		User	*getUserByName( std::string name );
+		User	*getUserByNickname( std::string name );
 
 		/*--------------- Channels --------------*/
         void    addChannel( Channel *chan );
