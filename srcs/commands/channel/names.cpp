@@ -18,16 +18,16 @@ static std::vector<std::string>	splitByComma(std::string str)
 
 static void	listAllUsers(Command &cmd)
 {
-	std::vector<std::string> channels = Command::server->getChannels();
+	std::vector<Channel *> channels = Command::server->getChannels();
 
-	std::vector<std::string>::iterator it = channels.begin();
-	std::vector<std::string>::iterator it_end = channels.end();
+	std::vector<Channel *>::iterator it = channels.begin();
+	std::vector<Channel *>::iterator it_end = channels.end();
 	for (; it < it_end; it++)
 	{
 		std::vector<std::string> nicks;
-		std::vector<Users *> users = (*it)->getUsers();
-		std::vector<std::string>::iterator it_usr = users.begin();
-		std::vector<std::string>::iterator it_usr_end = users.end();
+		std::vector<User *> users = (*it)->getUsers();
+		std::vector<User *>::iterator it_usr = users.begin();
+		std::vector<User *>::iterator it_usr_end = users.end();
 		for (; it_usr < it_usr_end; it_usr++)
 			nicks.push_back((*it_usr)->getNickname());
 		cmd.addOutput(rpl_namreply((*it)->getName(), nicks));
@@ -49,9 +49,9 @@ void	names(Command &cmd) // VISIBILITIES ??
 
 			Channel	*chan = Command::server->getChannelByName(*it);
 			std::vector<std::string> nicks;
-			std::vector<Users *> users = chan->getUsers();
-			std::vector<std::string>::iterator it_usr = users.begin();
-			std::vector<std::string>::iterator it_usr_end = users.end();
+			std::vector<User *> users = chan->getUsers();
+			std::vector<User *>::iterator it_usr = users.begin();
+			std::vector<User *>::iterator it_usr_end = users.end();
 			for (; it_usr < it_usr_end; it_usr++)
 				nicks.push_back((*it_usr)->getNickname());
 			cmd.addOutput(rpl_namreply(chan->getName(), nicks));
