@@ -9,12 +9,13 @@
 # include "User.hpp"
 
 class Server;
+class User;
 
 class Command
 {
 	public:
 		typedef void (*handler_type)(Command &);
-		static Server *								server;
+		static Server 								*server;
 		static std::map<std::string, handler_type>	cmd_map;
 
 	private:		
@@ -42,7 +43,7 @@ class Command
 };
 
 /*---------------- Non-member functions ----------------*/
-void 			instanciateCommand( Server *server );
+void 			instanciateCommand();
 void			handle_input( User *user, std::string user_input );
 std::string		getColonMsg( std::vector<std::string> params, size_t pos );
 

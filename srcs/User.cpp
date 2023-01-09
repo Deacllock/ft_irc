@@ -6,25 +6,23 @@ unsigned long	User::_ids = 0;
 
 User::User(): _fd(-1), _userId(User::_ids++)
 {
-    this->_hostname = "";
     this->_status = STARTING;
     this->_username = "";
     this->_nickname = "";
     this->_lastNickChange = 0;
-    this->_mode = 0;
+    this->_operator = false;
     this->_realName = "";
     this->_limit = -1;
     this->_replies = std::queue<std::string>();
 }
 
-User::User( std::string hostname, int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
+User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
 {
-    this->_hostname = hostname;
     this->_status = val;
     this->_username = "";
     this->_nickname = "";
     this->_lastNickChange = 0;
-    this->_mode = 0;
+    this->_operator = false;
     this->_realName = "";
     this->_limit = limit;
     this->_replies = std::queue<std::string>();
@@ -40,7 +38,6 @@ User & User::operator=( const User &rhs )
     this->_username = rhs._username;
     this->_nickname = rhs._nickname;
     this->_lastNickChange = rhs._lastNickChange;
-    this->_mode = rhs._mode;
     this->_realName = rhs._realName;
     this->_limit = rhs._limit;
 	this->_joinedChan = rhs._joinedChan;
@@ -51,12 +48,11 @@ User & User::operator=( const User &rhs )
 int				User::getFd() const             	{ return this->_fd; }
 unsigned long	User::getUserId() const         	{ return this->_userId; }
 
-bool			User::getIsConnected() const    	{ return this->_status == CONNECTED; }
-bool			User::getIsRegistered() const  	 	{ return this->_status == REGISTERED; }
-bool			User::getIsDisconnected() const     { return this->_status == DISCONNECTED; }
+bool			User::isConnected() const    	{ return this->_status == CONNECTED; }
+bool			User::isRegistered() const  	 	{ return this->_status == REGISTERED; }
+bool			User::isDisconnected() const     { return this->_status == DISCONNECTED; }
 
-bool            User::getIsOperator() const         { return (this->_mode >> OPERATOR) & 1; }
-char            User::getMode() const               { return this->_mode; }
+bool            User::isOperator() const         { return this->_operator; }
 
 std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }
@@ -79,7 +75,7 @@ void    User::setNickname( std::string nick )
 }
 void    User::setRealName( std::string name )       { this->_realName = name; }
 
-void	User::setMode( char mode )                  { this->_mode = mode; }
+void	User::setOperator( bool val )               { this->_operator = val; }
 void	User::setLimit( unsigned long limit )		{ this->_limit = limit; }
 
 void	User::addJoinedChan( Channel *c )
@@ -123,7 +119,7 @@ bool	User::isOnChan( std::string name )
 	return false;
 }
 
-void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->_hostname + " " + reply + "\r\n"); }
+void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->server->getName() + " " + reply + "\r\n"); }
 void	User::popReply() { this->_replies.pop(); }
 
 /*---------------- Non-member functions ----------------*/

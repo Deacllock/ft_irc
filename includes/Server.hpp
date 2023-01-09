@@ -11,17 +11,22 @@
 # include <unistd.h>
 # include <vector>
 
+# include "Channel.hpp"
 # include "Command.hpp"
 # include "User.hpp"
 
+class Channel;
 class Command;
+class User;
 
 class Server
 {
     private:
+        bool                    _isUp;
+
         std::string             _name;
         std::string             _port;
-        std::string             _password; // shall it be encoded?
+        std::string             _password;
         int                     _sockfd;
         std::string             _opeCredential[2];
 
@@ -47,9 +52,13 @@ class Server
         int client_interactions();
 
         /*--------------- Getters ---------------*/
-        std::vector<User*>  getUsers() const;
-        std::string         getName() const;
+        std::vector<User*>      getUsers() const;
+        std::string             getName() const;
 		std::vector<Channel *>	getChannels() const;
+        bool                    isUp() const;
+ 
+        /*--------------- Setters ---------------*/
+        void    setIsUp(bool val);
 
         /*--------------- Users ---------------*/
         User    *searchUserByFd( int fd );

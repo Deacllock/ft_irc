@@ -83,7 +83,7 @@ void	user_mode(Command &cmd)
 	std::string	mode_str;
 	char		mode;
 
-	if ( !usr->getIsRegistered() )
+	if ( !usr->isRegistered() )
 		return (usr->pushReply(err_notregistered()));
 
 	if ( params.size() < 1)

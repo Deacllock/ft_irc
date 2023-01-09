@@ -13,7 +13,7 @@ void	pass(Command &cmd)
 	User		*user = cmd.getUser();
 	std::string	username = user->getUsername();
 
-	if (user->getIsRegistered())
+	if (user->isRegistered())
 	 	user->pushReply(err_alreadyregistered(username));
 
 	else if (cmd.getParams().size() < 1)

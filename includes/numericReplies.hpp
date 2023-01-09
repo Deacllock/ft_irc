@@ -44,7 +44,9 @@ std::string err_inviteonlychan( std::string channel ); //473
 std::string err_bannedfromchan( std::string channel ); //474
 std::string err_badchannelkey( std::string channel ); //475
 std::string err_badchanmask( std::string channel ); //476
+std::string err_noprivileges(); // 481
 std::string err_chanoprivsneeded( std::string channel ); //482
+std::string err_cantkillserver(); //483
 std::string err_restricted(); //484 
 std::string err_umodeunknownflag(); //501
 std::string err_usersdontmatch(); //502

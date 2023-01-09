@@ -85,9 +85,10 @@ std::string err_bannedfromchan(std::string channel) { return "474 * " + channel 
 std::string err_badchannelkey( std::string channel ) { return "475 * " + channel + " :Cannot join channel (+k)"; }
 //476
 std::string err_badchanmask( std::string channel ) { return "476 * " + channel + " :Bad Channel Mask"; }
+std::string err_noprivileges() { return "481 * :Permission Denied- You're not an IRC operator"; }
 //482
 std::string err_chanoprivsneeded( std::string channel ) { return "482 * " + channel + " :You're not channel operator"; }
-//484
+std::string err_cantkillserver() { return "483 :You can't kill a server!"; }
 std::string err_restricted() { return "484 * :Your connection is restricted!"; }
 
 

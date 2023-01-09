@@ -4,11 +4,17 @@
 #include "Server.hpp"
 
 /*--------------- Constructors ---------------*/
+Server *Command::server;
+Server *User::server;
+
 Server::Server(): _name("ft_irc"), _port("6667"), _password("")
 {
+	this->_isUp = true;
 	this->_opeCredential[0] = "admin";
 	this->_opeCredential[1] = "admin";
-	instanciateCommand(this);
+	Command::server = this;
+	User::server = this;
+	instanciateCommand();
 	if (this->server_start())
 		throw CannotStartServer();
 	this->client_interactions();
@@ -16,9 +22,12 @@ Server::Server(): _name("ft_irc"), _port("6667"), _password("")
 
 Server::Server(std::string port, std::string password): _name("ft_irc"), _port(port), _password(password)
 {
+	this->_isUp = true;
 	this->_opeCredential[0] = "admin";
 	this->_opeCredential[1] = "admin";
-	instanciateCommand(this);
+	Command::server = this;
+	User::server = this;
+	instanciateCommand();
 	if (this->server_start())
 		throw CannotStartServer();
 	this->client_interactions();
@@ -34,7 +43,6 @@ Server & Server::operator=( const Server &rhs )
 	this->_users = rhs._users; //check vector cpy
 	return (*this);
 }
-
  
 Server::~Server()
 {
@@ -49,9 +57,13 @@ const char *Server::CannotStartServer::what() const throw()
 }
 
 /*--------------- Getters ---------------*/
-std::vector<User *> Server::getUsers() const		{ return this->_users; };
-std::vector<Channel *> Server::getChannels() const	{ return this->_channels; };
-std::string	Server::getName() const					{ return this->_name; };
+std::vector<User *>		Server::getUsers() const	{ return this->_users; };
+std::vector<Channel *>	Server::getChannels() const	{ return this->_channels; };
+std::string				Server::getName() const		{ return this->_name; };
+bool					Server::isUp() const 	{ return this->_isUp;}
+
+/*--------------- Setters ---------------*/
+void	Server::setIsUp( bool val ) { this->_isUp = val; }
 
 /*--------------- Users ---------------*/
 User    *Server::searchUserByFd( int fd )
@@ -67,7 +79,7 @@ void Server::addUser( int fd )
 	enum status status = STARTING;
 	if (this->_password == "")
 		status = CONNECTED;
-	this->_users.push_back(new User(this->_name, fd, status, -1));
+	this->_users.push_back(new User(fd, status, -1));
 }
 
 void     Server::removeUser( User *user )

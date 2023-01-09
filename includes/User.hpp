@@ -7,18 +7,10 @@
 # include <string>
 
 # include "Channel.hpp"
+# include "Server.hpp"
 
 class Channel;
-
-enum mode_flags
-{
-	AWAY, //1
-	INVISIBLE, //2
-	WALLOPS, //4
-	RESTRICTED, //8
-	OPERATOR, //16 //only one in use
-	NOTICE //32
-};
+class Server;
 
 enum status
 {
@@ -30,18 +22,20 @@ enum status
 
 class User
 {
+	public:
+		static Server			*server;
+
 	private:
-		std::string				_hostname;
 		static	unsigned long	_ids;
 
 		const int				_fd;
 		const unsigned long		_userId;
 	
+		bool					_operator;
 		enum status				_status;
 		std::string 			_username;
 		std::string				_nickname;
 		time_t					_lastNickChange;
-		char					_mode;
 		std::string				_realName;
 		unsigned long			_limit;
 
@@ -51,7 +45,7 @@ class User
 	public:
 		/*--------------- Constructors ---------------*/
 		User();
-		User( std::string hostname, int fd, enum status val, unsigned long limit );
+		User( int fd, enum status val, unsigned long limit );
 		User( const User &rhs);
 		~User();
 		User &operator=( const User &rhs );
@@ -61,18 +55,16 @@ class User
 		unsigned long			getUserId() const;
 
 		// STATUS //
-		bool					getIsConnected() const;
-		bool            		getIsRegistered() const;
-		bool					getIsDisconnected() const;
+		bool					isConnected() const;
+		bool            		isRegistered() const;
+		bool					isDisconnected() const;
 
 		std::string   		 	getUsername() const;
 		std::string     		getNickname() const;
 		time_t					getLastNickChange() const;
 		std::string     		getRealName() const;
 
-		// MODE //
-		bool					getIsOperator() const;
-		char					getMode() const;
+		bool					isOperator() const;
 		unsigned long			getLimit() const;
 
 		// CHANNEL //
@@ -86,9 +78,7 @@ class User
 		void    setNickname( std::string nick );
 		void    setRealName( std::string name );
 
-		// MODE //
-		void	setOperator();
-		void	setMode( char mode );
+		void	setOperator( bool val );
 		void	setLimit( unsigned long limit );
 
 		void	addJoinedChan( Channel *c );

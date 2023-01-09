@@ -1,7 +1,7 @@
 #include "commandHandlers.hpp"
 
 /**
- * @brief Oper comman allow a user to become operator if valid credentials are provided.
+ * @brief Oper command allow a user to become operator if valid credentials are provided.
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
@@ -9,7 +9,7 @@ void	oper(Command &cmd) //what about multiple attempts?
 {
 	std::vector<std::string> params = cmd.getParams();
 	User	*user = cmd.getUser();
-	if (!user->getIsRegistered())
+	if (!user->isRegistered())
 		user->pushReply(err_notregistered());
 
 	else if (params.size() < 2)
@@ -20,9 +20,8 @@ void	oper(Command &cmd) //what about multiple attempts?
 
 	else
 	{
+		user->setOperator(true);
 		user->pushReply(rpl_youreoper());
-		//replace by mode I guess?
-		//user->setOperator();
-		user->pushReply(rpl_umodeis("+o")); //is that really efficient? or shall I call MODE instead?
+		user->pushReply(rpl_umodeis("+o"));
 	}
 }

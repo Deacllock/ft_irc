@@ -1,25 +1,27 @@
 #include "commandHandlers.hpp"
 
 /*---------------- Static Instanciation ----------------*/
-Server *Command::server;
+
 std::map<std::string, Command::handler_type> Command::cmd_map;
 
-void instanciateCommand(Server	*server)
+void instanciateCommand()
 {
-	Command::server = server;
 	Command::cmd_map["PASS"] = pass;
 	Command::cmd_map["NICK"] = nick;
 	Command::cmd_map["USER"] = user;
 	Command::cmd_map["CAP"] = cap;
-	Command::cmd_map["OPER"] = oper;
 	Command::cmd_map["QUIT"] = quit;
+
 	Command::cmd_map["JOIN"] = join;
 	Command::cmd_map["PART"] = part;
 	Command::cmd_map["INVITE"] = invite;
 	Command::cmd_map["TOPIC"] = topic;
 	Command::cmd_map["LIST"] = list;
 	Command::cmd_map["NAMES"] = names;
-	Command::cmd_map["MODE"] = mode;
+
+	Command::cmd_map["DIE"] = die;
+	Command::cmd_map["KILL"] = kill;
+	Command::cmd_map["OPER"] = oper;
 }
 
 /*---------------- Constructors ----------------*/

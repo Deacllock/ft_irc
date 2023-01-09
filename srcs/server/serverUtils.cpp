@@ -131,7 +131,7 @@ static int	reply(User *usr)
 			break;
 		}
 	}
-	return usr->getIsDisconnected();
+	return usr->isDisconnected();
 }
 
 /**
@@ -202,7 +202,7 @@ int Server::client_interactions()
 	std::vector<pollfd>	fds;
 	add_poll_connection(fds, this->_sockfd, POLLIN);
 
-	while (true)
+	while (this->_isUp)
 	{
 		int ret = poll(fds.data(), fds.size(), TIMEOUT);
 		if ( ret < 0 )
