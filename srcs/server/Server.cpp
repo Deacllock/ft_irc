@@ -73,13 +73,14 @@ void Server::addUser( int fd )
 void     Server::removeUser( User *user )
 {
 	std::vector<User *>::iterator it = std::find(this->_users.begin(), this->_users.end(), user);
-	if (user != NULL || it == this->_users.end())
+	if (user == NULL || it == this->_users.end())
 		abort();
 	
 	this->_users.erase(it);
 
-	for (std::vector<Channel *>::iterator it = user->getJoinedChan().begin();
-		it != user->getJoinedChan().end(); it++)
+	std::vector<Channel *> joinedChan = user->getJoinedChan();
+	for (std::vector<Channel *>::iterator it = joinedChan.begin();
+		it != joinedChan.end(); it++)
 	{
 		(*it)->removeBannedUser(user);
 		(*it)->removeUser(user);

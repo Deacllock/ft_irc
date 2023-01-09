@@ -19,6 +19,7 @@ void instanciateCommand(Server	*server)
 	Command::cmd_map["TOPIC"] = topic;
 	Command::cmd_map["LIST"] = list;
 	Command::cmd_map["NAMES"] = names;
+	Command::cmd_map["MODE"] = mode;
 }
 
 /*---------------- Constructors ----------------*/
@@ -51,6 +52,7 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 
 /*---------------- Non-member functions ----------------*/
 
+#include <iostream>
 /**
  * @brief Split string in command and parameters.
  *

@@ -55,7 +55,8 @@ bool			User::getIsConnected() const    	{ return this->_status == CONNECTED; }
 bool			User::getIsRegistered() const  	 	{ return this->_status == REGISTERED; }
 bool			User::getIsDisconnected() const     { return this->_status == DISCONNECTED; }
 
-bool            User::getIsOperator() const         { return this->_mode | OPERATOR; }
+bool            User::getIsOperator() const         { return (this->_mode >> OPERATOR) & 1; }
+char            User::getMode() const               { return this->_mode; }
 
 std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }

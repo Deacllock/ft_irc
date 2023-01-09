@@ -16,9 +16,8 @@ enum mode_flags
 	INVISIBLE, //2
 	WALLOPS, //4
 	RESTRICTED, //8
-	OPERATOR = 16, //16
-	LOCAL_OPERATOR, //32
-	NOTICE //64
+	OPERATOR, //16 //only one in use
+	NOTICE //32
 };
 
 enum status
