@@ -6,53 +6,34 @@ Max size = 512 bytes
 - ? and * wildcards
 - Add command numeric replies in one single class
 
-Part 1
----------------------
 //CONNECTION MESSAGE (Victoria)
-- [TO TEST][1] PASS
-- [TO TEST][1] NICK
-- [TO TEST][1] USER
+- [1] PASS (1rs)
+- [1] NICK/ USER (2nd)
 - [3] PING/PONG?
-- [TO TEST][1] OPER
-- [TO TEST][1] QUIT
-- [2] MODE
+- [1] OPER
+- [1] QUIT
 
 //CHANNEL (Romane)
-- [1] JOIN		WIP
-- [1] PART		GOOD
-- [1] INVITE	WIP
-- [2/3] TOPIC	WIP
-- [2] NAMES		WIP
-- [2/3] LIST	WIP
+- [1] JOIN
+- [1] INVITE
+- [2/3] TOPIC
+- [2] NAMES
+- [2/3] LIST
 
---------------------
+// USER
+- [2] MODE
+- AWAY
 
-//Sending Messages
+//Sending Messages (Romane)
 - [1] PRIVMSG
-- [1] NOTICE ?
 
 // CHANNEL OPERATOR
-- [1/2] KICK
-- [1] MODE
+- [1/2] KICK (Victoria)
+- [2] MODE (Romane)
 
-//Server Queries and Commands
-- [3] MOTD ?
-- [] HELP ?
-- [3] INFO ?
-- [3] VERSION
-- [] ADMIN ?
-
-
-//User-Based Queries
-- [2/3] WHO ?
-- [2/3] WHOIS ?
-
-//Operator Messages
-- [1] KILL ?
-- [2] DIE
-- [2/3] RESTART
-- [1] SQUIT
+//Operator Messages  (Victoria)
+- [1] KILL
+- [1] DIE
 
 // From server
-- [I think it is gud][1] ERROR
-
+- [1] ERROR ?
