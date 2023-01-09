@@ -3,8 +3,9 @@
 #include <iostream>
 
 // ERR_INVITEONLYCHAN
-// ERR_BADCHANNELKEY
+// ERR_TOOMANYTARGETS
 // ERR_UNVAILRESOURCE
+// ERR_BADCHANMASK
 
 static std::vector<std::string>	splitByComma(std::string str)
 {
@@ -22,21 +23,19 @@ void	join(Command &cmd)
 {
 	User	*user = cmd.getUser();
 
-	if (cmd.getParams().size() < 1 || cmd.getParams().size() > 2) // how we do when more params ?
+	if (cmd.getParams().size() < 1)
 		return user->pushReply(err_needmoreparams(user->getUsername().c_str(), "JOIN"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
-	std::vector<std::string> keys = splitByComma(cmd.getParams()[1]);
+	std::vector<std::string> keys;
+	if (cmd.getParams().size() > 1)
+		keys = splitByComma(cmd.getParams()[1]);
 
-	if (channels.size() < keys.size()) //what do we do?
-	{
-		std::cout << "Error" << std::endl;
-		return;
-	}
-	
 	std::vector<std::string>::iterator it = channels.begin();
 	std::vector<std::string>::iterator it_end = channels.end();
-	for (; it < it_end; it++)
+	std::vector<std::string>::iterator it_k = keys.begin();
+	std::vector<std::string>::iterator it_k_end = keys.end();
+	for (; it < it_end; it++, it_k++)
 	{
 		if (*it == "0")
 		{
@@ -48,9 +47,15 @@ void	join(Command &cmd)
 			user->pushReply(err_nosuchchannel(*it));
 			continue;
 		}
-		// if to many chan with this name	ERR_TOOMANYTARGETS
-		// if bad mask						ERR_BADCHANMASK
 		Channel	*chan = Command::server->getChannelByName(*it);
+		if (it_k < it_k_end)
+		{
+			if (*it_k != chan->getKey())
+			{
+				user->pushReply(err_badchannelkey(chan->getName()));
+				continue;
+			}
+		}
 		if (chan->isBannedUser(user))
 		{
 			user->pushReply(err_bannedfromchan(chan->getName()));
@@ -63,6 +68,11 @@ void	join(Command &cmd)
 			user->pushReply(err_channelisfull(chan->getName()));
 			continue;
 		}
+		if (chan->getTopic() != "")
+			user->pushReply(rpl_topic(chan->getName(), chan->getTopic()));
+
+		// join the chan
+		chan->addUser(user);
+		user->addJoinedChan(chan);
 	}
-	// RPL_TOPIC
 }

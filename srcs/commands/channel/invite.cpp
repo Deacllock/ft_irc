@@ -6,7 +6,7 @@ void	invite(Command &cmd)
 {
 	User	*user = cmd.getUser();
 
-	if (cmd.getParams().size() != 2)
+	if (cmd.getParams().size() < 2)
 		return user->pushReply(err_needmoreparams(user->getUsername().c_str(), "INVITE"));
 	
 	std::string nickname = cmd.getParams()[0];

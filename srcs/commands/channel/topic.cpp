@@ -3,12 +3,13 @@
 #include <iostream>
 
 // ERR_CHANOPRIVSNEEDED
-// EER_NOCHANMODES
+// ERR_NOCHANMODES
+
 void	topic(Command &cmd)
 {
 	User	*user = cmd.getUser();
 
-	if (cmd.getParams().size() < 1 || cmd.getParams().size() > 2) // how we do when more params ?
+	if (cmd.getParams().size() < 1)
 		return user->pushReply(err_needmoreparams(user->getUsername().c_str(), "TOPIC"));
 	
 	std::string	channel = cmd.getParams()[0];
