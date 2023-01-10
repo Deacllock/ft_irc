@@ -3,10 +3,8 @@
 
 # include <map>
 # include <sstream>
-# include <vector>
 
 # include "Server.hpp"
-# include "User.hpp"
 
 class Server;
 class User;
@@ -46,6 +44,5 @@ class Command
 void 			instanciateCommand();
 void			handle_input( User *user, std::string user_input );
 std::string		getColonMsg( std::vector<std::string> params, size_t pos );
-
 
 #endif

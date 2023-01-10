@@ -1,5 +1,10 @@
 #include "commandHandlers.hpp"
 
+/**
+ * @brief Check if user is newly registered to a server. If so greet them.
+ * 
+ * @param cmd Class containing the user to eventually greet.
+ */
 void greetNewComer( Command &cmd )
 {
 	User *usr = cmd.getUser();

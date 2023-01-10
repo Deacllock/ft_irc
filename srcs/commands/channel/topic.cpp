@@ -1,7 +1,5 @@
 #include "commandHandlers.hpp"
 
-#include <iostream>
-
 // ERR_CHANOPRIVSNEEDED
 // ERR_NOCHANMODES
 

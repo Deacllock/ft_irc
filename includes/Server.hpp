@@ -5,10 +5,9 @@
 # define BUFFER_SIZE 42
 # define NICK_DELAY 60 // 1 minute
 
-# include <exception>
 # include <ostream>
-# include <string>
 # include <unistd.h>
+# include <string>
 # include <vector>
 
 # include "Channel.hpp"
@@ -69,7 +68,7 @@ class Server
 
 		/*--------------- Channels --------------*/
         void    addChannel( Channel *chan );
-        int     removeChannel( Channel *chan );
+        void    removeChannel( Channel *chan );
 		bool	isExistingChannelByName( std::string name );
 		Channel	*getChannelByName( std::string name );
 

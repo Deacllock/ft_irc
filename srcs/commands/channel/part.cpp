@@ -1,18 +1,5 @@
 #include "commandHandlers.hpp"
-
-#include <iostream>
-
-static std::vector<std::string>	splitByComma(std::string str)
-{
-	std::vector<std::string> vec;
-
-	std::string elem;
-	std::istringstream ss(str);
-	while (getline(ss, elem, ','))
-		vec.push_back(elem);
-	
-	return vec;
-}
+#include "utils.hpp"
 
 void	part(Command &cmd)
 {

@@ -1,20 +1,5 @@
 #include "commandHandlers.hpp"
-
-/**
- * @brief ExtractList split a string with ',' delimiter.
- * 
- * @param input String to parse.
- * @return std::vector<std::string> Vector containing splitted string elements.
- */
-static std::vector<std::string> extractList( std::string input )
-{
-	std::vector<std::string> ret;
-	std::istringstream ss(input);
-	std::string elm;
-	while (getline(ss, elm, ' '))
-		ret.push_back(elm);
-	return ret;
-}
+#include "utils.hpp"
 
 /**
  * @brief Procede to channel and user commanding kick user to make sure the kick is possible.
@@ -72,8 +57,8 @@ void	kick(Command &cmd)
 	if (params.size() < 2)
 		return usr->pushReply(err_needmoreparams(usr->getNickname(), "KICK"));	
 
-	std::vector<std::string> channels = extractList(params[0]);
-	std::vector<std::string> users = extractList(params[1]);
+	std::vector<std::string> channels = splitByComma(params[0]);
+	std::vector<std::string> users = splitByComma(params[1]);
 
 	if (channels.size() != users.size() && channels.size() != 1)
 		return usr->pushReply(error("Syntax error")); //??

@@ -1,12 +1,8 @@
 #ifndef USER
 # define USER
 
-# include <ctime>
-# include <ostream>
 # include <queue>
-# include <string>
 
-# include "Channel.hpp"
 # include "Server.hpp"
 
 class Channel;
@@ -59,6 +55,7 @@ class User
 		bool            		isRegistered() const;
 		bool					isDisconnected() const;
 
+		// INFOS //
 		std::string   		 	getUsername() const;
 		std::string     		getNickname() const;
 		time_t					getLastNickChange() const;
@@ -67,7 +64,6 @@ class User
 		bool					isOperator() const;
 		unsigned long			getLimit() const;
 
-		// CHANNEL //
 		std::vector<Channel *>	getJoinedChan() const;
 		std::queue<std::string>	getReplies() const;
 
