@@ -62,7 +62,7 @@ std::string err_nicknameinuse( std::string nick ) { return "433 * " + nick + " :
 //437
 std::string err_unavailableresource( std::string name ) { return "437 * " + name + " :Nick/channel is temporarily unavailable"; }
 std::string err_notregistered() { return "451 * :You have not registered"; }
-//442
+std::string err_usernotinchannel(std::string nick, std::string channel) { return "441 * " + nick + " " + channel + " :They aren't on that channel"; }
 std::string	err_notonchannel( std::string channel ) { return "442 * " + channel + " :You're not on that channel"; }
 //443
 std::string	err_useronchannel( std::string user, std::string channel ) { return "443 * " + user + " " + channel + " :is already on channel"; }

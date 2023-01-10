@@ -14,7 +14,6 @@ std::string rpl_umodeis( std::string user_mode ); //221
 std::string	rpl_topic( std::string channel, std::string topic ); //332
 std::string	rpl_youreoper(); //381
 
-std::string err_nosuchserver( std::string server ); //402
 std::string	rpl_away( std::string nick, std::string awayMess ); //301
 std::string	rpl_list( std::string channel, std::string visible, std::string topic ); //322
 std::string	rpl_listend(); //323
@@ -25,6 +24,7 @@ std::string	rpl_namreply( std::string channel, std::vector<std::string> nick ); 
 std::string	rpl_endofnames( std::string channel ); //366
 
 std::string	err_nosuchnick( std::string nickname ); //401
+std::string err_nosuchserver( std::string server ); //402
 std::string err_nosuchchannel( std::string channel ); //403
 std::string err_toomanychannels( std::string channel ); //405
 std::string	err_toomanytargets( std::string target, std::string error_code, std::string abort_mess ); //407
@@ -34,6 +34,7 @@ std::string err_erroneusnickname( std::string nick ); //432
 std::string err_nicknameinuse( std::string nick ); //433
 std::string err_unavailableresource( std::string name ); //437
 std::string err_notregistered(); //451
+std::string err_usernotinchannel(std::string nick, std::string channel); //441
 std::string	err_notonchannel( std::string channel ); //442
 std::string	err_useronchannel( std::string user, std::string channel ); //443
 std::string	err_needmoreparams( std::string client, std::string command ); //461

@@ -20,6 +20,7 @@ void instanciateCommand()
 	Command::cmd_map["NAMES"] = names;
 
 	Command::cmd_map["DIE"] = die;
+	Command::cmd_map["KICK"] = kick;
 	Command::cmd_map["KILL"] = kill;
 	Command::cmd_map["OPER"] = oper;
 }

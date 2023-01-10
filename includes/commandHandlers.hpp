@@ -23,8 +23,8 @@ void	names(Command &cmd);
 
 /*---------------- Operator ----------------*/
 void	die(Command &cmd);
+void	kick(Command &cmd);
 void	kill(Command &cmd);
 void	oper(Command &cmd);
-
 
 #endif
