@@ -80,6 +80,7 @@ void	user_mode(Command &cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User	*usr = cmd.getUser();
+	User	*usr = cmd.getUser();
 	std::string	mode_str;
 	char		mode;
 
@@ -104,7 +105,76 @@ void	user_mode(Command &cmd)
 		usr->pushReply(rpl_umodeis(modeToString('\0', cmd.getUser()->getMode())));
 }
 
-void	mode(Command &cmd)
+static  void	operatorModeInChan(User *usr, std::vector<std::string> params, char sym, size_t i)
 {
-	user_mode(cmd);
+}
+
+static  void	setLimitInchan(User *usr, std::vector<std::string> params, char sym, size_t i)
+{
+}
+
+static  void	setInviteOnlyForChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+{
+}
+
+static  void	setKeyForChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+{
+}
+
+// ERR_NOCHANMODES channel doesn't support modes ??
+// ERR_USERNOTINCHANNEL
+// ERR_KEYSET
+
+// RPL_CHANNELMODEIS
+// RPL_BANLIST RPL_ENDOFBANLIST
+// RPL_EXCEPTLIST RPL_ENDOFEXCEPTLIST
+// RPL_INVITELIST RPL_ENDOFINVITELIST
+// RPL_UNIQOPIS
+
+void	channel_mode(Command &cmd)
+{
+	User	*usr = cmd.getUser();
+	std::vector<std::string> params = cmd.getParams();
+	char	sym = params[1][0];
+
+	if (!usr->isOnChan(params[0]))
+		return usr->pushReply(err_usernotinchannel(user->getNickname(), params[0]));
+	
+	if (!usr->getIsOperator())
+		return usr->pushReply(err_chanoprivsneeded(params[0]));
+
+	for (size_t i = 1; i < params[1].size(); i++)
+	{
+		switch (params[1][i])
+		{
+			case 'o': // make someone op in chan - or supp op
+				operatorModeInChan(usr, params, sym, i);
+				break;
+			case 'l': // set limit for chan
+				setLimitInChan(usr, params, sym, i);
+				break;
+			case 'i': // set inviteonly chan
+				setInviteOnlyForChan(usr, params, sym, i);
+				break;
+			case 'k': // set key for chan
+				setKeyForChan(usr, params, sym, i);
+				break;
+			default:
+				user->pushReply(err_unknownmode(params[1][i], params[0]));
+		}
+	}
+}
+
+void	mode(Command &cmd) // See how to organize this part
+{
+	User	*usr = cmd.getUser();
+
+	if (cmd.getParams() < 2)
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+
+	if (Command::server->isExistingUserByName())
+		user_mode(cmd);
+	else if (Command::server->isExistingChannelByName())
+		channel_mode(cmd);
+	// else
 }
