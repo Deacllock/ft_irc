@@ -1,12 +1,8 @@
 #ifndef CHANNEL
 # define CHANNEL
 
-# include <ctime>
-# include <ostream>
-# include <string>
-# include <vector>
+# include "Server.hpp"
 
-# include "User.hpp"
 class User;
 
 class Channel

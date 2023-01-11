@@ -1,23 +1,9 @@
 #include "commandHandlers.hpp"
-
-#include <iostream>
+#include "utils.hpp"
 
 // ERR_INVITEONLYCHAN
 // ERR_TOOMANYTARGETS
 // ERR_UNVAILRESOURCE
-// ERR_BADCHANMASK
-
-static std::vector<std::string>	splitByComma(std::string str)
-{
-	std::vector<std::string> vec;
-
-	std::string elem;
-	std::istringstream ss(str);
-	while (getline(ss, elem, ','))
-		vec.push_back(elem);
-	
-	return vec;
-}
 
 void	join(Command &cmd)
 {

@@ -4,17 +4,10 @@
 #include <string>
 #include <vector>
 
-/* The server sends Replies 001 to 004 to a user upon successful registration */
 std::string	rpl_welcome( std::string nick, std::string user, std::string host ); //001
-std::string	rpl_yourhost( std::string servername, std::string version ); //002
-std::string rpl_created( std::string date ); //003
-std::string rpl_myinfo( std::string servername, std::string version, std::string user_modes, std::string channel_modes ); //004
-
 std::string rpl_umodeis( std::string user_mode ); //221
 std::string	rpl_topic( std::string channel, std::string topic ); //332
 std::string	rpl_youreoper(); //381
-
-std::string	rpl_away( std::string nick, std::string awayMess ); //301
 std::string	rpl_list( std::string channel, std::string visible, std::string topic ); //322
 std::string	rpl_listend(); //323
 std::string	rpl_notopic( std::string channel ); //331
@@ -22,7 +15,6 @@ std::string	rpl_topic( std::string channel, std::string topic ); //332
 std::string	rpl_inviting( std::string channel, std::string nick ); //341
 std::string	rpl_namreply( std::string channel, std::vector<std::string> nick ); //353 //VISIBILITY ????
 std::string	rpl_endofnames( std::string channel ); //366
-
 std::string	err_nosuchnick( std::string nickname ); //401
 std::string err_nosuchserver( std::string server ); //402
 std::string err_nosuchchannel( std::string channel ); //403
@@ -51,7 +43,6 @@ std::string err_cantkillserver(); //483
 std::string err_restricted(); //484 
 std::string err_umodeunknownflag(); //501
 std::string err_usersdontmatch(); //502
-
-
 std::string error( std::string data );
+
 #endif

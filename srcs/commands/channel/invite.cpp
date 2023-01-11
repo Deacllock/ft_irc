@@ -1,13 +1,11 @@
 #include "commandHandlers.hpp"
 
-#include <iostream>
-
 void	invite(Command &cmd)
 {
 	User	*user = cmd.getUser();
 
 	if (cmd.getParams().size() < 2)
-		return user->pushReply(err_needmoreparams(user->getUsername().c_str(), "INVITE"));
+		return user->pushReply(err_needmoreparams(user->getUsername(), "INVITE"));
 	
 	std::string nickname = cmd.getParams()[0];
 	std::string channel = cmd.getParams()[1];

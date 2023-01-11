@@ -9,7 +9,7 @@ SRCS_PATH = srcs/
 OBJS_PATH = objs/
 FOLDER_TO_CREATE = server commands commands/connection commands/channel commands/operator
 
-SRCS = main.cpp \
+SRCS = main.cpp utils.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp User.cpp Channel.cpp) \
 		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp\
 		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp) \

@@ -1,7 +1,7 @@
 #include <algorithm>
 
-#include "Command.hpp"
 #include "Server.hpp"
+#include "utils.hpp"
 
 /*--------------- Constructors ---------------*/
 Server *Command::server;
@@ -128,28 +128,12 @@ User	*Server::getUserByName( std::string name )
 /*--------------- Channels ---------------*/
 void	Server::addChannel( Channel *chan )
 {
-	std::vector<Channel *>::iterator it = this->_channels.begin();
-	std::vector<Channel *>::iterator it_end = this->_channels.end();
-
-	for (; it < it_end; it++)
-		if (chan == *it)
-			return;
-	
-	this->_channels.push_back(chan);
+	addElmToVector(this->_channels, chan);
 }
 
-int		Server::removeChannel( Channel *chan )
+void	Server::removeChannel( Channel *chan )
 {
-	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); it++)
-	{
-		if ((*it) == chan)
-		{
-			delete *it;
-			this->_channels.erase(it);
-			return 0;
-		}
-	}
-	return (-1);
+	removeElmFromVector(this->_channels, chan);
 }
 
 bool	Server::isExistingChannelByName( std::string name )
@@ -186,7 +170,6 @@ bool    Server::checkOpeCredentials( std::string username, std::string pwd )
 {
 	return (this->_opeCredential[0].compare(username) == 0 && this->_opeCredential[0].compare(pwd) == 0);
 }
-
 
 std::ostream & operator<<(std::ostream &o, Server const &rhs)
 {
