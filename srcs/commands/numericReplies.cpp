@@ -11,6 +11,14 @@ std::string	rpl_away( std::string nick, std::string awayMess ) { return "301 * "
 std::string	rpl_list( std::string channel, std::string visible, std::string topic ) { return "322 * " + channel + " " + visible + " :" + topic; }
 //323
 std::string	rpl_listend() { return "323 * :End of LIST"; }
+//324
+std::string	rpl_channelmodeis( std::string channel, char mode, std::string modeParams )
+{
+	std::string str(1, mode);
+	return "324 * " + channel + " " + str + " " + modeParams;
+}
+//325
+std::string	rpl_uniqopis( std::string channel, std::string nickname ) { return "325 * " + channel + " " + nickname; }
 //331
 std::string	rpl_notopic( std::string channel ) { return "331 * " + channel + " :No topic is set"; }
 //332
