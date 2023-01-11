@@ -8,7 +8,7 @@ User::User(): _fd(-1), _userId(User::_ids++)
 {
     this->_status = STARTING;
     this->_username = "";
-    this->_nickname = "";
+    this->_nickname = "*";
     this->_lastNickChange = 0;
     this->_operator = false;
     this->_realName = "";
@@ -20,7 +20,7 @@ User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(Use
 {
     this->_status = val;
     this->_username = "";
-    this->_nickname = "";
+    this->_nickname = "*";
     this->_lastNickChange = 0;
     this->_operator = false;
     this->_realName = "";
