@@ -117,13 +117,27 @@ static  void	setInviteOnlyForChan(User *usr, std::vector<std::string> params, ch
 {
 }
 
-static  void	setKeyForChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
+	if (sym == '+')
+	{
+		if (chan->getKey() != "")
+			return usr->pushReply(err_keyset(chan->getName()));
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"))
+		chan->setKey(params[i]);
+	}
+	else
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"))
+		if (chan->getKey() == params[i])
+			chan->setKey("");
+	}
 }
 
 // ERR_NOCHANMODES channel doesn't support modes ??
 // ERR_USERNOTINCHANNEL
-// ERR_KEYSET
 
 // RPL_CHANNELMODEIS
 // RPL_BANLIST RPL_ENDOFBANLIST
@@ -135,18 +149,27 @@ void	channel_mode(Command &cmd)
 {
 	User	*usr = cmd.getUser();
 	std::vector<std::string> params = cmd.getParams();
-	char	sym = params[1][0];
+	Channel	*chan = Command::server->getChannelByName(params[0]);
 
 	if (!usr->isOnChan(params[0]))
 		return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[0]));
 	
 	if (!usr->getIsOperator())
 		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), params[0]));
+	if (!usr->isOnChan(chan->getName()))
+		return usr->pushReply(err_usernotinchannel(user->getNickname(), chan->getName()));
+	
+	if (!usr->getIsOperator())
+		return usr->pushReply(err_chanoprivsneeded(chan->getName()));
 
-	for (size_t i = 1; i < params[1].size(); i++)
+	for (size_t i = 1; i < params.size(); i++)
 	{
-		switch (params[1][i])
+		char	sym = params[i][0];
+		if (sym != '-' && sym != '+')
+			continue;
+		for (size_t j = 1; j < params[i].size(); j++)
 		{
+<<<<<<< HEAD
 			case 'o': // make someone op in chan - or supp op
 				operatorModeInChan(usr, params, sym, i);
 				break;
@@ -161,6 +184,25 @@ void	channel_mode(Command &cmd)
 				break;
 			default:
 				usr->pushReply(err_unknownmode(usr->getNickname(), params[1][i], params[0]));
+=======
+			switch (params[i][j])
+			{
+				case 'o': // make someone op in chan - or supp op
+					operatorModeInChan(usr, params, sym, i + 1);
+					break;
+				case 'l': // set limit for chan
+					setLimitInChan(usr, params, sym, i + 1);
+					break;
+				case 'i': // set inviteonly chan
+					setInviteOnlyForChan(usr, params, sym, i + 1);
+					break;
+				case 'k': // set key for chan
+					setKeyForChan(usr, chan, params, sym, i + 1);
+					break;
+				default:
+					user->pushReply(err_unknownmode(params[i][j], chan->getName()));
+			}
+>>>>>>> 9607069b1c485161083dbaba78ec9ad911d3c998
 		}
 	}
 }

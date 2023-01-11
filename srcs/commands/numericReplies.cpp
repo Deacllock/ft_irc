@@ -10,7 +10,19 @@ std::string	rpl_away( std::string nick, std::string awayMess ) { return "301 " +
 //322
 std::string	rpl_list( std::string nick, std::string channel, std::string visible, std::string topic ) { return "322 " + nick + " " + channel + " " + visible + " :" + topic; }
 //323
+<<<<<<< HEAD
 std::string	rpl_listend( std::string nick ) { return "323 " + nick + " :End of LIST"; }
+=======
+std::string	rpl_listend() { return "323 * :End of LIST"; }
+//324
+std::string	rpl_channelmodeis( std::string channel, char mode, std::string modeParams )
+{
+	std::string str(1, mode);
+	return "324 * " + channel + " " + str + " " + modeParams;
+}
+//325
+std::string	rpl_uniqopis( std::string channel, std::string nickname ) { return "325 * " + channel + " " + nickname; }
+>>>>>>> 9607069b1c485161083dbaba78ec9ad911d3c998
 //331
 std::string	rpl_notopic( std::string nick, std::string channel ) { return "331 " + nick + " " + channel + " :No topic is set"; }
 //332
@@ -69,10 +81,17 @@ std::string	err_needmoreparams( std::string nick, std::string command ) { return
 std::string	err_alreadyregistered( std::string nick, std::string client ) { return "462 " + nick + " " + client + " :You may not reregister"; }
 //464
 std::string err_passwordmismatch( std::string nick ) { return "464 " + nick + " :Password incorrect"; }
+std::string	err_keyset(std::string channel) { return "467 * " + channel + " :Channel key already set"; }
 //474
 std::string err_bannedformchan( std::string nick, std::string channel ) { return "474 " + nick + " " + channel + " :Cannot join channel (+b)"; }
 //471
 std::string err_channelisfull( std::string nick, std::string channel ) { return "471 " + nick + " " + channel + " :Cannot join channel (+l)"; }
+//472
+std::string	err_unknownmode( char c, std::string channel )
+{
+	std::string s(1, c);
+	return "472 * " + s + " :is unknown mode char to me for " + channel;
+}
 //473
 std::string err_inviteonlychan( std::string nick, std::string channel ) { return "473 " + nick + " " + channel + " :Cannot join channel (+i)"; } // what is +i
 //474
@@ -80,7 +99,13 @@ std::string err_bannedfromchan( std::string nick, std::string channel) { return 
 //475
 std::string err_badchannelkey( std::string nick, std::string channel ) { return "475 " + nick + " " + channel + " :Cannot join channel (+k)"; }
 //476
+<<<<<<< HEAD
 std::string err_badchanmask( std::string nick, std::string channel ) { return "476 " + nick + " " + channel + " :Bad Channel Mask"; }
+=======
+std::string err_badchanmask( std::string channel ) { return "476 * " + channel + " :Bad Channel Mask"; }
+//477
+std::string	err_nochanmodes( std::string channel ) { return "477 * " + channel + " Channel doesn't support modes"; }
+>>>>>>> 9607069b1c485161083dbaba78ec9ad911d3c998
 //481
 std::string err_noprivileges( std::string nick ) { return "481 " + nick + " :Permission Denied- You're not an IRC operator"; }
 //482
