@@ -36,4 +36,9 @@ Max size = 512 bytes
 - [1] DIE
 
 // From server
-- [1] ERROR ?
+- [1] ERROR  	
+
+main test
+change error reply to give nickname	
+make regular ping 
+check registration for every command!

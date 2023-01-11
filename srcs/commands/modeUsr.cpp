@@ -36,22 +36,22 @@ void	user_mode(Command &cmd)
 	bool	isOp = false;
 
 	if ( !usr->isRegistered() )
-		return (usr->pushReply(err_notregistered()));
+		return (usr->pushReply(err_notregistered(usr->getNickname())));
 
 	if ( params.size() < 1)
-		usr->pushReply(err_needmoreparams(cmd.getUser()->getNickname(), "MODE"));
+		usr->pushReply(err_needmoreparams(usr->getNickname(), cmd.getUser()->getNickname(), "MODE"));
 
     else if (cmd.getUser()->getNickname().compare(params[0]))
-		usr->pushReply(err_usersdontmatch());
+		usr->pushReply(err_usersdontmatch(usr->getNickname()));
 	
 	else if (params.size() > 1)
 	{
 		if (parseParams(isOp, params))
-			usr->pushReply(err_umodeunknownflag());
+			usr->pushReply(err_umodeunknownflag(usr->getNickname()));
 		mode_str = modeToString(usr->getMode(), mode);
 		if (mode_str != "")
-			rpl_umodeis(mode_str);
+			rpl_umodeis(usr->getNickname(), mode_str);
 	}
 	else
-		usr->pushReply(rpl_umodeis(modeToString('\0', cmd.getUser()->getMode())));
+		usr->pushReply(rpl_umodeis(usr->getNickname(), modeToString('\0', cmd.getUser()->getMode())));
 }

@@ -12,6 +12,8 @@ void	user( Command &cmd );
 void	cap(Command &cmd);
 void	quit(Command &cmd);
 void	mode(Command &cmd);
+void	ping(Command &cmd);
+void	pong(Command &cmd);
 
 /*---------------- Channel ----------------*/
 void	join(Command &cmd);

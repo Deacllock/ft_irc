@@ -50,18 +50,18 @@ void	nick(Command &cmd)
 {
 	User *usr = cmd.getUser();
 	if (cmd.getParams().size() < 1)
-		return usr->pushReply(err_nonicknamegiven());
+		return usr->pushReply(err_nonicknamegiven(usr->getNickname()));
 
 	std::string nickname = cmd.getParams()[0];
 	
 	if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY )
-		usr->pushReply(err_unavailableresource(nickname));
+		usr->pushReply(err_unavailableresource(usr->getNickname(), nickname));
 
 	else if (!isNicknameValid(nickname))
-		usr->pushReply(err_erroneusnickname(nickname));
+		usr->pushReply(err_erroneusnickname(usr->getNickname(), nickname));
 	
 	else if (isNicknameInUse(cmd.server->getUsers(), usr, nickname))
-		usr->pushReply(err_nicknameinuse(nickname));
+		usr->pushReply(err_nicknameinuse(usr->getNickname(), nickname));
 
 	else
 	{

@@ -8,15 +8,15 @@
 void	oper(Command &cmd) //what about multiple attempts?
 {
 	std::vector<std::string> params = cmd.getParams();
-	User	*user = cmd.getUser();
-	if (!user->isRegistered())
-		user->pushReply(err_notregistered());
+	User	*usr = cmd.getUser();
+	if (!usr->isRegistered())
+		usr->pushReply(err_notregistered(usr->getNickname()));
 
 	else if (params.size() < 2)
-		user->pushReply(err_needmoreparams(user->getNickname(), "OPER"));
+		usr->pushReply(err_needmoreparams(usr->getNickname(), "OPER"));
 
 	else if (!cmd.server->checkOpeCredentials(params[0], params[1]))
-		user->pushReply(err_passwordmismatch());
+		usr->pushReply(err_passwordmismatch(usr->getNickname()));
 
 	else
 	{

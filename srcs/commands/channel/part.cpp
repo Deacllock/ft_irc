@@ -3,10 +3,10 @@
 
 void	part(Command &cmd)
 {
-	User	*user = cmd.getUser();
+	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return user->pushReply(err_needmoreparams(user->getUsername().c_str(), "PART"));
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), usr->getUsername().c_str(), "PART"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
 
@@ -16,16 +16,16 @@ void	part(Command &cmd)
 	{
 		if (!Command::server->isExistingChannelByName(*it))
 		{
-			user->pushReply(err_nosuchchannel(*it));
+			usr->pushReply(err_nosuchchannel(usr->getNickname(), *it));
 			continue;
 		}
 		Channel	*chan = Command::server->getChannelByName(*it);
-		if (!chan->isJoinedUser(user))
+		if (!chan->isJoinedUser(usr))
 		{
-			user->pushReply(err_notonchannel(chan->getName()));
+			usr->pushReply(err_notonchannel(usr->getNickname(), chan->getName()));
 			continue;
 		}
-		chan->removeUser(user);
-		user->removeJoinedChan(chan);
+		chan->removeUser(usr);
+		usr->removeJoinedChan(chan);
 	}
 }

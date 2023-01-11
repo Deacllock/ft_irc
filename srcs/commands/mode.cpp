@@ -85,24 +85,24 @@ void	user_mode(Command &cmd)
 	char		mode;
 
 	if ( !usr->isRegistered() )
-		return (usr->pushReply(err_notregistered()));
+		return (usr->pushReply(err_notregistered(usr->getNickname())));
 
 	if ( params.size() < 1)
 		usr->pushReply(err_needmoreparams(cmd.getUser()->getNickname(), "MODE"));
 
     else if (cmd.getUser()->getNickname().compare(params[0]))
-		usr->pushReply(err_usersdontmatch());
+		usr->pushReply(err_usersdontmatch(usr->getNickname()));
 	
 	else if (params.size() > 1)
 	{
 		if (parseParams(mode, params))
-			usr->pushReply(err_umodeunknownflag());
+			usr->pushReply(err_umodeunknownflag(usr->getNickname()));
 		mode_str = modeToString(usr->getMode(), mode);
 		if (mode_str != "")
 			rpl_umodeis(mode_str);
 	}
 	else
-		usr->pushReply(rpl_umodeis(modeToString('\0', cmd.getUser()->getMode())));
+		usr->pushReply(rpl_umodeis(usr->getNickname(), modeToString('\0', cmd.getUser()->getMode())));
 }
 
 static  void	operatorModeInChan(User *usr, std::vector<std::string> params, char sym, size_t i)
@@ -138,10 +138,10 @@ void	channel_mode(Command &cmd)
 	char	sym = params[1][0];
 
 	if (!usr->isOnChan(params[0]))
-		return usr->pushReply(err_usernotinchannel(user->getNickname(), params[0]));
+		return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[0]));
 	
 	if (!usr->getIsOperator())
-		return usr->pushReply(err_chanoprivsneeded(params[0]));
+		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), params[0]));
 
 	for (size_t i = 1; i < params[1].size(); i++)
 	{
@@ -160,7 +160,7 @@ void	channel_mode(Command &cmd)
 				setKeyForChan(usr, params, sym, i);
 				break;
 			default:
-				user->pushReply(err_unknownmode(params[1][i], params[0]));
+				usr->pushReply(err_unknownmode(usr->getNickname(), params[1][i], params[0]));
 		}
 	}
 }

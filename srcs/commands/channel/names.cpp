@@ -16,7 +16,7 @@ static void	listAllUsers(Command &cmd)
 		std::vector<User *>::iterator it_usr_end = users.end();
 		for (; it_usr < it_usr_end; it_usr++)
 			nicks.push_back((*it_usr)->getNickname());
-		cmd.getUser()->pushReply(rpl_namreply((*it)->getName(), nicks));
+		cmd.getUser()->pushReply(rpl_namreply(cmd.getUser()->getNickname(), (*it)->getName(), nicks));
 	}
 }
 
@@ -40,9 +40,9 @@ void	names(Command &cmd) // VISIBILITIES ??
 			std::vector<User *>::iterator it_usr_end = users.end();
 			for (; it_usr < it_usr_end; it_usr++)
 				nicks.push_back((*it_usr)->getNickname());
-			cmd.getUser()->pushReply(rpl_namreply(chan->getName(), nicks));
+			cmd.getUser()->pushReply(rpl_namreply(cmd.getUser()->getNickname(), chan->getName(), nicks));
 		}
 	}
 	else { listAllUsers(cmd); }
-	cmd.getUser()->pushReply(rpl_listend());
+	cmd.getUser()->pushReply(rpl_listend(cmd.getUser()->getNickname()));
 }

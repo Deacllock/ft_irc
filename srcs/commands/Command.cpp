@@ -11,6 +11,8 @@ void instanciateCommand()
 	Command::cmd_map["USER"] = user;
 	Command::cmd_map["CAP"] = cap;
 	Command::cmd_map["QUIT"] = quit;
+	Command::cmd_map["PING"] = ping;
+	Command::cmd_map["PONG"] = pong;
 
 	Command::cmd_map["JOIN"] = join;
 	Command::cmd_map["PART"] = part;
@@ -89,7 +91,7 @@ void	handle_input(User *user, std::string user_input)
 	if (c.getHandler())
 		c.getHandler()(c);
 	else
-		user->pushReply(error(c.getCmd() + " :Cannot find command"));
+		user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
 }
 
 std::string		getColonMsg( std::vector<std::string> params, size_t pos )

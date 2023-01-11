@@ -7,10 +7,10 @@
 
 void	join(Command &cmd)
 {
-	User	*user = cmd.getUser();
+	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return user->pushReply(err_needmoreparams(user->getUsername().c_str(), "JOIN"));
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "JOIN"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
 	std::vector<std::string> keys;
@@ -25,12 +25,12 @@ void	join(Command &cmd)
 	{
 		if (*it == "0")
 		{
-			user->quitAllChan();
+			usr->quitAllChan();
 			continue;
 		}
 		if (!Command::server->isExistingChannelByName(*it))
 		{
-			user->pushReply(err_nosuchchannel(*it));
+			usr->pushReply(err_nosuchchannel(usr->getNickname(), *it));
 			continue;
 		}
 		Channel	*chan = Command::server->getChannelByName(*it);
@@ -38,27 +38,27 @@ void	join(Command &cmd)
 		{
 			if (*it_k != chan->getKey())
 			{
-				user->pushReply(err_badchannelkey(chan->getName()));
+				usr->pushReply(err_badchannelkey(usr->getNickname(), chan->getName()));
 				continue;
 			}
 		}
-		if (chan->isBannedUser(user))
+		if (chan->isBannedUser(usr))
 		{
-			user->pushReply(err_bannedfromchan(chan->getName()));
+			usr->pushReply(err_bannedfromchan(usr->getNickname(), chan->getName()));
 			continue;
 		}
-		if (user->tooManyChanJoined())
-			return user->pushReply(err_toomanychannels(chan->getName()));
+		if (usr->tooManyChanJoined())
+			return usr->pushReply(err_toomanychannels(usr->getNickname(), chan->getName()));
 		if (chan->isChannelFull())
 		{
-			user->pushReply(err_channelisfull(chan->getName()));
+			usr->pushReply(err_channelisfull(usr->getNickname(), chan->getName()));
 			continue;
 		}
 		if (chan->getTopic() != "")
-			user->pushReply(rpl_topic(chan->getName(), chan->getTopic()));
+			usr->pushReply(rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 
 		// join the chan
-		chan->addUser(user);
-		user->addJoinedChan(chan);
+		chan->addUser(usr);
+		usr->addJoinedChan(chan);
 	}
 }

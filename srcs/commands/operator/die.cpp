@@ -10,7 +10,7 @@ void	die(Command &cmd)
 	User	*usr = cmd.getUser();
 	
 	if (!usr->isOperator())
-		usr->pushReply(err_noprivileges());
+		usr->pushReply(err_noprivileges(usr->getNickname()));
 
 	else
 		cmd.server->setIsUp(false);
