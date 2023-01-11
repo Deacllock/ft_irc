@@ -69,10 +69,18 @@ std::string	err_needmoreparams( std::string client, std::string command ) { retu
 std::string	err_alreadyregistered( std::string client ) { return "462 * " + client + " :You may not reregister"; }
 //464
 std::string err_passwordmismatch() { return "464 * :Password incorrect"; }
+//467
+std::string	err_keyset(std::string channel) { return "467 * " + channel + " :Channel key already set"; }
 //474
 std::string err_bannedformchan(std::string channel) { return "474 * " + channel + " :Cannot join channel (+b)"; }
 //471
 std::string err_channelisfull(std::string channel) { return "471 * " + channel + " :Cannot join channel (+l)"; }
+//472
+std::string	err_unknownmode( char c, std::string channel )
+{
+	std::string s(1, c);
+	return "472 * " + s + " :is unknown mode char to me for " + channel;
+}
 //473
 std::string err_inviteonlychan(std::string channel) { return "473 * " + channel + " :Cannot join channel (+i)"; } // what is +i
 //474
@@ -81,6 +89,8 @@ std::string err_bannedfromchan(std::string channel) { return "474 * " + channel 
 std::string err_badchannelkey( std::string channel ) { return "475 * " + channel + " :Cannot join channel (+k)"; }
 //476
 std::string err_badchanmask( std::string channel ) { return "476 * " + channel + " :Bad Channel Mask"; }
+//477
+std::string	err_nochanmodes( std::string channel ) { return "477 * " + channel + " Channel doesn't support modes"; }
 //481
 std::string err_noprivileges() { return "481 * :Permission Denied- You're not an IRC operator"; }
 //482

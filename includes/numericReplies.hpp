@@ -32,11 +32,14 @@ std::string	err_useronchannel( std::string user, std::string channel ); //443
 std::string	err_needmoreparams( std::string client, std::string command ); //461
 std::string	err_alreadyregistered( std::string client ); //462
 std::string err_passwordmismatch(); //464
-std::string err_channelisfull( std::string channel ); // 471
+std::string	err_keyset(std::string channel); //467
+std::string err_channelisfull( std::string channel ); //471
+std::string	err_unknownmode( char c, std::string channel ); //472
 std::string err_inviteonlychan( std::string channel ); //473
 std::string err_bannedfromchan( std::string channel ); //474
 std::string err_badchannelkey( std::string channel ); //475
 std::string err_badchanmask( std::string channel ); //476
+std::string	err_nochanmodes( std::string channel ); //477
 std::string err_noprivileges(); // 481
 std::string err_chanoprivsneeded( std::string channel ); //482
 std::string err_cantkillserver(); //483
