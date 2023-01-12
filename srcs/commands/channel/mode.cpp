@@ -1,24 +1,35 @@
 #include "commandHandlers.hpp"
 
-static  void	operatorModeInChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
 	(void)usr;
+	(void)chan;
 	(void)params;
 	(void)sym;
 	(void)i;
 }
 
-static  void	setLimitInChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	(void)usr;
-	(void)params;
-	(void)sym;
-	(void)i;
+	stringstream	ss;
+	unsigned long	limit;
+
+	if (sym == '+')
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		ss << params[i];
+		ss >> limit;
+		chan->setLimit(limit);
+	}
+	else
+		chan->setLimit(-1);
 }
 
-static  void	setInviteOnlyForChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	setInviteOnlyForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
 	(void)usr;
+	(void)chan;
 	(void)params;
 	(void)sym;
 	(void)i;
@@ -80,13 +91,13 @@ void	channel_mode(Command &cmd)
 			switch (params[i][j])
 			{
 				case 'o': // make someone op in chan - or supp op
-					operatorModeInChan(usr, params, sym, i + 1);
+					operatorModeInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'l': // set limit for chan
-					setLimitInChan(usr, params, sym, i + 1);
+					setLimitInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'i': // set inviteonly chan
-					setInviteOnlyForChan(usr, params, sym, i + 1);
+					setInviteOnlyForChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'k': // set key for chan
 					setKeyForChan(usr, chan, params, sym, i + 1);
