@@ -1,24 +1,54 @@
 #include "commandHandlers.hpp"
 
-static  void	operatorModeInChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	(void)usr;
-	(void)params;
-	(void)sym;
-	(void)i;
+	User	*newOp;
+
+	if (sym == '+')
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		if (!Command::server->isExistingUserByName(params[i]))
+			return usr->pushReply(err_usernotinchannel(params[i], chan->getName()));
+		newOp = Command::server->getUserByName(params[i]);
+		if (!newOp->isOnChan(chan->getName()))
+			return usr->pushReply(err_usernotinchannel(newOp->getNickname(), chan->getName()));
+		chan->addOperator(newOp);
+	}
+	else
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		if (!Command::server->isExistingUserByName(params[i]))
+			return usr->pushReply(err_usernotinchannel(params[i], chan->getName()));
+		newOp = Command::server->getUserByName(params[i]);
+		if (!newOp->isOnChan(chan->getName()))
+			return usr->pushReply(err_usernotinchannel(newOp->getNickname(), chan->getName()));
+		chan->removeOperator(newOp);
+	}
 }
 
-static  void	setLimitInChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	(void)usr;
-	(void)params;
-	(void)sym;
-	(void)i;
+	std::stringstream	ss;
+	unsigned long		limit;
+
+	if (sym == '+')
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		ss << params[i];
+		ss >> limit;
+		chan->setLimit(limit);
+	}
+	else
+		chan->setLimit(-1);
 }
 
-static  void	setInviteOnlyForChan(User *usr, std::vector<std::string> params, char sym, size_t i)
+static  void	setInviteOnlyForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
 	(void)usr;
+	(void)chan;
 	(void)params;
 	(void)sym;
 	(void)i;
@@ -44,7 +74,6 @@ static  void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> pa
 }
 
 // ERR_NOCHANMODES channel doesn't support modes ??
-// ERR_USERNOTINCHANNEL
 
 // RPL_CHANNELMODEIS
 // RPL_BANLIST RPL_ENDOFBANLIST
@@ -65,7 +94,7 @@ void	channel_mode(Command &cmd)
 		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), params[0]));
 	
 	if (!usr->isOnChan(chan->getName()))
-		return usr->pushReply(err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
+		return usr->pushReply(err_usernotinchannel(usr->getNickname(), chan->getName()));
 	
 	if (!usr->isOperator())
 		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), chan->getName()));
@@ -80,13 +109,13 @@ void	channel_mode(Command &cmd)
 			switch (params[i][j])
 			{
 				case 'o': // make someone op in chan - or supp op
-					operatorModeInChan(usr, params, sym, i + 1);
+					operatorModeInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'l': // set limit for chan
-					setLimitInChan(usr, params, sym, i + 1);
+					setLimitInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'i': // set inviteonly chan
-					setInviteOnlyForChan(usr, params, sym, i + 1);
+					setInviteOnlyForChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'k': // set key for chan
 					setKeyForChan(usr, chan, params, sym, i + 1);
