@@ -11,8 +11,8 @@ static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::strin
 
 static  void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	stringstream	ss;
-	unsigned long	limit;
+	std::stringstream	ss;
+	unsigned long		limit;
 
 	if (sym == '+')
 	{
