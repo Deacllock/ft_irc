@@ -22,7 +22,7 @@ static bool isKickPossible( Channel *channel, User *usr )
 	}
 	if (!channel->isOperatorUser(usr))
 	{
-		usr->pushReply(err_chanoprivsneeded(usr->getNickname(), channel->getName()));
+		usr->pushReply(err_chanoprivsneeded(channel->getName()));
 		return false;
 	}
 	return true;
@@ -39,7 +39,8 @@ static void kickUser( Channel *channel, Command &cmd, std::string nickToKill )
 {
 	User *toKick = cmd.server->getUserByName(nickToKill);
 	if (!channel->isJoinedUser(toKick))
-		cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), nickToKill, channel->getName()));
+		cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), channel->getName()));
+		//cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), nickToKill, channel->getName()));
 	// else
 	// 	curChan->sendMessage()
 }

@@ -102,7 +102,7 @@ std::string	err_nochanmodes( std::string nick, std::string channel ) { return "4
 //481
 std::string err_noprivileges( std::string nick ) { return "481 " + nick + " :Permission Denied- You're not an IRC operator"; }
 //482
-std::string err_chanoprivsneeded( std::string nick, std::string channel ) { return "482 " + nick + " " + channel + " :You're not channel operator"; }
+std::string err_chanoprivsneeded( std::string channel ) { return "482 " + channel + " :You're not channel operator"; }
 //483
 std::string err_cantkillserver( std::string nick ) { return "483 " + nick + " :You can't kill a server!"; }
 //484

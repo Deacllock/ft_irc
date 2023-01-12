@@ -83,19 +83,17 @@ void	channel_mode(Command &cmd)
 {
 	User	*usr = cmd.getUser();
 	std::vector<std::string> params = cmd.getParams();
+
+	if (!Command::server->isExistingChannelByName(params[0]))
+		return;
+	
 	Channel	*chan = Command::server->getChannelByName(params[0]);
 
-	if (!usr->isOnChan(params[0]))
-		return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[0], chan->getName()));
-	
-	if (!usr->isOperator())
-		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), params[0]));
-	
 	if (!usr->isOnChan(chan->getName()))
 		return usr->pushReply(err_usernotinchannel(usr->getNickname(), chan->getName()));
 	
 	if (!usr->isOperator())
-		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), chan->getName()));
+		return usr->pushReply(err_chanoprivsneeded(chan->getName()));
 
 	for (size_t i = 1; i < params.size(); i++)
 	{

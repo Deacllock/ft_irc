@@ -40,7 +40,7 @@ std::string err_bannedfromchan( std::string nick, std::string channel ); //474
 std::string err_badchannelkey( std::string nick, std::string channel ); //475
 std::string err_badchanmask( std::string nick, std::string channel ); //476
 std::string err_noprivileges( std::string nick ); // 481
-std::string err_chanoprivsneeded( std::string nick, std::string channel ); //482
+std::string err_chanoprivsneeded( std::string channel ); //482
 std::string err_cantkillserver( std::string nick ); //483
 std::string err_restricted( std::string nick ); //484 
 std::string err_umodeunknownflag( std::string nick ); //501

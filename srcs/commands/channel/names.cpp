@@ -1,7 +1,6 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-// ERR_TOOMANYMATCHES
 static void	listAllUsers(Command &cmd)
 {
 	std::vector<Channel *> channels = Command::server->getChannels();

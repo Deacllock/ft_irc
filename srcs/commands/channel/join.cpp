@@ -2,8 +2,6 @@
 #include "utils.hpp"
 
 // ERR_INVITEONLYCHAN
-// ERR_TOOMANYTARGETS
-// ERR_UNVAILRESOURCE
 
 void	join(Command &cmd)
 {
@@ -57,7 +55,6 @@ void	join(Command &cmd)
 		if (chan->getTopic() != "")
 			usr->pushReply(rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 
-		// join the chan
 		chan->addUser(usr);
 		usr->addJoinedChan(chan);
 	}
