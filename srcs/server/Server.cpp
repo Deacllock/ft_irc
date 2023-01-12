@@ -205,7 +205,7 @@ void Server::sendPing()
 {
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
 	{
-		(*it)->pushReply("PING" + this->getPingValue());
+		(*it)->pushReply("PING " + this->getPingValue());
 		(*it)->addPing();
 	}
 	
