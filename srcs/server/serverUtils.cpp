@@ -209,7 +209,10 @@ int Server::client_interactions()
 			return -1;
 
 		if (ret == 0)
-			continue;
+		{
+			this->checkPong();
+			this->sendPing();
+		}
 		
 		for (size_t size = fds.size(), i = 0; i < size; i++, size = fds.size())
 		{

@@ -28,11 +28,6 @@ static bool	parseParams(bool &isOp, std::vector<std::string> params)
 	return unknown;
 }
 
-static std::string diff(bool prev, bool cur)
-{
-	std::string ret = "";
-	if (pre
-}
 //Parameters: <nickname> *( ( "+" / "-" ) *( "o" ) )
 void	user_mode(Command &cmd)
 {
@@ -41,28 +36,22 @@ void	user_mode(Command &cmd)
 	bool	isOp = true;
 
 	if ( !usr->isRegistered() )
-		return (usr->pushReply(err_notregistered(usr->getNickname())));
+		(usr->pushReply(err_notregistered(usr->getNickname())));
 
 	else if ( params.size() < 1)
-		return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
 
     else if (cmd.getUser()->getNickname().compare(params[0]))
-		return usr->pushReply(err_usersdontmatch(usr->getNickname()));
+		usr->pushReply(err_usersdontmatch(usr->getNickname()));
 	
 	else if (params.size() > 1)
 	{
 		if (parseParams(isOp, params))
 			usr->pushReply(err_umodeunknownflag(usr->getNickname()));
-		
-		// if (mode_str != "")
-			// rpl_umodeis(usr->getNickname(), mode_str);
+		if (usr->isOperator() && !isOp)
+			rpl_umodeis(usr->getNickname(), "-o");
 	}
 
-	if ( usr->isOperator() && isOp )
-	else
-	{
-		if (isOp)
-			usr->pushReply(rpl_umodeis(usr->getNickname(), ));
-		
-	}
+	else if (usr->isOperator())
+		usr->pushReply(rpl_umodeis(usr->getNickname(), "o"));
 }

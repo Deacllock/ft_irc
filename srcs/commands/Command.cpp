@@ -20,6 +20,7 @@ void instanciateCommand()
 	Command::cmd_map["TOPIC"] = topic;
 	Command::cmd_map["LIST"] = list;
 	Command::cmd_map["NAMES"] = names;
+	Command::cmd_map["MODE"] = mode;
 
 	Command::cmd_map["DIE"] = die;
 	Command::cmd_map["KICK"] = kick;
@@ -89,7 +90,15 @@ void	handle_input(User *user, std::string user_input)
 {
 	Command c(user, user_input);
 	if (c.getHandler())
-		c.getHandler()(c);
+	{
+		std::string cmd = c.getCmd();
+		if (cmd.compare("PASS") && cmd.compare("NICK")
+			&& cmd.compare("CAP") && cmd.compare("USER")
+			&& cmd.compare("QUIT") && !user->isRegistered())
+				user->pushReply(err_notregistered(user->getNickname()));
+		else
+			c.getHandler()(c);
+	}
 	else
 		user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
 }

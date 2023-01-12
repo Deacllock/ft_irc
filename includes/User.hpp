@@ -38,6 +38,8 @@ class User
 		std::queue<std::string>	_replies;
 		std::vector<Channel * >	_joinedChan;
 
+		int						_nbPing;
+
 	public:
 		/*--------------- Constructors ---------------*/
 		User();
@@ -66,6 +68,7 @@ class User
 
 		std::vector<Channel *>	getJoinedChan() const;
 		std::queue<std::string>	getReplies() const;
+		int						getNbPing() const;
 
 		/*--------------- Setters ---------------*/
 		void	setStatus( enum status val );
@@ -85,6 +88,9 @@ class User
 
 		void	pushReply( std::string reply );
 		void	popReply();
+
+		void	addPing();
+		void	removePing();
 
 };
 

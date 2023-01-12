@@ -15,4 +15,6 @@ void	pong(Command &cmd)
 		else
 			to->pushReply("PONG " + params[0]); //hum not that sur about pong shall do some test
 	}
+
+	//check pong is a reply to server ping
 }

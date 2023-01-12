@@ -14,6 +14,7 @@ User::User(): _fd(-1), _userId(User::_ids++)
     this->_realName = "";
     this->_limit = -1;
     this->_replies = std::queue<std::string>();
+    this->_nbPing = 0;
 }
 
 User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
@@ -26,6 +27,7 @@ User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(Use
     this->_realName = "";
     this->_limit = limit;
     this->_replies = std::queue<std::string>();
+    this->_nbPing = 0;
 }
 
 User::User( const User &rhs): _fd(rhs._fd), _userId(rhs._userId) { *this = rhs; }
@@ -48,11 +50,11 @@ User & User::operator=( const User &rhs )
 int				User::getFd() const             	{ return this->_fd; }
 unsigned long	User::getUserId() const         	{ return this->_userId; }
 
-bool			User::isConnected() const    	{ return this->_status == CONNECTED; }
+bool			User::isConnected() const           { return this->_status == CONNECTED; }
 bool			User::isRegistered() const  	 	{ return this->_status == REGISTERED; }
-bool			User::isDisconnected() const     { return this->_status == DISCONNECTED; }
+bool			User::isDisconnected() const        { return this->_status == DISCONNECTED; }
 
-bool            User::isOperator() const         { return this->_operator; }
+bool            User::isOperator() const            { return this->_operator; }
 
 std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }
@@ -60,8 +62,9 @@ time_t      	User::getLastNickChange() const 	{ return this->_lastNickChange; }
 
 std::vector<Channel *>	User::getJoinedChan() const { return this->_joinedChan; }
 
-
 std::queue<std::string>	User::getReplies() const	{ return this->_replies; }
+
+int             User::getNbPing() const             { return this->_nbPing; }
 
 /*--------------- Setters ---------------*/
 void	User::setStatus( enum status val )            { this->_status = val; }
@@ -121,6 +124,10 @@ bool	User::isOnChan( std::string name )
 
 void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->server->getName() + " " + reply + "\r\n"); }
 void	User::popReply() { this->_replies.pop(); }
+
+void    User::addPing() { this->_nbPing++; }
+void    User::removePing()  { this->_nbPing--; }
+
 
 /*---------------- Non-member functions ----------------*/
 

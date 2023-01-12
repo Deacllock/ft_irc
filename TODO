@@ -39,6 +39,7 @@ Max size = 512 bytes
 - [1] ERROR  	
 
 main test
-change error reply to give nickname	
+[DONE] change error reply to give nickname	
 make regular ping 
-check registration for every command!
+[DONE] check registration for every command!
+lower cases?

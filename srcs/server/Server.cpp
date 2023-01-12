@@ -3,6 +3,8 @@
 #include "Server.hpp"
 #include "utils.hpp"
 
+unsigned long	_pingID = 0;
+
 /*--------------- Constructors ---------------*/
 Server *Command::server;
 Server *User::server;
@@ -180,4 +182,26 @@ std::ostream & operator<<(std::ostream &o, Server const &rhs)
 		o << **it << std::endl;
 	o << "-----------------------" << std::endl;
 	return (o);
+}
+
+/*--------------- Timeout ---------------*/
+
+
+//parcours and apply function
+void	Server::checkPong()
+{
+	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
+	{
+		if ((*it)->getNbPing())
+			(*it)->setStatus(DISCONNECTED);
+	}
+}
+
+void Server::sendPing()
+{
+	// for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
+	// {
+	// 	(*it)->pushReply("PING" + this->_pingID++);
+	// }
+	
 }

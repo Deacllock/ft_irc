@@ -105,8 +105,8 @@ void	mode(Command &cmd) // See how to organize this part
 	if (cmd.getParams().size() < 2)
 		return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
 
-	// if (Command::server->isExistingUserByName(usr->getNickname()))
-	// 	user_mode(cmd);
-	// else
+	if (Command::server->isExistingUserByName(usr->getNickname()))
+		user_mode(cmd);
+	else
 		channel_mode(cmd);
 }

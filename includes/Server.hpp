@@ -1,7 +1,7 @@
 #ifndef SERVER
 # define SERVER
 
-# define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
+# define TIMEOUT 20000 // 20 * 1000 = 20 sec
 # define BUFFER_SIZE 42
 # define NICK_DELAY 60 // 1 minute
 
@@ -21,6 +21,7 @@ class User;
 class Server
 {
     private:
+        static unsigned long    _pingID;
         bool                    _isUp;
 
         std::string             _name;
@@ -75,6 +76,10 @@ class Server
         /*--------------- Password ---------------*/
         bool    checkPassword( std::string pwd );
         bool    checkOpeCredentials( std::string username, std::string pwd );
+
+        /*--------------- Password ---------------*/
+        void    checkPong();
+        void    sendPing();
 };
 
 std::ostream &operator<<(std::ostream &o, Server const &rhs);
