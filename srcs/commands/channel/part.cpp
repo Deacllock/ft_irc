@@ -6,7 +6,7 @@ void	part(Command &cmd)
 	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return usr->pushReply(err_needmoreparams(usr->getNickname(), usr->getUsername().c_str(), "PART"));
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "PART"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
 

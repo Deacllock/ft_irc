@@ -39,7 +39,7 @@ static void kickUser( Channel *channel, Command &cmd, std::string nickToKill )
 {
 	User *toKick = cmd.server->getUserByName(nickToKill);
 	if (!channel->isJoinedUser(toKick))
-		cmd.getUser()->pushReply(err_usernotinchannel(usr->getNickname(), nickToKill, channel->getName()));
+		cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), nickToKill, channel->getName()));
 	// else
 	// 	curChan->sendMessage()
 }
@@ -61,7 +61,7 @@ void	kick(Command &cmd)
 	std::vector<std::string> users = splitByComma(params[1]);
 
 	if (channels.size() != users.size() && channels.size() != 1)
-		return usr->pushReply(error("Syntax error")); //??
+		return usr->pushReply(error(usr->getNickname(), "Syntax error")); //??
 	
 	if (channels.size() == 1)
 	{

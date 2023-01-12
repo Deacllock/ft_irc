@@ -20,8 +20,8 @@ void	oper(Command &cmd) //what about multiple attempts?
 
 	else
 	{
-		user->setOperator(true);
-		user->pushReply(rpl_youreoper());
-		user->pushReply(rpl_umodeis("+o"));
+		usr->setOperator(true);
+		usr->pushReply(rpl_youreoper(usr->getNickname()));
+		usr->pushReply(rpl_umodeis(usr->getNickname(), "+o"));
 	}
 }

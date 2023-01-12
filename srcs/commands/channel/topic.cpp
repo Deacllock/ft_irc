@@ -8,7 +8,7 @@ void	topic(Command &cmd)
 	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return usr->pushReply(err_needmoreparams(usr->getNickname(), usr->getUsername().c_str(), "TOPIC"));
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "TOPIC"));
 	
 	std::string	channel = cmd.getParams()[0];
 	bool		hasTopic = cmd.getParams().size() > 1 && cmd.getParams()[1].at(0) == ':';

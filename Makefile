@@ -13,8 +13,8 @@ SRCS = main.cpp utils.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp User.cpp Channel.cpp) \
 		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp\
 		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp ping.cpp pong.cpp) \
-		$(addprefix channel/, join.cpp part.cpp invite.cpp topic.cpp list.cpp names.cpp) \
-		$(addprefix operator/, die.cpp kill.cpp oper.cpp kick.cpp))
+		$(addprefix channel/, join.cpp part.cpp invite.cpp topic.cpp list.cpp names.cpp mode.cpp) \
+		$(addprefix operator/, die.cpp kill.cpp oper.cpp kick.cpp userMode.cpp))
 
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)

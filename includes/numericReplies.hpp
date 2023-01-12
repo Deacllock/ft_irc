@@ -26,13 +26,15 @@ std::string err_erroneusnickname( std::string nick, std::string nickname ); //43
 std::string err_nicknameinuse( std::string nick, std::string nickname ); //433
 std::string err_unavailableresource( std::string nick, std::string name ); //437
 std::string err_notregistered( std::string nick ); //451
-std::string err_usernotinchannel(std::string nick, std::string channel); //441
+std::string err_usernotinchannel(std::string nick, std::string nickname, std::string channel); //441
 std::string	err_notonchannel( std::string nick, std::string channel ); //442
 std::string	err_useronchannel( std::string nick, std::string user, std::string channel ); //443
 std::string	err_needmoreparams( std::string nick, std::string command ); //461
 std::string	err_alreadyregistered( std::string nick, std::string client ); //462
 std::string err_passwordmismatch( std::string nick ); //464
+std::string err_keyset( std::string nick, std::string channel ); //467
 std::string err_channelisfull( std::string nick, std::string channel ); // 471
+std::string	err_unknownmode( std::string nick, char c, std::string channel ); //472
 std::string err_inviteonlychan( std::string nick, std::string channel ); //473
 std::string err_bannedfromchan( std::string nick, std::string channel ); //474
 std::string err_badchannelkey( std::string nick, std::string channel ); //475
