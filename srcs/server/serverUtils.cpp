@@ -210,6 +210,7 @@ int Server::client_interactions()
 
 		if (ret == 0)
 		{
+			std::cout << "Timeout !" <<std::endl;
 			this->checkPong();
 			this->sendPing();
 		}

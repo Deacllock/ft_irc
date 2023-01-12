@@ -26,7 +26,7 @@ std::string err_erroneusnickname( std::string nick, std::string nickname ); //43
 std::string err_nicknameinuse( std::string nick, std::string nickname ); //433
 std::string err_unavailableresource( std::string nick, std::string name ); //437
 std::string err_notregistered( std::string nick ); //451
-std::string err_usernotinchannel(std::string nickname, std::string channel); //441
+std::string err_usernotinchannel( std::string nick, std::string nickname, std::string channel ); //441
 std::string	err_notonchannel( std::string nick, std::string channel ); //442
 std::string	err_useronchannel( std::string nick, std::string user, std::string channel ); //443
 std::string	err_needmoreparams( std::string nick, std::string command ); //461

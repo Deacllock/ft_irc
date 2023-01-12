@@ -126,7 +126,7 @@ void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->serv
 void	User::popReply() { this->_replies.pop(); }
 
 void    User::addPing() { this->_nbPing++; }
-void    User::removePing()  { this->_nbPing--; }
+void    User::subPing() { this->_nbPing--; }
 
 
 /*---------------- Non-member functions ----------------*/
