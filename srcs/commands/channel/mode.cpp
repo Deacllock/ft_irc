@@ -2,11 +2,30 @@
 
 static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	(void)usr;
-	(void)chan;
-	(void)params;
-	(void)sym;
-	(void)i;
+	User	*newOp;
+
+	if (sym == '+')
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		if (!Command::server->isExistingUserByName(params[i]))
+			return usr->pushReply(err_usernotinchannel(params[i], chan->getName()));
+		newOp = Command::server->getUserByName(params[i]);
+		if (!newOp->isOnChan(chan->getName()))
+			return usr->pushReply(err_usernotinchannel(newOp->getNickname(), chan->getName()));
+		chan->addOperator(newOp);
+	}
+	else
+	{
+		if (params[i][0] == '+' || params[i][0] == '-')
+			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		if (!Command::server->isExistingUserByName(params[i]))
+			return usr->pushReply(err_usernotinchannel(params[i], chan->getName()));
+		newOp = Command::server->getUserByName(params[i]);
+		if (!newOp->isOnChan(chan->getName()))
+			return usr->pushReply(err_usernotinchannel(newOp->getNickname(), chan->getName()));
+		chan->removeOperator(newOp);
+	}
 }
 
 static  void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
@@ -55,7 +74,6 @@ static  void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> pa
 }
 
 // ERR_NOCHANMODES channel doesn't support modes ??
-// ERR_USERNOTINCHANNEL
 
 // RPL_CHANNELMODEIS
 // RPL_BANLIST RPL_ENDOFBANLIST
@@ -76,7 +94,7 @@ void	channel_mode(Command &cmd)
 		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), params[0]));
 	
 	if (!usr->isOnChan(chan->getName()))
-		return usr->pushReply(err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
+		return usr->pushReply(err_usernotinchannel(usr->getNickname(), chan->getName()));
 	
 	if (!usr->isOperator())
 		return usr->pushReply(err_chanoprivsneeded(usr->getNickname(), chan->getName()));
@@ -115,9 +133,5 @@ void	mode(Command &cmd) // See how to organize this part
 
 	if (cmd.getParams().size() < 2)
 		return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-
-	// if (Command::server->isExistingUserByName(usr->getNickname()))
-	// 	user_mode(cmd);
-	// else
-		channel_mode(cmd);
+	channel_mode(cmd);
 }
