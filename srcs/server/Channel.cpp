@@ -88,6 +88,7 @@ bool	Channel::isOperatorUser(const User *u) const
 bool	Channel::isInvitedUser(const User *u) const
 {
 	return std::find(this->_invited.begin(), this->_invited.end(), u) != this->_invited.end();
+}
 
 bool	Channel::isChannelFull() const { return this->_limit == this->_users.size(); }
 

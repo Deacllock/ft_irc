@@ -1,8 +1,6 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-// ERR_INVITEONLYCHAN
-
 void	join(Command &cmd)
 {
 	User	*usr = cmd.getUser();
@@ -45,6 +43,8 @@ void	join(Command &cmd)
 			usr->pushReply(err_bannedfromchan(usr->getNickname(), chan->getName()));
 			continue;
 		}
+		if (chan->isInviteOnly() && !chan->isInvitedUser(usr))
+			return usr->pushReply(err_inviteonlychan(usr->getNickname(), chan->getName()));
 		if (usr->tooManyChanJoined())
 			return usr->pushReply(err_toomanychannels(usr->getNickname(), chan->getName()));
 		if (chan->isChannelFull())
@@ -57,5 +57,6 @@ void	join(Command &cmd)
 
 		chan->addUser(usr);
 		usr->addJoinedChan(chan);
+		chan->removeInvited(usr);
 	}
 }
