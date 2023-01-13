@@ -46,6 +46,7 @@ class Channel
 		void	setTopic( std::string topic );
 		void	setKey( std::string key );
 		void	setLimit( unsigned long limit);
+		void	setInviteOnly( bool inviteOnly );
 
 		void	addBannedUser( User *u );
 		void	removeBannedUser( User *u );

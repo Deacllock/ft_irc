@@ -42,6 +42,7 @@ void    Channel::setName( std::string name )       { this->_name = name; }
 void    Channel::setTopic( std::string topic )       { this->_topic = topic; }
 void	Channel::setKey( std::string key )			{ this->_key = key; }
 void	Channel::setLimit( unsigned long limit )	{ this->_limit = limit; }
+void	Channel::setInviteOnly( bool inviteOnly )	{ this->_inviteOnly = inviteOnly; }
 
 static void addUserToVector( std::vector<User *> vect, User *u )
 {
