@@ -40,6 +40,6 @@ Max size = 512 bytes
 
 main test
 [DONE] change error reply to give nickname	
-make regular ping 
+[DONE] make regular ping 
 [DONE] check registration for every command!
 lower cases?

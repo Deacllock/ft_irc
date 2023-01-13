@@ -67,7 +67,7 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 void	Command::split_str(std::string str)
 {
 	if (str[str.length() - 1] == '\n' && str[str.length() - 2] == '\r')
-		str = str.substr(0, str.length() - 2); //shall be prevented by using proper parsing
+		str = str.substr(0, str.length() - 2);
 
 	std::istringstream ss(str);
 
@@ -78,6 +78,9 @@ void	Command::split_str(std::string str)
 	{
 		if (first && elem != "")
 		{
+			for (int i = 0; elem[i]; i++)
+				if (islower(elem[i]))
+					elem[i] = toupper(elem[i]);
 			this->_cmd = elem;
 			first = false;
 		}
@@ -86,7 +89,6 @@ void	Command::split_str(std::string str)
 	}
 }
 
-#include <iostream>
 void	handle_input(User *user, std::string user_input)
 {
 	while ( user_input != "")
@@ -101,16 +103,15 @@ void	handle_input(User *user, std::string user_input)
 		if (c.getHandler())
 		{
 			std::string cmd = c.getCmd();
-			if (cmd.compare("PASS") && cmd.compare("NICK")
-				&& cmd.compare("CAP") && cmd.compare("USER")
-				&& cmd.compare("QUIT") && !user->isRegistered())
+			if (cmd.compare("PASS") && cmd.compare("NICK") && cmd.compare("CAP")
+				&& cmd.compare("USER") && cmd.compare("QUIT") && cmd.compare("PONG")
+				&& !user->isRegistered())
 					user->pushReply(err_notregistered(user->getNickname()));
 			else
 				c.getHandler()(c);
 		}
 		else
 			user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
-
 		
 		std::string next = user_input.substr(i, user_input.length());
 		user_input = next;

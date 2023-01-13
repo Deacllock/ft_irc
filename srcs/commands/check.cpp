@@ -3,7 +3,7 @@
 static bool areSpaces( std::string msg, size_t &i )
 {
 	bool ret = false;
-	if ( msg.at(i) == ' ')
+	if ( msg[i] == ' ')
 		ret = true;
 	while ( msg [i] == ' ')
 		i++;
@@ -22,17 +22,17 @@ static bool nospcrlfcl( char c )
 
 static bool isMiddle( std::string msg, size_t &i )
 {
-	if (!nospcrlfcl(msg.at(i)))
+	if (!nospcrlfcl(msg[i]))
 		return (false);
 	i++;
-	while (nospcrlfcl(msg.at(i)) || msg.at(i) == ':') //: not usefull?
+	while (nospcrlfcl(msg[i]) || msg[i] == ':') //: not usefull?
 		i++;
 	return (true);
 }
 
 static bool isTrailing( std::string msg, size_t &i )
 {
-	while (msg.at(i) == ':' || msg.at(i) == ' ' || nospcrlfcl(msg.at(i)))
+	while (msg[i] == ':' || msg[i] == ' ' || nospcrlfcl(msg[i]))
 		i++;
 	return true;
 }
@@ -45,22 +45,22 @@ static bool areParamValids( std::string msg, size_t &i )
 	if (j > 14)
 		return false;
 	
-	if (msg.at(i) == ':')
+	if (msg[i] == ':')
 		i++;
 	return (isTrailing(msg, i));
 }
 
 static bool isCommandValid( std::string msg, size_t &i )
 {
-	// if (isdigit(msg.at(i)))
+	// if (isdigit(msg[i]))
 	// {
 	// 	i++;
 	// 	return isdigit(msg.at(i++)) && isdigit(msg.at(i++));
 	// }
 	
-	if (isalpha(msg.at(i++)))
+	if (isalpha(msg[i]))
 	{
-		while (isalpha(msg.at(i)))
+		while (isalpha(msg[i]))
 			i++;
 		return true;
 	}
@@ -128,7 +128,7 @@ static bool isCommandValid( std::string msg, size_t &i )
  */
 bool	isMessageValid( std::string msg, size_t &i )
 {
-	// if (msg.at(i) == ':')
+	// if (msg[i] == ':')
 	// 	if (isPrefixValid(msg, ++i) && !areSpaces(msg, i))
 	// 		return false;
 	

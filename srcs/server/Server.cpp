@@ -206,6 +206,8 @@ void Server::sendPing()
 	this->_pingID++;
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
 	{
+		if ((*it)->isDisconnected())
+			continue;
 		(*it)->pushReply("PING " + this->getPingValue());
 		(*it)->addPing();
 	}
