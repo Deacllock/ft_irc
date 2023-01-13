@@ -10,14 +10,19 @@
  */
 void	pass(Command &cmd)
 {
-	std::string	username = cmd.getUser()->getUsername();
+	User		*usr = cmd.getUser();
+	std::string	username = usr->getUsername();
 
-	if (cmd.getUser()->getIsRegistered())
-	 	cmd.addOutput(err_alreadyregistered(username));
+	if (usr->isRegistered())
+	 	usr->pushReply(err_alreadyregistered(usr->getNickname(), username));
 
 	else if (cmd.getParams().size() < 1)
-		cmd.addOutput(err_needmoreparams(username, "PASS"));
+		usr->pushReply(err_needmoreparams(usr->getNickname(), "PASS"));
+
+	else if (Command::server->checkPassword(cmd.getParams()[0]))
+		usr->setStatus(CONNECTED);
 
 	else
-		cmd.getUser()->setIsConnected(Command::server->checkPassword(cmd.getParams()[0]));
+		usr->setStatus(STARTING);
+
 }

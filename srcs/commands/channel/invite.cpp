@@ -1,27 +1,25 @@
 #include "commandHandlers.hpp"
 
-#include <iostream>
-
 void	invite(Command &cmd)
 {
-	User	*user = cmd.getUser();
+	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() != 2)
-		return cmd.addOutput(err_needmoreparams(user->getUsername().c_str(), "INVITE"));
+	if (cmd.getParams().size() < 2)
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "INVITE"));
 	
 	std::string nickname = cmd.getParams()[0];
 	std::string channel = cmd.getParams()[1];
 
 	Channel	*chan = Command::server->getChannelByName(channel);
-	if (!chan->isJoinedUser(*user))
-		return cmd.addOutput(err_notonchannel(chan->getName()));
+	if (!chan->isJoinedUser(usr))
+		return usr->pushReply(err_notonchannel(usr->getNickname(), chan->getName()));
 	//ERR_CHANOPRIVSNEEDED
 	if (!Command::server->isExistingUserByName(nickname))
-		return cmd.addOutput(err_nosuchnick(nickname));
+		return usr->pushReply(err_nosuchnick(usr->getNickname(), nickname));
 	User	*userToInvite = Command::server->getUserByName(nickname);
-	if (chan->isJoinedUser(*userToInvite))
-		return cmd.addOutput(err_useronchannel(nickname, channel));
+	if (chan->isJoinedUser(userToInvite))
+		return usr->pushReply(err_useronchannel(usr->getNickname(), nickname, channel));
 	// INVITE
-	cmd.addOutput(rpl_inviting(channel, nickname));
+	usr->pushReply(rpl_inviting(usr->getNickname(), channel, nickname));
 	//RPL_AWAY
 }

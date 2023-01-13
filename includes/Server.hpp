@@ -1,28 +1,34 @@
 #ifndef SERVER
 # define SERVER
 
-# define TIMEOUT 180000 // 3 * 60 * 1000 = 3min
+# define TIMEOUT 20000 // 20 * 1000 = 20 sec
 # define BUFFER_SIZE 42
 # define NICK_DELAY 60 // 1 minute
 
-# include <exception>
 # include <ostream>
-# include <string>
 # include <unistd.h>
+# include <string>
 # include <vector>
 
+# include "Channel.hpp"
 # include "Command.hpp"
 # include "User.hpp"
 
+class Channel;
 class Command;
+class User;
 
 class Server
 {
     private:
+        static unsigned long    _pingID;
+        bool                    _isUp;
+
         std::string             _name;
         std::string             _port;
-        std::string             _password; // shall be encoded?
+        std::string             _password;
         int                     _sockfd;
+        std::string             _opeCredential[2];
 
         std::vector<User *>       _users;
         std::vector<Channel *>    _channels;
@@ -46,14 +52,18 @@ class Server
         int client_interactions();
 
         /*--------------- Getters ---------------*/
-        std::vector<User*>  getUsers() const;
-        std::string         getName() const;
+        std::vector<User*>      getUsers() const;
+        std::string             getName() const;
 		std::vector<Channel *>	getChannels() const;
+        bool                    isUp() const;
+ 
+        /*--------------- Setters ---------------*/
+        void    setIsUp(bool val);
 
         /*--------------- Users ---------------*/
         User    *searchUserByFd( int fd );
         void    addUser( int fd );
-        int     removeUser( User *user );
+        void    removeUser( User *user );
 		bool	isExistingUserByName( std::string name );
 		bool	isExistingUserByNickname( std::string name );
 		User	*getUserByName( std::string name );
@@ -61,12 +71,18 @@ class Server
 
 		/*--------------- Channels --------------*/
         void    addChannel( Channel *chan );
-        int     removeChannel( Channel *chan );
+        void    removeChannel( Channel *chan );
 		bool	isExistingChannelByName( std::string name );
 		Channel	*getChannelByName( std::string name );
 
         /*--------------- Password ---------------*/
         bool    checkPassword( std::string pwd );
+        bool    checkOpeCredentials( std::string username, std::string pwd );
+
+        /*--------------- Timeout ---------------*/
+        std::string getPingValue();
+        void    checkPong();
+        void    sendPing();
 };
 
 std::ostream &operator<<(std::ostream &o, Server const &rhs);

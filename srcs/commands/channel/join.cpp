@@ -1,68 +1,64 @@
 #include "commandHandlers.hpp"
-
-#include <iostream>
+#include "utils.hpp"
 
 // ERR_INVITEONLYCHAN
-// ERR_BADCHANNELKEY
+// ERR_TOOMANYTARGETS
 // ERR_UNVAILRESOURCE
-
-static std::vector<std::string>	splitByComma(std::string str)
-{
-	std::vector<std::string> vec;
-
-	std::string elem;
-	std::istringstream ss(str);
-	while (getline(ss, elem, ','))
-		vec.push_back(elem);
-	
-	return vec;
-}
 
 void	join(Command &cmd)
 {
-	User	*user = cmd.getUser();
+	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() < 1 || cmd.getParams().size() > 2) // how we do when more params ?
-		return cmd.addOutput(err_needmoreparams(user->getUsername().c_str(), "JOIN"));
+	if (cmd.getParams().size() < 1)
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "JOIN"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
-	std::vector<std::string> keys = splitByComma(cmd.getParams()[1]);
+	std::vector<std::string> keys;
+	if (cmd.getParams().size() > 1)
+		keys = splitByComma(cmd.getParams()[1]);
 
-	if (channels.size() < keys.size()) //what do we do?
-	{
-		std::cout << "Error" << std::endl;
-		return;
-	}
-	
 	std::vector<std::string>::iterator it = channels.begin();
 	std::vector<std::string>::iterator it_end = channels.end();
-	for (; it < it_end; it++)
+	std::vector<std::string>::iterator it_k = keys.begin();
+	std::vector<std::string>::iterator it_k_end = keys.end();
+	for (; it < it_end; it++, it_k++)
 	{
 		if (*it == "0")
 		{
-			user->quitAllChan();
+			usr->quitAllChan();
 			continue;
 		}
 		if (!Command::server->isExistingChannelByName(*it))
 		{
-			cmd.addOutput(err_nosuchchannel(*it));
+			usr->pushReply(err_nosuchchannel(usr->getNickname(), *it));
 			continue;
 		}
-		// if to many chan with this name	ERR_TOOMANYTARGETS
-		// if bad mask						ERR_BADCHANMASK
 		Channel	*chan = Command::server->getChannelByName(*it);
-		if (chan->isBannedUser(*user))
+		if (it_k < it_k_end)
 		{
-			cmd.addOutput(err_bannedfromchan(chan->getName()));
+			if (*it_k != chan->getKey())
+			{
+				usr->pushReply(err_badchannelkey(usr->getNickname(), chan->getName()));
+				continue;
+			}
+		}
+		if (chan->isBannedUser(usr))
+		{
+			usr->pushReply(err_bannedfromchan(usr->getNickname(), chan->getName()));
 			continue;
 		}
-		if (user->tooManyChanJoined())
-			return cmd.addOutput(err_toomanychannels(chan->getName()));
+		if (usr->tooManyChanJoined())
+			return usr->pushReply(err_toomanychannels(usr->getNickname(), chan->getName()));
 		if (chan->isChannelFull())
 		{
-			cmd.addOutput(err_channelisfull(chan->getName()));
+			usr->pushReply(err_channelisfull(usr->getNickname(), chan->getName()));
 			continue;
 		}
+		if (chan->getTopic() != "")
+			usr->pushReply(rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
+
+		// join the chan
+		chan->addUser(usr);
+		usr->addJoinedChan(chan);
 	}
-	// RPL_TOPIC
 }

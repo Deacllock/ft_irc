@@ -17,19 +17,22 @@ void	privmsg(Command &cmd)
 	if (Command::server->isExistingChannelByName(target))
 	{
 		Channel	*chan = Command::server->getChannelByName(target);
-		if (!user->isOnChan(target)) // CHECK MODE
+		if (!user->isOnChan(target))
 			return cmd.addOutput(err_cannotsendtochan(target));
-		// SEND MESSAGE TO CHAN
-		// SEND ALL USER pushreply for all users
-		(void) chan;
+
+		std::vector<User *> users = chan->getUsers();
+
+		std::vector<User *>::iterator it = users.begin();
+		std::vector<User *>::iterator it_end = users.end();
+		for (; it < it_end; it++)
+			(*it)->pushReply(text);
 	}
 	else
 	{
 		if (!Command::server->isExistingUserByName(target))
 			return cmd.addOutput(err_nosuchnick(target));
+		
 		User *userTarget = Command::server->getUserByNickname(target);
-		// SEND MESSAGE TO USER
-		// SEND QUEUE REPLY pushreply
-		(void) userTarget;
+		userTarget->pushReply(text);
 	}
 }

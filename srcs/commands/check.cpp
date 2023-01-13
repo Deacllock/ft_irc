@@ -1,143 +1,123 @@
-#include <cctype>
 #include <string>
-#include <iostream>
 
-bool	is_servername(std::string msg, int *i)
+static bool areSpaces( std::string msg, size_t &i )
 {
-	int	j = 1;
-	
-	if (!isalpha(msg.at(*i)) && !isdigit(msg.at(*i)))
-		return false;
+	bool ret = false;
+	if ( msg[i] == ' ')
+		ret = true;
+	while ( msg [i] == ' ')
+		i++;
+	return ret;
+}
 
-	for (; msg.at(*i + j) != '.' && msg.at(*i + j) != ' '; j++)
-		if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)) && msg.at(*i + j) != '-')
-			return false;
+static bool	isCrlf( std::string msg, size_t &i )
+{
+	return (msg[i++] == '\r' && msg[i++] == '\n');
+}
 
-	if (msg.at(*i + j - 1) == '-')
+static bool nospcrlfcl( char c )
+{
+	return c != '\0' && c != '\r' && c != '\n' && c != ' ' && c != ':' ;
+}
+
+static bool isMiddle( std::string msg, size_t &i )
+{
+	if (!nospcrlfcl(msg[i]))
+		return (false);
+	i++;
+	while (nospcrlfcl(msg[i]) || msg[i] == ':') //: not usefull?
+		i++;
+	return (true);
+}
+
+static bool isTrailing( std::string msg, size_t &i )
+{
+	while (msg[i] == ':' || msg[i] == ' ' || nospcrlfcl(msg[i]))
+		i++;
+	return true;
+}
+
+static bool areParamValids( std::string msg, size_t &i )
+{
+	size_t j = 1;
+	while (isMiddle(msg, i) && areSpaces(msg, i))
+		j++;
+	if (j > 14)
 		return false;
 	
-	while (msg.at(*i + j) != ' ')
+	if (msg[i] == ':')
+		i++;
+	return (isTrailing(msg, i));
+}
+
+static bool isCommandValid( std::string msg, size_t &i )
+{
+	// if (isdigit(msg[i]))
+	// {
+	// 	i++;
+	// 	return isdigit(msg.at(i++)) && isdigit(msg.at(i++));
+	// }
+	
+	if (isalpha(msg[i]))
 	{
-		if (msg.at(*i + j) != '.')
-			return false;
-
-		j++;
-		if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)))
-			return false;
-
-		j++;
-		for (; msg.at(*i + j) != '.' && msg.at(*i + j) != ' '; j++)
-			if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)) && msg.at(*i + j) != '-')
-				return false;
-
-		if (msg.at(*i + j - 1) == '-')
-			return false;
-	}
-	*i += j;
-
-	return true;
-}
-
-bool	is_other_prefix(std::string msg, int *i)
-{
-	//int	j = 0;
-	(void) msg;
-	(void) i;
-	return true;
-}
-
-bool	has_prefix(std::string msg, int *i)
-{
-	// servername | (nickname [["!" user]"@"host])
-	if (is_servername(msg, i) || is_other_prefix(msg, i))
+		while (isalpha(msg[i]))
+			i++;
 		return true;
-
+	}
 	return false;
 }
 
-bool	is_good_command(std::string msg, int *i)
-{
-	if (isdigit(msg[*i]))
-	{
-		if (isdigit(msg[*i + 1]) && isdigit(msg[*i + 2]) && msg[*i + 3] == ' ')
-		{
-			*i += 4;
-			return true;
-		}
-		else
-			return false;
-	}
-
-	int j = 0;
-	for (; msg[*i + j] != ' ' && msg[*i + j] != '\r'; j++)
-		if (!isalpha(msg[*i + j]))
-			return false;
-	*i += j;
+// bool	is_servername(std::string msg, size_t *i)
+// {
+// 	size_t	j = 1;
 	
-	return true;
-}
+// 	if (!isalpha(msg.at(*i)) && !isdigit(msg.at(*i)))
+// 		return false;
 
-bool	nospcrlfcl(char c)
-{
-	if (c == 0 || c == '\r' || c == '\n' || c == ' ' || c == ':')
-		return false;
-	return true;
-}
+// 	for (; msg.at(*i + j) != '.' && msg.at(*i + j) != ' '; j++)
+// 		if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)) && msg.at(*i + j) != '-')
+// 			return false;
 
-bool	is_trailing(std::string msg, int *i)
-{
-	for (; msg[*i] && msg.at(*i) != '\r'; (*i)++)
-		if (msg.at(*i) != ':' && msg.at(*i) != ' ' && !nospcrlfcl(msg.at(*i)))
-			return false;
+// 	if (msg.at(*i + j - 1) == '-')
+// 		return false;
+	
+// 	while (msg.at(*i + j) != ' ')
+// 	{
+// 		if (msg.at(*i + j) != '.')
+// 			return false;
 
-	return true;
-}
+// 		j++;
+// 		if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)))
+// 			return false;
 
-bool	is_space_middle(std::string msg, int *i)
-{
-	int j = 0;
+// 		j++;
+// 		for (; msg.at(*i + j) != '.' && msg.at(*i + j) != ' '; j++)
+// 			if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)) && msg.at(*i + j) != '-')
+// 				return false;
 
-	if (msg.at(j) != ' ')
-		return false;
-	j++;
-	if (!nospcrlfcl(msg.at(j)))
-		return false;
-	j++;
-	int k = 0;
-	for (; msg[j] && (msg.at(j + 1) == ':' || is_trailing(msg.substr(j + 1), &k)); j++)
-		if (!nospcrlfcl(msg.at(j)) && msg.at(j) != ':')
-			return false;
-	*i += j + 1;
-	return true;
-}
+// 		if (msg.at(*i + j - 1) == '-')
+// 			return false;
+// 	}
+// 	*i += j;
 
-bool	has_good_params(std::string msg, int *i)
-{
-	if (msg.at(*i) == '\r' && msg.at(*i + 1) != '\n')
-		return true;
+// 	return true;
+// }
 
-	int nb_space_middle = 0;
-	int j = 0;
-	for (; 1; nb_space_middle++, j++)
-		if (!is_space_middle(msg.substr(*i + j), &j))
-			break;
-	*i += j;
+// bool	is_other_prefix(std::string msg, size_t *i)
+// {
+// 	//size_t	j = 0;
+// 	(void) msg;
+// 	(void) i;
+// 	return true;
+// }
 
-	if (nb_space_middle > 14)
-		return false;
-	if (msg.at(*i) != ' ')
-		return false;
-	(*i)++;
-	if (nb_space_middle < 14 && msg.at(*i) != ':')
-		return false;
-	if (msg.at(*i) == ':')
-		(*i)++;
-	if (!is_trailing(msg, i))
-		return false;
 
-	return true;
-}
+// static bool isPrefixValid( std::string msg, size_t &i)
+// {
+// 	return (isServerName(msg, i) || isNickname(msg, i));
+// }
 
+//what about space managment
 /**
  * @brief Check if the message has a good parsing.
  *
@@ -146,24 +126,21 @@ bool	has_good_params(std::string msg, int *i)
  * @param msg The extracted message.
  * @return bool
  */
-bool	is_good_message(std::string msg)
+bool	isMessageValid( std::string msg, size_t &i )
 {
-	int i = 0;
-	if (msg.at(i) == ':')
-	{
-		i++;
-		if (!has_prefix(msg, &i) || msg.at(i) != ' ')
-			return false;
-		i++;
-	}
-	if (!is_good_command(msg, &i))
+	// if (msg[i] == ':')
+	// 	if (isPrefixValid(msg, ++i) && !areSpaces(msg, i))
+	// 		return false;
+	
+	if (!isCommandValid(msg, i))
 		return false;
-	if (!has_good_params(msg, &i))
-		return false;
-	if (msg.at(i) != '\r')
-		return false;
-	if (msg.at(i + 1) != '\n')
-		return false;
-	return true;
-}
 
+	if (!areSpaces(msg, i))
+		return (isCrlf(msg, i));
+
+	if (!areParamValids(msg, i))
+		return false;
+
+	areSpaces(msg, i);
+	return (isCrlf(msg, i));
+}

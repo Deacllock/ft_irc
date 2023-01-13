@@ -33,15 +33,14 @@ static bool isNicknameValid( std::string nick )
 	return true;
 }
 
-static User *isNicknameInUse( std::vector<User *> users, std::string nickname)
+static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string nickname)
 {
 	for (size_t i = 0; i < users.size(); i++)
-		if (users[i]->getNickname() == nickname)
-			return (users[i]);
-	return (NULL);
+		if (users[i] != usr && users[i]->getNickname().compare(nickname) == 0)
+			return true;
+	return false;
 }
 
-#include <iostream>
 /**
  * @brief NICK command is used to give user a nickname or change the existing one.
  * 
@@ -51,26 +50,22 @@ void	nick(Command &cmd)
 {
 	User *usr = cmd.getUser();
 	if (cmd.getParams().size() < 1)
-		return cmd.addOutput(err_nonicknamegiven());
+		return usr->pushReply(err_nonicknamegiven(usr->getNickname()));
 
 	std::string nickname = cmd.getParams()[0];
-	if (!isNicknameValid(nickname))
-		return cmd.addOutput(err_erroneusnickname(nickname));
 	
-	User *usrWithSameNick = isNicknameInUse(cmd.server->getUsers(), nickname);
-	if (usrWithSameNick != NULL && usrWithSameNick != usr)
-		cmd.addOutput(err_nicknameinuse(nickname));
+	if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY )
+		usr->pushReply(err_unavailableresource(usr->getNickname(), nickname));
 
-	else if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY ) //can be problematic with irssi
-		cmd.addOutput(err_unavailableresource(nickname));
-
-	// else if (usr->getIsRestricted())
-	// 	cmd.addOutput(err_restricted());
+	else if (!isNicknameValid(nickname))
+		usr->pushReply(err_erroneusnickname(usr->getNickname(), nickname));
+	
+	else if (isNicknameInUse(cmd.server->getUsers(), usr, nickname))
+		usr->pushReply(err_nicknameinuse(usr->getNickname(), nickname));
 
 	else
 	{
 		usr->setNickname(cmd.getParams()[0]);
 		greetNewComer(cmd);
 	}
-
 }

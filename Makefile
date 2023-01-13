@@ -7,14 +7,15 @@ DBFLAGS = -DDEBUG -g
 
 SRCS_PATH = srcs/
 OBJS_PATH = objs/
-FOLDER_TO_CREATE = server commands commands/connection commands/channel commands/message
+FOLDER_TO_CREATE = server commands commands/connection commands/channel commands/operator
 
-SRCS = main.cpp User.cpp Channel.cpp\
-		$(addprefix server/, Server.cpp serverUtils.cpp) \
-		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp \
-		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp) \
-		$(addprefix channel/, join.cpp part.cpp invite.cpp topic.cpp list.cpp names.cpp) \
-		$(addprefix message/, privmsg.cpp))
+SRCS = main.cpp utils.cpp\
+		$(addprefix server/, Server.cpp serverUtils.cpp User.cpp Channel.cpp) \
+		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp\
+		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp ping.cpp pong.cpp) \
+		$(addprefix channel/, join.cpp part.cpp invite.cpp topic.cpp list.cpp names.cpp mode.cpp) \
+		$(addprefix operator/, die.cpp kill.cpp oper.cpp kick.cpp userMode.cpp))
+
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
@@ -34,11 +35,15 @@ $(NAME): $(OBJS)
 
 -include $(DEPS)
 
-debug: CXXFLAGS += $(DBFLAGS)
-debug: all
+opt_debug: CXXFLAGS += $(DBFLAGS)
+opt_debug: all
 
-test: debug
-	valgrind ./ft_irc "6667" "plop"
+test: opt_debug
+	valgrind ./ft_irc 6667 pwd
+
+debug: opt_debug
+	gdb --args ./ft_irc 6667 pwd
+
 
 clear:
 	clear

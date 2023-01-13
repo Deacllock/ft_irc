@@ -1,20 +1,7 @@
 #include "commandHandlers.hpp"
-
-#include <iostream>
+#include "utils.hpp"
 
 // ERR_TOOMANYMATCHES
-
-static std::vector<std::string>	splitByComma(std::string str)
-{
-	std::vector<std::string> vec;
-
-	std::string elem;
-	std::istringstream ss(str);
-	while (getline(ss, elem, ','))
-		vec.push_back(elem);
-	
-	return vec;
-}
 
 static void	listAllChan(Command &cmd)
 {
@@ -22,13 +9,16 @@ static void	listAllChan(Command &cmd)
 
 	std::vector<Channel *>::iterator it = channels.begin();
 	std::vector<Channel *>::iterator it_end = channels.end();
+	User *usr = cmd.getUser();
 	
 	for (; it < it_end; it++)
-		cmd.addOutput(rpl_list((*it)->getName(), "#", (*it)->getTopic())); // what for <# visible>
+		usr->pushReply(rpl_list(usr->getNickname(), (*it)->getName(), "#", (*it)->getTopic())); // what for <# visible>
 }
 
 void	list(Command &cmd)
 {
+	User *usr = cmd.getUser();
+
 	if (cmd.getParams().size() > 0)
 	{
 		std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
@@ -41,9 +31,9 @@ void	list(Command &cmd)
 				continue;
 
 			Channel	*chan = Command::server->getChannelByName(*it);
-			cmd.addOutput(rpl_list(chan->getName(), "#", chan->getTopic())); // what for <# visible>
+			usr->pushReply(rpl_list(usr->getNickname(), chan->getName(), "#", chan->getTopic())); // what for <# visible>
 		}
 	}
 	else { listAllChan(cmd); }
-	cmd.addOutput(rpl_listend());
+	usr->pushReply(rpl_listend(usr->getNickname()));
 }

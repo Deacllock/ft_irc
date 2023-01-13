@@ -1,6 +1,9 @@
 #include <iostream>
+#include <csignal>
 
-#include "Command.hpp"
+#include "Server.hpp"
+
+void	ctrl_c(int signum) { (void)signum; }
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +12,6 @@ int main(int argc, char *argv[])
 		std::cerr << "Usage: ./ft_irc port password" << std::endl;
 		return (2);
 	}
-	Server	srv(argv[1], argv[2]);
-
+	signal(SIGINT, ctrl_c);
+	Server(argv[1], argv[2]);
 }

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <netdb.h>
 #include <poll.h>
 
@@ -108,44 +109,63 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
 }
 
 /**
- * @brief Read user input, parse it and reply.
+ * @brief Send to the user the message queue for them.
+ * 
+ * @param usr User to send message to.
+ * @return int Indicator to tell if the connection shall be closed after communication. 
+ */
+static void	reply(User *usr)
+{
+	int ret;
+	while (usr->getReplies().size())
+	{
+		std::string reply = usr->getReplies().front();
+		ret = send(usr->getFd(), reply.c_str(), reply.length(), MSG_DONTWAIT);
+		#ifdef DEBUG
+			std::cout << usr->getFd() << " > " << reply; //debug
+		#endif
+		if (ret >= 0 && static_cast<size_t>(ret) == reply.length())
+			usr->popReply();
+		else
+		{
+			if ( ret >= 0)
+				usr->getReplies().front() = reply.substr(ret, reply.length());
+			break;
+		}
+	}
+}
+
+/**
+ * @brief Read user input and parse it.
  * 
  * Receive user message, call parsing and send a reply depending on user input.
  * 
  * @param fd User fd.
  * @return int 
  */
-static int	read_parse_and_reply(Server *server, int fd)
+static int	read_and_parse(User *user)
 {
+	if (!user) //gnn
+		return (1);
+
 	char			buf[BUFFER_SIZE + 1];
 	std::string 	msg = "";
 
-	int ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
+	int ret = recv(user->getFd(), buf, BUFFER_SIZE, MSG_DONTWAIT);
 	while (ret > 0)
 	{
 		buf[ret] = '\0';
 		msg += buf;
-		ret = recv(fd, buf, BUFFER_SIZE, MSG_DONTWAIT);
+		ret = recv(user->getFd(), buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
-
-	
 	
 	if (msg.substr(0, msg.length() - 2) == "") //shall be handled later in parsing
 		return ret;
 	#ifdef DEBUG
-		std::cout << fd << " < " << msg; //debug
+		std::cout << user->getFd() << " < " << msg; //debug
 	#endif
-	
-	std::vector<std::string> srv_reps = handle_input(server->searchUserByFd(fd), msg).getOutputs();
-	std::vector<std::string>::iterator it = srv_reps.begin();
-	std::vector<std::string>::iterator it_end = srv_reps.end();
-	for (; it < it_end; it++)
-	{
-		send(fd, (*it).c_str(), (*it).length(), MSG_DONTWAIT); //keep send output?
-		#ifdef DEBUG
-			std::cout << fd << " > " << *it; //debug
-		#endif
-	}
+
+	handle_input(user, msg);
 	return (ret);
 }
 
@@ -168,6 +188,8 @@ int	Server::server_start()
 	return 0;
 }
 
+
+
 /**
  * @brief While server is up, handle user connections.
  * 
@@ -183,38 +205,51 @@ int Server::client_interactions()
 	std::vector<pollfd>	fds;
 	add_poll_connection(fds, this->_sockfd, POLLIN);
 
-	while (true)
+	while (this->_isUp)
 	{
+		for (std::vector<User *>::iterator it = this->_users.begin(); it < this->_users.end(); )
+		{
+			reply(*it);
+			if ((*it)->isDisconnected())
+			{
+				#ifdef DEBUG
+					std::cout << "Connection closed with " + (*it)->getNickname() << std::endl;
+				#endif
+				this->removeUser(*it);
+				fds.erase(fds.begin() + (it - this->_users.begin() + 1));
+			}
+			else
+				it++;
+		}
+
 		int ret = poll(fds.data(), fds.size(), TIMEOUT);
 		if ( ret < 0 )
 			return -1;
 
 		if (ret == 0)
-			continue;
+		{
+			this->checkPong();
+			this->sendPing();
+		}
 		
 		for (size_t size = fds.size(), i = 0; i < size; i++, size = fds.size())
 		{
 			if (fds[i].revents == 0)
 				continue;
-
-			if (fds[i].revents != POLLIN)
+				
+			if (fds[i].fd == this->_sockfd)
 			{
-				#ifdef DEBUG
-					std::cout << "User has left " + this->_name << std::endl;
-				#endif
-				this->removeUser(this->searchUserByFd(fds[i].fd));
-				fds.erase(fds.begin() + (i--));
+				accept_new_connections(*this, fds, this->_sockfd);
+				continue;
 			}
 
-			else if (fds[i].fd == this->_sockfd)
-				accept_new_connections(*this, fds, this->_sockfd);
-
-			else if (read_parse_and_reply(this, fds[i].fd) == 0)
+			User *user = this->searchUserByFd(fds[i].fd);
+			if (fds[i].revents != POLLIN || (fds[i].revents == POLLIN && read_and_parse(user) == 0))
 			{
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;
 				#endif
-				this->removeUser(this->searchUserByFd(fds[i].fd));
+				this->removeUser(user);
 				fds.erase(fds.begin() + (i--));
 			}
 		}

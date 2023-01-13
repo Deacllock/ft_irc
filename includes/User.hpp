@@ -1,48 +1,49 @@
 #ifndef USER
 # define USER
 
-# include <ctime>
-# include <ostream>
-# include <string>
+# include <queue>
 
-# include "Channel.hpp"
+# include "Server.hpp"
 
 class Channel;
+class Server;
 
-enum mode_flags
+enum status
 {
-	away, //1
-	invisible, //2
-	wallops, //4
-	restricted, //8
-	op, //16
-	local_op, //32
-	notice_serv //64
+	DISCONNECTED,
+	STARTING,
+	CONNECTED,
+	REGISTERED
 };
 
 class User
 {
+	public:
+		static Server			*server;
+
 	private:
 		static	unsigned long	_ids;
 
 		const int				_fd;
 		const unsigned long		_userId;
 	
-		bool					_isConnected;
-		bool					_isRegistered;
+		bool					_operator;
+		enum status				_status;
 		std::string 			_username;
 		std::string				_nickname;
 		time_t					_lastNickChange;
-		char					_mode;
 		std::string				_realName;
 		unsigned long			_limit;
-		std::vector<Channel *>	_joinedChan;
 
+		std::queue<std::string>	_replies;
+		std::vector<Channel * >	_joinedChan;
 
-	
+		int						_nbPing;
+
 	public:
 		/*--------------- Constructors ---------------*/
-		User( int fd = -1, bool isCo = false, unsigned long limit = -1 );
+		User();
+		User( int fd, enum status val, unsigned long limit );
 		User( const User &rhs);
 		~User();
 		User &operator=( const User &rhs );
@@ -50,37 +51,52 @@ class User
 		/*--------------- Getters ---------------*/
 		int						getFd() const;
 		unsigned long			getUserId() const;
-		bool					getIsConnected() const;
+
+		// STATUS //
+		bool					isConnected() const;
+		bool            		isRegistered() const;
+		bool					isDisconnected() const;
+
+		// INFOS //
 		std::string   		 	getUsername() const;
 		std::string     		getNickname() const;
 		time_t					getLastNickChange() const;
-		char					getMode() const;
-		bool            		getIsRegistered() const;
 		std::string     		getRealName() const;
+
+		bool					isOperator() const;
 		unsigned long			getLimit() const;
+
 		std::vector<Channel *>	getJoinedChan() const;
+		std::queue<std::string>	getReplies() const;
+		int						getNbPing() const;
 
 		/*--------------- Setters ---------------*/
-		void	setIsConnected( bool val );
+		void	setStatus( enum status val );
+
 		void    setUsername( std::string user );
 		void    setNickname( std::string nick );
-		void	setLastNickChange( time_t new_time );
-		void	setMode( char mode );
-		void    setIsRegistered(bool val);
 		void    setRealName( std::string name );
+
+		void	setOperator( bool val );
 		void	setLimit( unsigned long limit );
+
 		void	addJoinedChan( Channel *c );
 		void	removeJoinedChan( Channel *c );
 		void	quitAllChan();
-
-		/*-------------- Others --------------*/
 		bool	tooManyChanJoined() const;
-		bool	isOnChan( std::string name );
+		bool    isOnChan( std::string name );
+
+		void	pushReply( std::string reply );
+		void	popReply();
+
+		void	addPing();
+		void	subPing();
+
 };
 
-/*---------------- Non-member functions ----------------*/
-std::ostream &operator<<(std::ostream &o, User const &rhs);
+/*---------------- operators ----------------*/
 
+std::ostream &operator<<(std::ostream &o, User const &rhs);
 bool	operator==(const User &u1, const User &u2);
 
 

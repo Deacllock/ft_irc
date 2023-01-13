@@ -1,25 +1,12 @@
 #include "commandHandlers.hpp"
-
-#include <iostream>
-
-static std::vector<std::string>	splitByComma(std::string str)
-{
-	std::vector<std::string> vec;
-
-	std::string elem;
-	std::istringstream ss(str);
-	while (getline(ss, elem, ','))
-		vec.push_back(elem);
-	
-	return vec;
-}
+#include "utils.hpp"
 
 void	part(Command &cmd)
 {
-	User	*user = cmd.getUser();
+	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() != 1)
-		return cmd.addOutput(err_needmoreparams(user->getUsername().c_str(), "PART"));
+	if (cmd.getParams().size() < 1)
+		return usr->pushReply(err_needmoreparams(usr->getNickname(), "PART"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
 
@@ -29,16 +16,16 @@ void	part(Command &cmd)
 	{
 		if (!Command::server->isExistingChannelByName(*it))
 		{
-			cmd.addOutput(err_nosuchchannel(*it));
+			usr->pushReply(err_nosuchchannel(usr->getNickname(), *it));
 			continue;
 		}
 		Channel	*chan = Command::server->getChannelByName(*it);
-		if (!chan->isJoinedUser(*user))
+		if (!chan->isJoinedUser(usr))
 		{
-			cmd.addOutput(err_notonchannel(chan->getName()));
+			usr->pushReply(err_notonchannel(usr->getNickname(), chan->getName()));
 			continue;
 		}
-		chan->removeUser(user);
-		user->removeJoinedChan(chan);
+		chan->removeUser(usr);
+		usr->removeJoinedChan(chan);
 	}
 }

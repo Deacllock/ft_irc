@@ -1,31 +1,39 @@
 #include "commandHandlers.hpp"
 
-/* STATIC INSTANCIATION */
-Server *Command::server;
+/*---------------- Static Instanciation ----------------*/
+
 std::map<std::string, Command::handler_type> Command::cmd_map;
 
-void instanciateCommand(Server	*server)
+void instanciateCommand()
 {
-	Command::server = server;
 	Command::cmd_map["PASS"] = pass;
 	Command::cmd_map["NICK"] = nick;
 	Command::cmd_map["USER"] = user;
 	Command::cmd_map["CAP"] = cap;
+	Command::cmd_map["QUIT"] = quit;
+	Command::cmd_map["PING"] = ping;
+	Command::cmd_map["PONG"] = pong;
+
 	Command::cmd_map["JOIN"] = join;
 	Command::cmd_map["PART"] = part;
 	Command::cmd_map["INVITE"] = invite;
 	Command::cmd_map["TOPIC"] = topic;
 	Command::cmd_map["LIST"] = list;
 	Command::cmd_map["NAMES"] = names;
-	Command::cmd_map["PRIVMSG"] = privmsg;
+	Command::cmd_map["MODE"] = mode;
+
+	Command::cmd_map["DIE"] = die;
+	Command::cmd_map["KICK"] = kick;
+	Command::cmd_map["KILL"] = kill;
+	Command::cmd_map["OPER"] = oper;
 }
 
-/* CONSTRUCTORS */
+/*---------------- Constructors ----------------*/
 Command::Command() {}
 Command::Command( User *user, std::string &str ): _user(user)
 { 
 	split_str(str);
-	this->_handler = this->cmd_map[this->_cmd]; //what if not here?
+	this->_handler = this->cmd_map[this->_cmd];
 }
 
 Command::Command( const Command &rhs ) { *this = rhs; }
@@ -37,31 +45,18 @@ Command & Command::operator=(const Command &rhs)
 	this->_params = rhs._params;
 	this->_user = rhs._user;
 	this->_handler = rhs._handler;
-	this->_outputs = rhs._outputs;
 	return *this;
 }
 
 Command::~Command() {}
 
-/* GETTER */
-std::string Command::getCmd() const 						{ return this->_cmd; }
-std::vector<std::string> Command::getParams() const			{ return this->_params; }
-User * Command::getUser() const 							{ return this->_user; }
-Command::handler_type Command::getHandler() const			{ return this->_handler; }
-std::vector<std::string>	Command::getOutputs() const 	{ return this->_outputs; };
+/*---------------- Getters ----------------*/
+std::string Command::getCmd() const 				{ return this->_cmd; }
+std::vector<std::string> Command::getParams() const	{ return this->_params; }
+User * Command::getUser() const						{ return this->_user; }
+Command::handler_type Command::getHandler() const	{ return this->_handler; }
 
-/* SETTER */
-void	Command::addOutput( std::string output )
-{
-	std::vector<std::string>::iterator it = this->_outputs.begin();
-	std::vector<std::string>::iterator it_end = this->_outputs.end();
-
-	for (; it < it_end; it++)
-		if (output == *it)
-			return;
-
-	this->_outputs.push_back(":" + this->server->getName() + " " + output + "\n");
-}
+/*---------------- Non-member functions ----------------*/
 
 /**
  * @brief Split string in command and parameters.
@@ -71,7 +66,11 @@ void	Command::addOutput( std::string output )
  */
 void	Command::split_str(std::string str)
 {
-	std::istringstream ss(str.substr(0, str.length() - 2));
+	if (str[str.length() - 1] == '\n' && str[str.length() - 2] == '\r')
+		str = str.substr(0, str.length() - 2);
+
+	std::istringstream ss(str);
+
 	std::string elem;
 
 	bool first = true;
@@ -79,6 +78,9 @@ void	Command::split_str(std::string str)
 	{
 		if (first && elem != "")
 		{
+			for (int i = 0; elem[i]; i++)
+				if (islower(elem[i]))
+					elem[i] = toupper(elem[i]);
 			this->_cmd = elem;
 			first = false;
 		}
@@ -87,13 +89,46 @@ void	Command::split_str(std::string str)
 	}
 }
 
-Command	handle_input(User *user, std::string user_input)
+void	handle_input(User *user, std::string user_input)
 {
-	Command c(user, user_input);
-	//make check;
-	if (c.getHandler())
-		c.getHandler()(c);
-	else
-		c.addOutput(error(c.getCmd() + " :Cannot find command"));
-	return (c);
+	while ( user_input != "")
+	{
+		size_t i = 0;
+		if (!isMessageValid(user_input, i))
+			return user->pushReply(error(user->getNickname(), " :Cannot parse message"));
+
+		std::string cur = user_input.substr(0, i);
+		Command c(user, cur);
+
+		if (c.getHandler())
+		{
+			std::string cmd = c.getCmd();
+			if (cmd.compare("PASS") && cmd.compare("NICK") && cmd.compare("CAP")
+				&& cmd.compare("USER") && cmd.compare("QUIT") && cmd.compare("PONG")
+				&& !user->isRegistered())
+					user->pushReply(err_notregistered(user->getNickname()));
+			else
+				c.getHandler()(c);
+		}
+		else
+			user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
+		
+		std::string next = user_input.substr(i, user_input.length());
+		user_input = next;
+	}
+}
+
+std::string		getColonMsg( std::vector<std::string> params, size_t pos )
+{
+	if (pos >= params.size())
+		return "";
+
+	std::string ret = params[pos];
+	if (pos < params.size() && params[pos][0] == ':')
+	{
+		ret = params[pos].substr(1, params[pos].length());
+		for (size_t i = pos + 1; i < params.size(); i++)
+			ret = ret + " " + params[i];
+	}
+	return ret;	
 }
