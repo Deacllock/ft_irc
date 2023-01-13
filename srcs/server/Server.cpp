@@ -188,7 +188,7 @@ std::ostream & operator<<(std::ostream &o, Server const &rhs)
 
 std::string	Server::getPingValue()
 {
-	return (static_cast< std::ostringstream & >(( std::ostringstream() << std::dec << (this->_pingID++) ) ).str());
+	return (static_cast< std::ostringstream & >(( std::ostringstream() << std::dec << this->_pingID ) ).str());
 }
 
 //parcours and apply function
@@ -203,6 +203,7 @@ void	Server::checkPong()
 
 void Server::sendPing()
 {
+	this->_pingID++;
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
 	{
 		(*it)->pushReply("PING " + this->getPingValue());

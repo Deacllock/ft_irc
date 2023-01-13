@@ -8,7 +8,7 @@ void	pong(Command &cmd)
 	if (params.size() == 0)
 		return usr->pushReply(err_noorigin(usr->getNickname()));
 
-	if (params[1].compare(cmd.server->getPingValue()) == 0)
+	if (getColonMsg(params, 0).compare(cmd.server->getPingValue()) == 0)
 		usr->subPing();
 	
 	if (params.size() >= 2)
@@ -17,8 +17,7 @@ void	pong(Command &cmd)
 		if (!to)
 			usr->pushReply(err_nosuchserver(usr->getNickname(), params[1]));
 		else
-			to->pushReply("PONG " + params[0]); //hum not that sur about pong shall do some test
+			to->pushReply("PONG " +  params[0]); //hum not that sur about pong shall do some test
 	}
-
 
 }

@@ -7,7 +7,10 @@ void	ping(Command &cmd)
 
 	if (params.size() == 0)
 		return usr->pushReply(err_noorigin(usr->getNickname()));
-	if (params.size() >= 2)
+	if (params[0][0] == ':')
+		return usr->pushReply("PONG :" + getColonMsg(params, 0));
+	
+	else if (params.size() >= 2)
 	{
 		User *to = cmd.server->getUserByName(params[1]);
 		if (!to)
