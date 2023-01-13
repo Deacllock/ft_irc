@@ -30,5 +30,8 @@ void	kick( Command &cmd );
 void	kill( Command &cmd );
 void	oper( Command &cmd );
 void	user_mode( Command &cmd );
+ 
+/*---------------- Operator ----------------*/
+void	privmsg( Command &cmd );
 
 #endif

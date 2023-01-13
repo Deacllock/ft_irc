@@ -7,9 +7,9 @@ void	privmsg(Command &cmd)
 	User	*user = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return cmd.addOutput(err_norecipient("PRIVMSG"));
+		return user->pushReply(err_norecipient(user->getNickname(), "PRIVMSG"));
 	if (cmd.getParams().size() < 2)
-		return cmd.addOutput(err_notexttosend());
+		return user->pushReply(err_notexttosend(user->getNickname()));
 	
 	std::string target = cmd.getParams()[0];
 	std::string text = cmd.getParams()[1];
@@ -18,7 +18,7 @@ void	privmsg(Command &cmd)
 	{
 		Channel	*chan = Command::server->getChannelByName(target);
 		if (!user->isOnChan(target))
-			return cmd.addOutput(err_cannotsendtochan(target));
+			return user->pushReply(err_cannotsendtochan(user->getNickname(), target));
 
 		std::vector<User *> users = chan->getUsers();
 
@@ -30,7 +30,7 @@ void	privmsg(Command &cmd)
 	else
 	{
 		if (!Command::server->isExistingUserByName(target))
-			return cmd.addOutput(err_nosuchnick(target));
+			return user->pushReply(err_nosuchnick(user->getNickname(), target));
 		
 		User *userTarget = Command::server->getUserByNickname(target);
 		userTarget->pushReply(text);

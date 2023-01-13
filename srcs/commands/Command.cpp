@@ -26,6 +26,8 @@ void instanciateCommand()
 	Command::cmd_map["KICK"] = kick;
 	Command::cmd_map["KILL"] = kill;
 	Command::cmd_map["OPER"] = oper;
+
+	Command::cmd_map["PRIVMSG"] = privmsg;
 }
 
 /*---------------- Constructors ----------------*/

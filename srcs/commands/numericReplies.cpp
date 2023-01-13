@@ -45,12 +45,18 @@ std::string	err_nosuchnick( std::string nick, std::string nickname ) { return "4
 std::string err_nosuchserver( std::string nick, std::string server ) {return "402 " + nick + " " + server + " :No such server";}
 //403
 std::string err_nosuchchannel( std::string nick, std::string channel ) { return "403 " + nick + " " + channel + " :No such channel"; }
+//404
+std::string	err_cannotsendtochan( std::string nick, std::string channel ) { return "404 " + nick + " " + channel + " :Cannot send to channel"; }
 //405
 std::string err_toomanychannels( std::string nick, std::string channel ) { return "405 " + nick + " " + channel + " :You have joined too many channels"; }
 //407
 std::string	err_toomanytargets( std::string nick, std::string target, std::string error_code, std::string abort_mess ) { return "407 " + nick + " " + target + " :" + error_code + " recipients. " + abort_mess; }
 //409
 std::string err_noorigin( std::string nick ) { return "409 " + nick + " : No origin specified"; }
+//411
+std::string	err_norecipient( std::string nick, std::string command ) { return "411 " + nick + " :No recipient given (" + command + ")"; }
+//412
+std::string	err_notexttosend( std::string nick ) { return "412 " + nick + " :No text to send"; }
 //431
 std::string err_nonicknamegiven( std::string nick ) { return "431 " + nick + " :No nickname given"; }
 //432

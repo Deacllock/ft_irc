@@ -19,9 +19,12 @@ std::string	rpl_endofnames( std::string nick, std::string channel ); //366
 std::string	err_nosuchnick( std::string nick, std::string nickname ); //401
 std::string err_nosuchserver( std::string nick, std::string server ); //402
 std::string err_nosuchchannel( std::string nick, std::string channel ); //403
+std::string	err_cannotsendtochan( std::string nick, std::string channel ); //404
 std::string err_toomanychannels( std::string nick, std::string channel ); //405
 std::string	err_toomanytargets( std::string nick, std::string target, std::string error_code, std::string abort_mess ); //407
 std::string err_noorigin( std::string nick ); //409
+std::string	err_norecipient( std::string nick, std::string command ); //411
+std::string	err_notexttosend( std::string nick ); //412
 std::string err_nonicknamegiven( std::string nick ); //431
 std::string err_erroneusnickname( std::string nick, std::string nickname ); //432
 std::string err_nicknameinuse( std::string nick, std::string nickname ); //433
