@@ -30,16 +30,11 @@ static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::strin
 
 static  void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	std::stringstream	ss;
-	unsigned long		limit;
-
 	if (sym == '+')
 	{
 		if (params[i][0] == '+' || params[i][0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-		ss << params[i];
-		ss >> limit;
-		chan->setLimit(limit);
+		chan->setLimit(stringToULong(params[i]));
 	}
 	else
 		chan->setLimit(-1);
@@ -113,7 +108,7 @@ void	channel_mode(Command &cmd)
 					setKeyForChan(usr, chan, params, sym, i + 1);
 					break;
 				default:
-					usr->pushReply(err_unknownmode(usr->getNickname(), params[i][j], chan->getName()));
+					usr->pushReply(err_unknownmode(usr->getNickname(), charToString(params[i][j]), chan->getName()));
 			}
 		}
 	}

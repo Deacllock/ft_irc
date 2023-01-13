@@ -19,3 +19,25 @@ std::vector<std::string>	splitByComma(std::string str)
 	return vec;
 }
 
+
+std::string		intToString(int nb)
+{
+	std::stringstream	ss;
+
+	ss << nb;
+
+	return ss.str();
+}
+
+unsigned long	stringToULong(std::string str)
+{
+	std::stringstream	ss;
+	unsigned long		nb;
+
+	ss << str;
+	ss >> nb;
+	
+	return nb;
+}
+
+std::string	charToString(char c) { std::string str(1, c); return str; }
