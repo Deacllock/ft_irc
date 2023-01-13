@@ -45,4 +45,6 @@ void 			instanciateCommand();
 void			handle_input( User *user, std::string user_input );
 std::string		getColonMsg( std::vector<std::string> params, size_t pos );
 
+bool isMessageValid( std::string msg, size_t &i );
+
 #endif

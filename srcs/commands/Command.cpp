@@ -86,21 +86,35 @@ void	Command::split_str(std::string str)
 	}
 }
 
+#include <iostream>
 void	handle_input(User *user, std::string user_input)
 {
-	Command c(user, user_input);
-	if (c.getHandler())
+	while ( user_input != "")
 	{
-		std::string cmd = c.getCmd();
-		if (cmd.compare("PASS") && cmd.compare("NICK")
-			&& cmd.compare("CAP") && cmd.compare("USER")
-			&& cmd.compare("QUIT") && !user->isRegistered())
-				user->pushReply(err_notregistered(user->getNickname()));
+		size_t i = 0;
+		if (!isMessageValid(user_input, i))
+			return user->pushReply(error(user->getNickname(), " :Cannot parse message"));
+
+		std::string cur = user_input.substr(0, i);
+		Command c(user, cur);
+
+		if (c.getHandler())
+		{
+			std::string cmd = c.getCmd();
+			if (cmd.compare("PASS") && cmd.compare("NICK")
+				&& cmd.compare("CAP") && cmd.compare("USER")
+				&& cmd.compare("QUIT") && !user->isRegistered())
+					user->pushReply(err_notregistered(user->getNickname()));
+			else
+				c.getHandler()(c);
+		}
 		else
-			c.getHandler()(c);
+			user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
+
+		
+		std::string next = user_input.substr(i, user_input.length());
+		user_input = next;
 	}
-	else
-		user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
 }
 
 std::string		getColonMsg( std::vector<std::string> params, size_t pos )
