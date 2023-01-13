@@ -21,6 +21,6 @@ void	invite(Command &cmd)
 	if (chan->isJoinedUser(userToInvite))
 		return usr->pushReply(err_useronchannel(usr->getNickname(), nickname, channel));
 	// INVITE
+	// vector of invited people
 	usr->pushReply(rpl_inviting(usr->getNickname(), channel, nickname));
-	//RPL_AWAY
 }

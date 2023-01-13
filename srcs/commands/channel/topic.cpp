@@ -1,7 +1,5 @@
 #include "commandHandlers.hpp"
 
-// ERR_NOCHANMODES ??
-
 void	topic(Command &cmd)
 {
 	User	*usr = cmd.getUser();

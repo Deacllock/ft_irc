@@ -19,7 +19,7 @@ static void	listAllUsers(Command &cmd)
 	}
 }
 
-void	names(Command &cmd) // VISIBILITIES ??
+void	names(Command &cmd)
 {
 	if (cmd.getParams().size() > 0)
 	{

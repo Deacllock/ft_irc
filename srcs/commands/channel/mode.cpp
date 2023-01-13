@@ -73,11 +73,7 @@ static  void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> pa
 	}
 }
 
-// ERR_NOCHANMODES channel doesn't support modes ??
-
 // RPL_CHANNELMODEIS
-// RPL_INVITELIST RPL_ENDOFINVITELIST
-// RPL_UNIQOPIS
 
 void	channel_mode(Command &cmd)
 {
