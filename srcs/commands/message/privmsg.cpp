@@ -2,10 +2,6 @@
 
 #include <iostream>
 
-// ERR_WILDTOPLEVEL
-// ERR_NOTOPLEVEL
-// ERR_TOOMANYTARGETS
-
 void	privmsg(Command &cmd)
 {
 	User	*user = cmd.getUser();
@@ -24,7 +20,7 @@ void	privmsg(Command &cmd)
 		if (!user->isOnChan(target)) // CHECK MODE
 			return cmd.addOutput(err_cannotsendtochan(target));
 		// SEND MESSAGE TO CHAN
-		// SEND ALL USER
+		// SEND ALL USER pushreply for all users
 		(void) chan;
 	}
 	else
@@ -33,7 +29,7 @@ void	privmsg(Command &cmd)
 			return cmd.addOutput(err_nosuchnick(target));
 		User *userTarget = Command::server->getUserByNickname(target);
 		// SEND MESSAGE TO USER
-		// SEND QUEUE REPLY
+		// SEND QUEUE REPLY pushreply
 		(void) userTarget;
 	}
 }
