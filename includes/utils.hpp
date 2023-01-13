@@ -6,7 +6,7 @@
 
 std::vector<std::string>	splitByComma(std::string str);
 
-std::string					intToString(long nb);
+std::string					intToString(int nb);
 
 unsigned long				stringToULong(std::string str);
 
