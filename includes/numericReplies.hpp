@@ -10,6 +10,7 @@ std::string	rpl_topic( std::string nick, std::string channel, std::string topic 
 std::string	rpl_youreoper( std::string nick ); //381
 std::string	rpl_list( std::string nick, std::string channel, std::string visible, std::string topic ); //322
 std::string	rpl_listend( std::string nick ); //323
+std::string	rpl_channelmodeis( std::string nick, std::string channel, std::string mode, std::string params ); //324
 std::string	rpl_notopic( std::string nick, std::string channel ); //331
 std::string	rpl_topic( std::string nick, std::string channel, std::string topic ); //332
 std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ); //341

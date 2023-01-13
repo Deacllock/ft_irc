@@ -3,72 +3,87 @@
 static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
 	User	*newOp;
+	std::string	param = params[i];
 
 	if (sym == '+')
 	{
-		if (params[i][0] == '+' || params[i][0] == '-')
+		if (param[0] == '+' || param[0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-		if (!Command::server->isExistingUserByName(params[i]))
-			return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[i], chan->getName()));
-		newOp = Command::server->getUserByName(params[i]);
+		if (!Command::server->isExistingUserByName(param))
+			return usr->pushReply(err_usernotinchannel(usr->getNickname(), param, chan->getName()));
+		newOp = Command::server->getUserByName(param);
 		if (!newOp->isOnChan(chan->getName()))
 			return usr->pushReply(err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName()));
 		chan->addOperator(newOp);
 	}
 	else
 	{
-		if (params[i][0] == '+' || params[i][0] == '-')
+		if (param[0] == '+' || param[0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-		if (!Command::server->isExistingUserByName(params[i]))
-			return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[i], chan->getName()));
-		newOp = Command::server->getUserByName(params[i]);
+		if (!Command::server->isExistingUserByName(param))
+			return usr->pushReply(err_usernotinchannel(usr->getNickname(), param, chan->getName()));
+		newOp = Command::server->getUserByName(param);
 		if (!newOp->isOnChan(chan->getName()))
 			return usr->pushReply(err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName()));
 		chan->removeOperator(newOp);
 	}
+	if (param[0] == '+' || param[0] == '-')
+		param = "";
+	usr->pushReply(rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
 }
 
 static  void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
+	std::string	param = params[i];
+	
 	if (sym == '+')
 	{
-		if (params[i][0] == '+' || params[i][0] == '-')
+		if (param[0] == '+' || param[0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-		chan->setLimit(stringToULong(params[i]));
+		chan->setLimit(stringToULong(param));
+		if (param[0] == '+' || param[0] == '-')
+			param = "";
 	}
 	else
+	{
 		chan->setLimit(-1);
+		param = "";
+	}
+	usr->pushReply(rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "l", param));
 }
 
-static  void	setInviteOnlyForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+static  void	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
 {
-	(void)usr;
-	(void)chan;
-	(void)params;
-	(void)sym;
-	(void)i;
+	if (sym == '+')
+		chan->setInviteOnly(true);
+	else
+		chan->setInviteOnly(false);
+	usr->pushReply(rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "i", ""));
 }
 
 static  void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
+	std::string	param = params[i];
+
 	if (sym == '+')
 	{
 		if (chan->getKey() != "")
 			return usr->pushReply(err_keyset(usr->getNickname(), chan->getName()));
-		if (params[i][0] == '+' || params[i][0] == '-')
+		if (param[0] == '+' || param[0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-		chan->setKey(params[i]);
+		chan->setKey(param);
 	}
 	else
 	{
-		if (params[i][0] == '+' || params[i][0] == '-')
+		if (param[0] == '+' || param[0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
-		if (chan->getKey() == params[i])
+		if (chan->getKey() == param)
 			chan->setKey("");
 	}
+	if (param[0] == '+' || param[0] == '-')
+		param = "";
+	usr->pushReply(rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
 }
-
-// RPL_CHANNELMODEIS
 
 void	channel_mode(Command &cmd)
 {
@@ -102,7 +117,7 @@ void	channel_mode(Command &cmd)
 					setLimitInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'i': // set inviteonly chan
-					setInviteOnlyForChan(usr, chan, params, sym, i + 1);
+					setInviteOnlyForChan(usr, chan, sym);
 					break;
 				case 'k': // set key for chan
 					setKeyForChan(usr, chan, params, sym, i + 1);
