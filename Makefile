@@ -35,11 +35,15 @@ $(NAME): $(OBJS)
 
 -include $(DEPS)
 
-debug: CXXFLAGS += $(DBFLAGS)
-debug: all
+opt_debug: CXXFLAGS += $(DBFLAGS)
+opt_debug: all
 
-test: debug
-	valgrind ./ft_irc "6667" "plop"
+test: opt_debug
+	valgrind ./ft_irc 6667 pwd
+
+debug: opt_debug
+	gdb --args ./ft_irc 6667 pwd
+
 
 clear:
 	clear
