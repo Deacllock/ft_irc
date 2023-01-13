@@ -15,10 +15,12 @@ class Channel
 		std::string				_topic;
 		std::string				_key;
 		unsigned long			_limit;
+		bool					_inviteOnly;
 
 		std::vector<User *>		_users;
 		std::vector<User *>		_banned;
 		std::vector<User *>		_operators;
+		std::vector<User *>		_invited;
 	
 	public:
 		/*--------------- Constructors ---------------*/
@@ -37,6 +39,7 @@ class Channel
 		std::vector<User *>	getBanned() const;
 		std::vector<User *>	getUsers() const;
 		std::vector<User *>	getOperators() const;
+		std::vector<User *>	getInvited() const;
 
 		/*--------------- Setters ---------------*/
 		void    setName( std::string user );
@@ -53,11 +56,15 @@ class Channel
 		void	addOperator( User *u );
 		void	removeOperator( User *u );
 
+		void	addInvited( User *u );
+		void	removeInvited( User *u );
+
 		/*-------------- Others ----------------*/
 		bool	isBannedUser( const User *u ) const;
 		bool	isJoinedUser( const User *u ) const;
 		bool	isOperatorUser( const User *u ) const;
 		bool	isChannelFull() const;
+		bool	isInviteOnly() const;
 };
 
 std::ostream	&operator<<( std::ostream &o, Channel const &rhs );

@@ -5,7 +5,7 @@
 /*--------------- Constructors ---------------*/
 unsigned long	Channel::_ids = 0;
 
-Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids++), _name(name), _topic(topic), _limit(limit) 
+Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids++), _name(name), _topic(topic), _limit(limit), _inviteOnly(false) 
 {	
 	this->_banned = std::vector<User *>();
     this->_users = std::vector<User *>();
@@ -34,7 +34,8 @@ std::string			Channel::getKey() const			{ return this->_key; }
 unsigned long		Channel::getLimit() const		{ return this->_limit; }
 std::vector<User *>	Channel::getBanned() const		{ return this->_banned; }
 std::vector<User *>	Channel::getUsers() const		{ return this->_users; }
-std::vector<User *>	Channel::getOperators() const	{ return this->_users; }
+std::vector<User *>	Channel::getOperators() const	{ return this->_operators; }
+std::vector<User *>	Channel::getInvited() const		{ return this->_invited; }
 
 /*--------------- Setters ---------------*/
 void    Channel::setName( std::string name )       { this->_name = name; }
@@ -65,6 +66,9 @@ void	Channel::removeUser( User *u )			{ removeUserFromVector(this->_users, u); }
 void	Channel::addOperator( User *u )			{ addUserToVector(this->_operators, u); }
 void	Channel::removeOperator( User *u )		{ removeUserFromVector(this->_operators, u); }
 
+void	Channel::addInvited( User *u )			{ addUserToVector(this->_invited, u); }
+void	Channel::removeInvited( User *u )		{ removeUserFromVector(this->_invited, u); }
+
 /*------------- Others --------------*/
 bool	Channel::isBannedUser(const User *u) const
 {
@@ -82,6 +86,8 @@ bool	Channel::isOperatorUser(const User *u) const
 }
 
 bool	Channel::isChannelFull() const { return this->_limit == this->_users.size(); }
+
+bool	Channel::isInviteOnly() const { return this->_inviteOnly; }
 
 // static bool	isChanstring(char c)
 // {

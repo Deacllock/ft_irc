@@ -39,8 +39,7 @@ static void kickUser( Channel *channel, Command &cmd, std::string nickToKill )
 {
 	User *toKick = cmd.server->getUserByName(nickToKill);
 	if (!channel->isJoinedUser(toKick))
-		cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), channel->getName()));
-		//cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), nickToKill, channel->getName()));
+		cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), nickToKill, channel->getName()));
 	// else
 	// 	curChan->sendMessage()
 }
