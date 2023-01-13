@@ -1,10 +1,6 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-// ERR_INVITEONLYCHAN
-// ERR_TOOMANYTARGETS
-// ERR_UNVAILRESOURCE
-
 void	join(Command &cmd)
 {
 	User	*usr = cmd.getUser();
@@ -47,6 +43,8 @@ void	join(Command &cmd)
 			usr->pushReply(err_bannedfromchan(usr->getNickname(), chan->getName()));
 			continue;
 		}
+		if (chan->isInviteOnly() && !chan->isInvitedUser(usr))
+			return usr->pushReply(err_inviteonlychan(usr->getNickname(), chan->getName()));
 		if (usr->tooManyChanJoined())
 			return usr->pushReply(err_toomanychannels(usr->getNickname(), chan->getName()));
 		if (chan->isChannelFull())
@@ -57,8 +55,8 @@ void	join(Command &cmd)
 		if (chan->getTopic() != "")
 			usr->pushReply(rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 
-		// join the chan
 		chan->addUser(usr);
 		usr->addJoinedChan(chan);
+		chan->removeInvited(usr);
 	}
 }

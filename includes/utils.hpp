@@ -6,6 +6,12 @@
 
 std::vector<std::string>	splitByComma(std::string str);
 
+std::string					intToString(int nb);
+
+unsigned long				stringToULong(std::string str);
+
+std::string					charToString(char c);
+
 template <class T>
 void addElmToVector( std::vector<T *> vect, T *u )
 {

@@ -1,8 +1,6 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-// ERR_TOOMANYMATCHES
-
 static void	listAllChan(Command &cmd)
 {
 	std::vector<Channel *> channels = Command::server->getChannels();
@@ -12,7 +10,7 @@ static void	listAllChan(Command &cmd)
 	User *usr = cmd.getUser();
 	
 	for (; it < it_end; it++)
-		usr->pushReply(rpl_list(usr->getNickname(), (*it)->getName(), "#", (*it)->getTopic())); // what for <# visible>
+		usr->pushReply(rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
 }
 
 void	list(Command &cmd)
@@ -31,7 +29,7 @@ void	list(Command &cmd)
 				continue;
 
 			Channel	*chan = Command::server->getChannelByName(*it);
-			usr->pushReply(rpl_list(usr->getNickname(), chan->getName(), "#", chan->getTopic())); // what for <# visible>
+			usr->pushReply(rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
 		}
 	}
 	else { listAllChan(cmd); }

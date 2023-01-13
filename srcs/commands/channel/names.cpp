@@ -1,7 +1,6 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-// ERR_TOOMANYMATCHES
 static void	listAllUsers(Command &cmd)
 {
 	std::vector<Channel *> channels = Command::server->getChannels();
@@ -20,7 +19,7 @@ static void	listAllUsers(Command &cmd)
 	}
 }
 
-void	names(Command &cmd) // VISIBILITIES ??
+void	names(Command &cmd)
 {
 	if (cmd.getParams().size() > 0)
 	{

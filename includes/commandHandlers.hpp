@@ -3,6 +3,7 @@
 
 # include "Command.hpp"
 # include "numericReplies.hpp"
+# include "utils.hpp"
 
 /*---------------- Connection ----------------*/
 void	pass( Command &cmd );

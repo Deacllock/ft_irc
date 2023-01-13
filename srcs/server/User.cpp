@@ -106,7 +106,18 @@ void	User::removeJoinedChan( Channel *c )
 		}
 	}
 }
-void	User::quitAllChan() { this->_joinedChan.clear(); }
+void	User::quitAllChan()
+{
+	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
+
+	for (; it < it_end; it++)
+	{
+		(*it)->removeUser(this);
+		(*it)->removeOperator(this);
+	}
+	this->_joinedChan.clear();
+}
 
 /*--------------- Others ---------------*/
 bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.size(); }

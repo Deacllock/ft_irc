@@ -12,11 +12,7 @@ std::string	rpl_list( std::string nick, std::string channel, std::string visible
 //323
 std::string	rpl_listend( std::string nick ) { return "323 " + nick + " :End of LIST"; }
 //324
-std::string	rpl_channelmodeis( std::string nick, std::string channel, char mode, std::string modeParams )
-{
-	std::string str(1, mode);
-	return "324 " + nick + " " +channel + " " + str + " " + modeParams;
-}
+std::string	rpl_channelmodeis( std::string nick, std::string channel, std::string mode, std::string modeParams ) { return "324 " + nick + " " +channel + " " + mode + " " + modeParams; }
 //325
 std::string	rpl_uniqopis( std::string nick, std::string channel, std::string nickname ) { return "325 " + nick + "  " + channel + " " + nickname; }
 //331
@@ -84,11 +80,7 @@ std::string err_bannedformchan( std::string nick, std::string channel ) { return
 //471
 std::string err_channelisfull( std::string nick, std::string channel ) { return "471 " + nick + " " + channel + " :Cannot join channel (+l)"; }
 //472
-std::string	err_unknownmode( std::string nick, char c, std::string channel )
-{
-	std::string s(1, c);
-	return "472 " + nick + "  " + s + " :is unknown mode char to me for " + channel;
-}
+std::string	err_unknownmode( std::string nick, std::string c, std::string channel ) { return "472 " + nick + "  " + c + " :is unknown mode char to me for " + channel; }
 //473
 std::string err_inviteonlychan( std::string nick, std::string channel ) { return "473 " + nick + " " + channel + " :Cannot join channel (+i)"; } // what is +i
 //474
@@ -102,7 +94,7 @@ std::string	err_nochanmodes( std::string nick, std::string channel ) { return "4
 //481
 std::string err_noprivileges( std::string nick ) { return "481 " + nick + " :Permission Denied- You're not an IRC operator"; }
 //482
-std::string err_chanoprivsneeded( std::string nick, std::string channel ) { return "482 " + nick + " " + channel + " :You're not channel operator"; }
+std::string err_chanoprivsneeded( std::string channel ) { return "482 " + channel + " :You're not channel operator"; }
 //483
 std::string err_cantkillserver( std::string nick ) { return "483 " + nick + " :You can't kill a server!"; }
 //484

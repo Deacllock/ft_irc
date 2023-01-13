@@ -22,7 +22,7 @@ static bool isKickPossible( Channel *channel, User *usr )
 	}
 	if (!channel->isOperatorUser(usr))
 	{
-		usr->pushReply(err_chanoprivsneeded(usr->getNickname(), channel->getName()));
+		usr->pushReply(err_chanoprivsneeded(channel->getName()));
 		return false;
 	}
 	return true;
