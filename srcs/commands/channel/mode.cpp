@@ -9,10 +9,10 @@ static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::strin
 		if (params[i][0] == '+' || params[i][0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
 		if (!Command::server->isExistingUserByName(params[i]))
-			return usr->pushReply(err_usernotinchannel(params[i], chan->getName()));
+			return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[i], chan->getName()));
 		newOp = Command::server->getUserByName(params[i]);
 		if (!newOp->isOnChan(chan->getName()))
-			return usr->pushReply(err_usernotinchannel(newOp->getNickname(), chan->getName()));
+			return usr->pushReply(err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName()));
 		chan->addOperator(newOp);
 	}
 	else
@@ -20,10 +20,10 @@ static  void	operatorModeInChan(User *usr, Channel *chan, std::vector<std::strin
 		if (params[i][0] == '+' || params[i][0] == '-')
 			return usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
 		if (!Command::server->isExistingUserByName(params[i]))
-			return usr->pushReply(err_usernotinchannel(params[i], chan->getName()));
+			return usr->pushReply(err_usernotinchannel(usr->getNickname(), params[i], chan->getName()));
 		newOp = Command::server->getUserByName(params[i]);
 		if (!newOp->isOnChan(chan->getName()))
-			return usr->pushReply(err_usernotinchannel(newOp->getNickname(), chan->getName()));
+			return usr->pushReply(err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName()));
 		chan->removeOperator(newOp);
 	}
 }
@@ -90,7 +90,7 @@ void	channel_mode(Command &cmd)
 	Channel	*chan = Command::server->getChannelByName(params[0]);
 
 	if (!usr->isOnChan(chan->getName()))
-		return usr->pushReply(err_usernotinchannel(usr->getNickname(), chan->getName()));
+		return usr->pushReply(err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
 	
 	if (!usr->isOperator())
 		return usr->pushReply(err_chanoprivsneeded(chan->getName()));

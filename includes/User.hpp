@@ -90,7 +90,7 @@ class User
 		void	popReply();
 
 		void	addPing();
-		void	removePing();
+		void	subPing();
 
 };
 

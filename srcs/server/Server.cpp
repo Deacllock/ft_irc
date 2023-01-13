@@ -3,7 +3,7 @@
 #include "Server.hpp"
 #include "utils.hpp"
 
-unsigned long	_pingID = 0;
+unsigned long	Server::_pingID = 0;
 
 /*--------------- Constructors ---------------*/
 Server *Command::server;
@@ -186,6 +186,10 @@ std::ostream & operator<<(std::ostream &o, Server const &rhs)
 
 /*--------------- Timeout ---------------*/
 
+std::string	Server::getPingValue()
+{
+	return (static_cast< std::ostringstream & >(( std::ostringstream() << std::dec << (this->_pingID++) ) ).str());
+}
 
 //parcours and apply function
 void	Server::checkPong()
@@ -199,9 +203,10 @@ void	Server::checkPong()
 
 void Server::sendPing()
 {
-	// for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
-	// {
-	// 	(*it)->pushReply("PING" + this->_pingID++);
-	// }
+	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
+	{
+		(*it)->pushReply("PING " + this->getPingValue());
+		(*it)->addPing();
+	}
 	
 }

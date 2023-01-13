@@ -66,7 +66,7 @@ std::string err_unavailableresource( std::string nick, std::string name ) { retu
 //451
 std::string err_notregistered( std::string nick ) { return "451 " + nick + " :You have not registered"; }
 //441
-std::string err_usernotinchannel(std::string nick, std::string channel) { return "441 " + nick + " " + channel + " :They aren't on that channel"; }
+std::string err_usernotinchannel(std::string nick, std::string nickname, std::string channel) { return "441 " + nick + " " + nickname + " " +channel + " :They aren't on that channel"; }
 //442
 std::string	err_notonchannel( std::string nick, std::string channel ) { return "442 " + nick + " " + channel + " :You're not on that channel"; }
 //443

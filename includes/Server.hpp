@@ -77,7 +77,8 @@ class Server
         bool    checkPassword( std::string pwd );
         bool    checkOpeCredentials( std::string username, std::string pwd );
 
-        /*--------------- Password ---------------*/
+        /*--------------- Timeout ---------------*/
+        std::string getPingValue();
         void    checkPong();
         void    sendPing();
 };

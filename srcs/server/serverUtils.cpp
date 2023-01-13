@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <netdb.h>
 #include <poll.h>
 
@@ -106,13 +107,14 @@ static void accept_new_connections(Server &server, std::vector<struct pollfd> &f
 		add_poll_connection(fds, new_fd, POLLIN | POLLRDHUP);
 	}
 }
+
 /**
  * @brief Send to the user the message queue for them.
  * 
  * @param usr User to send message to.
  * @return int Indicator to tell if the connection shall be closed after communication. 
  */
-static int	reply(User *usr)
+static void	reply(User *usr)
 {
 	int ret;
 	while (usr->getReplies().size())
@@ -131,18 +133,17 @@ static int	reply(User *usr)
 			break;
 		}
 	}
-	return usr->isDisconnected();
 }
 
 /**
- * @brief Read user input, parse it and reply.
+ * @brief Read user input and parse it.
  * 
  * Receive user message, call parsing and send a reply depending on user input.
  * 
  * @param fd User fd.
  * @return int 
  */
-static int	read_parse_and_reply(User *user)
+static int	read_and_parse(User *user)
 {
 	if (!user) //gnn
 		return (1);
@@ -165,7 +166,7 @@ static int	read_parse_and_reply(User *user)
 	#endif
 
 	handle_input(user, msg);
-	return (!reply(user) && ret);
+	return (ret);
 }
 
 /**
@@ -187,6 +188,8 @@ int	Server::server_start()
 	return 0;
 }
 
+
+
 /**
  * @brief While server is up, handle user connections.
  * 
@@ -204,6 +207,21 @@ int Server::client_interactions()
 
 	while (this->_isUp)
 	{
+		for (std::vector<User *>::iterator it = this->_users.begin(); it < this->_users.end(); )
+		{
+			reply(*it);
+			if ((*it)->isDisconnected())
+			{
+				#ifdef DEBUG
+					std::cout << "Connection closed with " + (*it)->getNickname() << std::endl;
+				#endif
+				this->removeUser(*it);
+				fds.erase(fds.begin() + (it - this->_users.begin() + 1));
+			}
+			else
+				it++;
+		}
+
 		int ret = poll(fds.data(), fds.size(), TIMEOUT);
 		if ( ret < 0 )
 			return -1;
@@ -218,21 +236,15 @@ int Server::client_interactions()
 		{
 			if (fds[i].revents == 0)
 				continue;
-
-			User *user = this->searchUserByFd(fds[i].fd);
-			if (fds[i].revents != POLLIN)
+				
+			if (fds[i].fd == this->_sockfd)
 			{
-				#ifdef DEBUG
-					std::cout << "User has left " + this->_name << std::endl;
-				#endif
-				this->removeUser(user);
-				fds.erase(fds.begin() + (i--));
+				accept_new_connections(*this, fds, this->_sockfd);
+				continue;
 			}
 
-			else if (fds[i].fd == this->_sockfd)
-				accept_new_connections(*this, fds, this->_sockfd);
-
-			else if (read_parse_and_reply(user) == 0)
+			User *user = this->searchUserByFd(fds[i].fd);
+			if (fds[i].revents != POLLIN || (fds[i].revents == POLLIN && read_and_parse(user) == 0))
 			{
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;
