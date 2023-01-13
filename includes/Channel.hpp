@@ -63,6 +63,7 @@ class Channel
 		bool	isBannedUser( const User *u ) const;
 		bool	isJoinedUser( const User *u ) const;
 		bool	isOperatorUser( const User *u ) const;
+		bool	isInvitedUser( const User *u ) const;
 		bool	isChannelFull() const;
 		bool	isInviteOnly() const;
 };
