@@ -25,6 +25,7 @@ void	part(Command &cmd)
 			usr->pushReply(err_notonchannel(usr->getNickname(), chan->getName()));
 			continue;
 		}
+		chan->removeOperator(usr);
 		chan->removeUser(usr);
 		usr->removeJoinedChan(chan);
 	}
