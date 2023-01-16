@@ -5,8 +5,9 @@
 /*--------------- Constructors ---------------*/
 unsigned long	Channel::_ids = 0;
 
-Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids++), _name(name), _topic(topic), _limit(limit), _inviteOnly(false) 
+Channel::Channel( std::string name, std::string topic, unsigned long limit ): _id(Channel::_ids++), _topic(topic), _limit(limit), _inviteOnly(false) 
 {	
+	this->_name = name;
 	this->_banned = std::vector<User *>();
     this->_users = std::vector<User *>();
 	this->_operators = std::vector<User *>();

@@ -43,3 +43,9 @@ main test
 [DONE] make regular ping 
 [DONE] check registration for every command!
 lower cases?
+
+
+
+After test:
+- send reply on NICK (:nick NICK newnick)
+-privmsg :nick PRIVMSG nick

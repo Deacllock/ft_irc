@@ -15,14 +15,14 @@ std::string					charToString(char c);
 bool						checkChannelName(std::string name);
 
 template <class T>
-void addElmToVector( std::vector<T *> vect, T *u )
+void addElmToVector( std::vector<T *> &vect, T *u )
 {
 	if (std::find(vect.begin(), vect.end(), u) == vect.end())
 		vect.push_back(u);
 }
 
 template <class T>
-void removeElmFromVector( std::vector<T *> vect, T *u )
+void removeElmFromVector( std::vector<T *> &vect, T *u )
 {
 	typename std::vector<T *>::iterator it = std::find(vect.begin(), vect.end(), u);
 

@@ -154,7 +154,7 @@ User	*Server::getUserByNickname( std::string name )
 /*--------------- Channels ---------------*/
 void	Server::createChan( std::string name )
 {
-	Channel	*chan = new Channel(name);
+	Channel	*chan = new Channel(name,"", -1);
 	this->addChannel(chan);
 }
 

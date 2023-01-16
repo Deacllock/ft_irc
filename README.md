@@ -11,7 +11,7 @@ make test
 
 Client side:
 ```
-nc -N 127.0.0.1 667
+nc -NC 127.0.0.1 6667
 ```
 -> Shall output "Amazing" on server side
 -> Usable with ::1 as IPv6
@@ -19,6 +19,5 @@ nc -N 127.0.0.1 667
 -> Usable with network ip
 
 -N : close fd when using ctrl+d
-
 
 //nc -C -N ircnet.clue.be 6667
