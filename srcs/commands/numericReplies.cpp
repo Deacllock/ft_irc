@@ -110,4 +110,5 @@ std::string err_umodeunknownflag( std::string nick ) { return "501 " + nick + " 
 //502
 std::string err_usersdontmatch( std::string nick ) { return "502 " + nick + " :Cannot change mode for other users"; }
 
+std::string	err_badnamechannel( std::string nick, std::string name ) { return nick + " " + name + " :Bad name channel"; }
 std::string error( std::string nick, std::string data ) { return  nick + " Error: " + data; }

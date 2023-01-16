@@ -152,6 +152,12 @@ User	*Server::getUserByNickname( std::string name )
 }
 
 /*--------------- Channels ---------------*/
+void	Server::createChan( std::string name )
+{
+	Channel	*chan = new Channel(name);
+	this->addChannel(chan);
+}
+
 void	Server::addChannel( Channel *chan )
 {
 	addElmToVector(this->_channels, chan);

@@ -24,12 +24,23 @@ void	join(Command &cmd)
 			usr->quitAllChan();
 			continue;
 		}
-		if (!Command::server->isExistingChannelByName(*it))
+		// CHECK NAME IS VALID
+		if (!checkChannelName(*it))
 		{
-			usr->pushReply(err_nosuchchannel(usr->getNickname(), *it));
+			usr->pushReply(err_badnamechannel(usr->getNickname(), *it));
 			continue;
 		}
+		// CREATE CHAN
+		if (!Command::server->isExistingChannelByName(*it))
+		{
+			Command::server->createChan(*it);
+			Channel	*chanTMP = Command::server->getChannelByName(*it);
+			chanTMP->addOperator(usr);
+		}
+
 		Channel	*chan = Command::server->getChannelByName(*it);
+		
+		// VERIF KEY
 		if (it_k < it_k_end)
 		{
 			if (*it_k != chan->getKey())
@@ -38,11 +49,13 @@ void	join(Command &cmd)
 				continue;
 			}
 		}
+
 		if (chan->isBannedUser(usr))
 		{
 			usr->pushReply(err_bannedfromchan(usr->getNickname(), chan->getName()));
 			continue;
 		}
+
 		if (chan->isInviteOnly() && !chan->isInvitedUser(usr))
 			return usr->pushReply(err_inviteonlychan(usr->getNickname(), chan->getName()));
 		if (usr->tooManyChanJoined())
@@ -52,9 +65,11 @@ void	join(Command &cmd)
 			usr->pushReply(err_channelisfull(usr->getNickname(), chan->getName()));
 			continue;
 		}
+		
 		if (chan->getTopic() != "")
 			usr->pushReply(rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 
+		// JOIN
 		chan->addUser(usr);
 		usr->addJoinedChan(chan);
 		chan->removeInvited(usr);
