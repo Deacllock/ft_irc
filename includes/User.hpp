@@ -39,6 +39,7 @@ class User
 		std::vector<Channel * >	_joinedChan;
 
 		int						_nbPing;
+		std::string				_incompleteCmd;
 
 	public:
 		/*--------------- Constructors ---------------*/
@@ -91,6 +92,9 @@ class User
 
 		void	addPing();
 		void	subPing();
+
+		void		pushIncompleteCmd( std::string cmd );
+		std::string popIncompleteCmd();
 
 };
 
