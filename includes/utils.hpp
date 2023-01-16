@@ -12,6 +12,8 @@ unsigned long				stringToULong(std::string str);
 
 std::string					charToString(char c);
 
+bool						checkChannelName(std::string name);
+
 template <class T>
 void addElmToVector( std::vector<T *> vect, T *u )
 {
