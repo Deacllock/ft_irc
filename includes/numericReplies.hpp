@@ -46,6 +46,7 @@ std::string err_cantkillserver( std::string nick ); //483
 std::string err_restricted( std::string nick ); //484 
 std::string err_umodeunknownflag( std::string nick ); //501
 std::string err_usersdontmatch( std::string nick ); //502
+std::string	err_badnamechannel( std::string nick, std::string name );
 std::string error( std::string nick, std::string data );
 
 #endif
