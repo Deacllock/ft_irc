@@ -152,15 +152,13 @@ static int	read_and_parse(User *user)
 	std::string 	msg = "";
 
 	int ret = recv(user->getFd(), buf, BUFFER_SIZE, MSG_DONTWAIT);
-	while (ret > 0)
+	while (ret > 0 )
 	{
 		buf[ret] = '\0';
 		msg += buf;
 		ret = recv(user->getFd(), buf, BUFFER_SIZE, MSG_DONTWAIT);
 	}
 	
-	if (msg.substr(0, msg.length() - 2) == "") //shall be handled later in parsing
-		return ret;
 	#ifdef DEBUG
 		std::cout << user->getFd() << " < " << msg; //debug
 	#endif

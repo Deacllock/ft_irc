@@ -1,4 +1,4 @@
-#include <string>
+#include "Command.hpp"
 
 static bool areSpaces( std::string msg, size_t &i )
 {
@@ -10,9 +10,11 @@ static bool areSpaces( std::string msg, size_t &i )
 	return ret;
 }
 
-static bool	isCrlf( std::string msg, size_t &i )
+static int	isCrlf( std::string msg, size_t &i )
 {
-	return (msg[i++] == '\r' && msg[i++] == '\n');
+	if (msg[i++] == '\r' && msg[i++] == '\n')
+		return true;
+	return INCOMPLETE;
 }
 
 static bool nospcrlfcl( char c )
@@ -126,21 +128,21 @@ static bool isCommandValid( std::string msg, size_t &i )
  * @param msg The extracted message.
  * @return bool
  */
-bool	isMessageValid( std::string msg, size_t &i )
+int	isMessageValid( std::string msg, size_t &i )
 {
 	// if (msg[i] == ':')
 	// 	if (isPrefixValid(msg, ++i) && !areSpaces(msg, i))
 	// 		return false;
 	
 	if (!isCommandValid(msg, i))
-		return false;
+		return isCrlf(msg, i);
 
 	if (!areSpaces(msg, i))
-		return (isCrlf(msg, i));
+		return isCrlf(msg, i);
 
 	if (!areParamValids(msg, i))
 		return false;
 
 	areSpaces(msg, i);
-	return (isCrlf(msg, i));
+	return isCrlf(msg, i);
 }

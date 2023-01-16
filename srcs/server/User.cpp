@@ -15,6 +15,7 @@ User::User(): _fd(-1), _userId(User::_ids++)
     this->_limit = -1;
     this->_replies = std::queue<std::string>();
     this->_nbPing = 0;
+    this->_incompleteCmd = "";
 }
 
 User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(User::_ids++)
@@ -28,6 +29,7 @@ User::User( int fd, enum status val, unsigned long limit ): _fd(fd), _userId(Use
     this->_limit = limit;
     this->_replies = std::queue<std::string>();
     this->_nbPing = 0;
+    this->_incompleteCmd = "";
 }
 
 User::User( const User &rhs): _fd(rhs._fd), _userId(rhs._userId) { *this = rhs; }
@@ -127,6 +129,14 @@ void	User::popReply() { this->_replies.pop(); }
 
 void    User::addPing() { this->_nbPing++; }
 void    User::subPing() { this->_nbPing--; }
+
+void    User::pushIncompleteCmd( std::string cmd ) { this->_incompleteCmd = cmd; }
+std::string User::popIncompleteCmd()
+{
+    std::string tmp = this->_incompleteCmd;
+    this->_incompleteCmd = "";
+    return tmp;
+}
 
 
 /*---------------- Non-member functions ----------------*/

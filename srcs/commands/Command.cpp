@@ -66,9 +66,6 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
  */
 void	Command::split_str(std::string str)
 {
-	if (str[str.length() - 1] == '\n' && str[str.length() - 2] == '\r')
-		str = str.substr(0, str.length() - 2);
-
 	std::istringstream ss(str);
 
 	std::string elem;
@@ -91,15 +88,20 @@ void	Command::split_str(std::string str)
 
 void	handle_input(User *user, std::string user_input)
 {
-	while ( user_input != "")
+	std::string cur = user->popIncompleteCmd();
+	while (true)
 	{
 		size_t i = 0;
-		if (!isMessageValid(user_input, i))
-			return user->pushReply(error(user->getNickname(), " :Cannot parse message"));
+		if (isMessageValid(user_input, i) == INCOMPLETE)
+			return user->pushIncompleteCmd(cur + user_input.substr(0, i));
 
-		std::string cur = user_input.substr(0, i);
+		cur += user_input.substr(0, i - 2);
+		std::string next = user_input.substr(i, user_input.length());
+		user_input = next;
+		if (cur == "")
+			continue;
+
 		Command c(user, cur);
-
 		if (c.getHandler())
 		{
 			std::string cmd = c.getCmd();
@@ -112,9 +114,7 @@ void	handle_input(User *user, std::string user_input)
 		}
 		else
 			user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
-		
-		std::string next = user_input.substr(i, user_input.length());
-		user_input = next;
+		cur = "";
 	}
 }
 
