@@ -11,14 +11,18 @@ make test
 
 Client side:
 ```
-nc -N 127.0.0.1 667
+nc -CN 127.0.0.1 6667
 ```
--> Shall output "Amazing" on server side
 -> Usable with ::1 as IPv6
 -> Usable with localhost
 -> Usable with network ip
 
 -N : close fd when using ctrl+d
+-C : enter \r\n automatically when enter is pressed
 
+Otherwise
+```
+irssi -c localhost -w pwd -p 6667
+```
 
 //nc -C -N ircnet.clue.be 6667

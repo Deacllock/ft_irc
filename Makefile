@@ -17,6 +17,8 @@ SRCS = main.cpp utils.cpp\
 		$(addprefix operator/, die.cpp kill.cpp oper.cpp kick.cpp userMode.cpp) \
 		$(addprefix message/, privmsg.cpp))
 
+TESTS = main.cpp
+
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
