@@ -68,6 +68,7 @@ class Server
 		User	*getUserByName( std::string name );
 
 		/*--------------- Channels --------------*/
+		void	createChan( std::string name );
         void    addChannel( Channel *chan );
         void    removeChannel( Channel *chan );
 		bool	isExistingChannelByName( std::string name );
