@@ -95,36 +95,6 @@ bool	Channel::isChannelFull() const { return this->_limit == this->_users.size()
 
 bool	Channel::isInviteOnly() const { return this->_inviteOnly; }
 
-// static bool	isChanstring(char c)
-// {
-// 	if (c == 0 || c == '\a' || c == '\r' || c == '\n' || c == ' ' || c == ',' || c == ':')
-// 		return false;
-// 	return true;
-// }
-
-// static bool	checkChannelName(std::string name)
-// {
-// 	int	i = 1;
-// 	if (name.at(0) != '#' && name.at(0) != '+' && name.at(0) != '&' && name.at(0) != '!')
-// 		return false;
-// 	if (name.at(0) == '!')
-// 	{
-// 		if (name.at(i) != '5')
-// 			return false;
-// 		i++;
-// 		if (!isupper(name.at(i)) && !isdigit(name.at(i)))
-// 			return false;
-// 		i++;
-// 	}
-// 	if (!isChanstring(name.at(i)))
-// 		return false;
-// 	i++;
-// 	if (name.at(i) == ':')
-// 		if (!isChanstring(name.at(i + 1)))
-// 			return false;
-// 	return true;
-// }
-
 /*--------------- Non-member fuctions ---------------*/
 std::ostream &operator<<(std::ostream &o, Channel const &rhs)
 {
