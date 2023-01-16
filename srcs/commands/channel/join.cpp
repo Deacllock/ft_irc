@@ -32,7 +32,11 @@ void	join(Command &cmd)
 		}
 		// CREATE CHAN
 		if (!Command::server->isExistingChannelByName(*it))
+		{
 			Command::server->createChan(*it);
+			Channel	*chanTMP = Command::server->getChannelByName(*it);
+			chanTMP->addOperator(usr);
+		}
 
 		Channel	*chan = Command::server->getChannelByName(*it);
 		
