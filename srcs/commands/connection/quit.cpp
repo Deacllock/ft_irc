@@ -10,7 +10,7 @@ void	quit(Command &cmd)
 	User *usr = cmd.getUser();
 	std::string msg = "";
 	if (cmd.getParams().size())
-		msg = getColonMsg(cmd.getParams(), 0);
+		msg = cmd.getParams()[0];//getColonMsg(cmd.getParams(), 0);
 	usr->pushReply(":" + cmd.server->getName() + " " + error(usr->getNickname(), msg));
 	usr->setStatus(DISCONNECTED);
 	usr->sendAllChannels(":" + usr->getNickname() + " QUIT " + msg);

@@ -24,7 +24,7 @@ static bool isspecial(int c) { return (c == '[' || c == ']' || c == '\\' || c ==
  */
 static bool isNicknameValid( std::string nick )
 {
-	if (nick.length() || nick.length() > 9)
+	if (nick.length() == 0 || nick.length() > 9)
 		return false;
 	if (!isspecial(nick[0]) && !isalpha(nick[0]))
 		return false;

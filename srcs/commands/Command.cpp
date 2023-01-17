@@ -84,7 +84,17 @@ void	Command::split_str(std::string str)
 			first = false;
 		}
 		else if (elem != "")
-			this->_params.push_back(elem);
+		{
+			std::string param = elem;
+			if (elem[0] == ':')
+			{
+				while (getline(ss, elem, ' ') && elem != "" && elem[0] != ':')
+					param += (" " + elem);
+				this->_params.push_back(param);
+			}
+			if (elem != "")
+				this->_params.push_back(elem);
+		}
 	}
 }
 
@@ -119,17 +129,17 @@ void	handle_input(User *user, std::string user_input)
 	}
 }
 
-std::string		getColonMsg( std::vector<std::string> params, size_t pos )
-{
-	if (pos >= params.size())
-		return "";
+// std::string		getColonMsg( std::vector<std::string> params, size_t pos )
+// {
+// 	if (pos >= params.size())
+// 		return "";
 
-	std::string ret = params[pos];
-	if (pos < params.size() && params[pos][0] == ':')
-	{
-		ret = params[pos].substr(1, params[pos].length());
-		for (size_t i = pos + 1; i < params.size(); i++)
-			ret = ret + " " + params[i];
-	}
-	return ret;	
-}
+// 	std::string ret = params[pos];
+// 	if (pos < params.size() && params[pos][0] == ':')
+// 	{
+// 		ret = params[pos].substr(1, params[pos].length());
+// 		for (size_t i = pos + 1; i < params.size(); i++)
+// 			ret = ret + " " + params[i];
+// 	}
+// 	return ret;	
+// }

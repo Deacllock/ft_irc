@@ -46,7 +46,6 @@ class Command
 /*---------------- Non-member functions ----------------*/
 void 			instanciateCommand();
 void			handle_input( User *user, std::string user_input );
-std::string		getColonMsg( std::vector<std::string> params, size_t pos );
 
 int isMessageValid( std::string msg, size_t &i );
 

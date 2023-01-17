@@ -8,7 +8,7 @@ void	ping(Command &cmd)
 	if (params.size() == 0)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noorigin(usr->getNickname()));
 	if (params[0][0] == ':')
-		return usr->pushReply("PONG :" + getColonMsg(params, 0));
+		return usr->pushReply("PONG :" + params[0]);//getColonMsg(params, 0));
 	
 	else if (params.size() >= 2)
 	{
