@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <User.hpp>
 
 std::vector<std::string>	splitByComma(std::string str);
 
@@ -29,5 +30,7 @@ void removeElmFromVector( std::vector<T *> &vect, T *u )
 	if (it != vect.end())
 		vect.erase(it);
 }
+
+void    sendAll( std::vector<User *> users, User *avoid, std::string msg );
 
 #endif

@@ -11,10 +11,10 @@ void	oper(Command &cmd) //what about multiple attempts?
 	User	*usr = cmd.getUser();
 
 	if (params.size() < 2)
-		usr->pushReply(err_needmoreparams(usr->getNickname(), "OPER"));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "OPER"));
 
 	else if (!cmd.server->checkOpeCredentials(params[0], params[1]))
-		usr->pushReply(err_passwordmismatch(usr->getNickname()));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_passwordmismatch(usr->getNickname()));
 
 	else
 	{

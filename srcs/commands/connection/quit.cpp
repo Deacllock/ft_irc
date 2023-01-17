@@ -7,7 +7,13 @@
  */
 void	quit(Command &cmd)
 {
-	cmd.getUser()->pushReply(error(cmd.getUser()->getNickname(), getColonMsg(cmd.getParams(), 0)));
+	User *usr = cmd.getUser();
+
+	usr->pushReply(":" + cmd.server->getName() + " " + error(usr->getNickname(), getColonMsg(cmd.getParams(), 0)));
 	//shall output to all that a user has left ->request to all channel the user belongs to to send info to everyone except them
-	cmd.getUser()->setStatus(DISCONNECTED);
+	usr->setStatus(DISCONNECTED);
+	std::string msg = "";
+	if (cmd.getParams().size())
+		msg = getColonMsg(cmd.getParams(), 0);
+	usr->sendAllChannels(":" + usr->getNickname() + " QUIT " + msg);
 }

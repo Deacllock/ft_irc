@@ -49,3 +49,4 @@ lower cases?
 After test:
 - send reply on NICK (:nick NICK newnick)
 -privmsg :nick PRIVMSG nick
+- test column messages

@@ -4,6 +4,7 @@
 # include <queue>
 
 # include "Server.hpp"
+# include "utils.hpp"
 
 class Channel;
 class Server;
@@ -96,6 +97,7 @@ class User
 		void		pushIncompleteCmd( std::string cmd );
 		std::string popIncompleteCmd();
 
+		void	sendAllChannels( std::string msg );
 };
 
 /*---------------- operators ----------------*/

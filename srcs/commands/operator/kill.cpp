@@ -11,17 +11,17 @@ void	kill(Command &cmd)
 	User	*usr = cmd.getUser();
 
 	if (!usr->isOperator())
-		return usr->pushReply(err_noprivileges(usr->getNickname()));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_noprivileges(usr->getNickname()));
 	
 	if (params.size() < 2)
-		return usr->pushReply(err_needmoreparams(usr->getNickname(), "KILL"));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KILL"));
 	
 	if (params[0].compare(cmd.server->getName()) == 0)
-		return usr->pushReply(err_cantkillserver(usr->getNickname()));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_cantkillserver(usr->getNickname()));
 	
 	User *toKill = cmd.server->getUserByName(params[0]);
 	if (toKill == NULL)
-		usr->pushReply(err_nosuchnick(usr->getNickname(), params[0]));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchnick(usr->getNickname(), params[0]));
 	toKill->setStatus(DISCONNECTED);
 
 	//send message?

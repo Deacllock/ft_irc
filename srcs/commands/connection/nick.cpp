@@ -1,4 +1,5 @@
 #include "commandHandlers.hpp"
+#include "utils.hpp"
 
 /**
  * @brief Check if c is a special char.
@@ -50,21 +51,22 @@ void	nick(Command &cmd)
 {
 	User *usr = cmd.getUser();
 	if (cmd.getParams().size() < 1)
-		return usr->pushReply(err_nonicknamegiven(usr->getNickname()));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_nonicknamegiven(usr->getNickname()));
 
 	std::string nickname = cmd.getParams()[0];
 	
 	if (difftime(time(0),usr->getLastNickChange()) <= NICK_DELAY )
-		usr->pushReply(err_unavailableresource(usr->getNickname(), nickname));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_unavailableresource(usr->getNickname(), nickname));
 
 	else if (!isNicknameValid(nickname))
-		usr->pushReply(err_erroneusnickname(usr->getNickname(), nickname));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_erroneusnickname(usr->getNickname(), nickname));
 	
 	else if (isNicknameInUse(cmd.server->getUsers(), usr, nickname))
-		usr->pushReply(err_nicknameinuse(usr->getNickname(), nickname));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_nicknameinuse(usr->getNickname(), nickname));
 
 	else
 	{
+		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getNickname() + " NICK " + cmd.getParams()[0]);
 		usr->setNickname(cmd.getParams()[0]);
 		greetNewComer(cmd);
 	}

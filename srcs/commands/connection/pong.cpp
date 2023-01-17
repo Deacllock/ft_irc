@@ -6,7 +6,7 @@ void	pong(Command &cmd)
 	User *usr = cmd.getUser();
 
 	if (params.size() == 0)
-		return usr->pushReply(err_noorigin(usr->getNickname()));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_noorigin(usr->getNickname()));
 
 	if (getColonMsg(params, 0).compare(cmd.server->getPingValue()) == 0)
 		usr->subPing();
@@ -15,9 +15,9 @@ void	pong(Command &cmd)
 	{
 		User *to = cmd.server->getUserByName(params[1]);
 		if (!to)
-			usr->pushReply(err_nosuchserver(usr->getNickname(), params[1]));
+			usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchserver(usr->getNickname(), params[1]));
 		else
-			to->pushReply("PONG " +  params[0]); //hum not that sur about pong shall do some test
+			to->pushReply(":" + usr->getNickname() + " PONG " +  params[0]); //hum not that sur about pong shall do some test
 	}
 
 }

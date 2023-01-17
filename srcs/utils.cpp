@@ -71,3 +71,14 @@ bool	checkChannelName(std::string name)
 			return false;
 	return true;
 }
+
+void    sendAll( std::vector<User *> users, User *avoid, std::string msg )
+{
+	for (std::vector<User *>::iterator it = users.begin();
+		it != users.end(); it++)
+	{
+		if (!avoid || (*it) != avoid)
+			if ((*it)->isConnected())
+				(*it)->pushReply(msg);
+	}
+}

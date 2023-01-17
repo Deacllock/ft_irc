@@ -12,17 +12,17 @@ static bool isKickPossible( Channel *channel, User *usr )
 {
 	if (!channel)
 	{
-		usr->pushReply(err_nosuchchannel(usr->getNickname(), channel->getName()));
+		usr->pushReply(":" + usr->server->getName() + " " + err_nosuchchannel(usr->getNickname(), channel->getName()));
 		return false;
 	}
 	if (!channel->isJoinedUser(usr))
 	{	
-		usr->pushReply(err_notonchannel(usr->getNickname(), channel->getName()));
+		usr->pushReply(":" + usr->server->getName() + " " + err_notonchannel(usr->getNickname(), channel->getName()));
 		return false;
 	}
 	if (!channel->isOperatorUser(usr))
 	{
-		usr->pushReply(err_chanoprivsneeded(channel->getName()));
+		usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(channel->getName()));
 		return false;
 	}
 	return true;
@@ -35,13 +35,14 @@ static bool isKickPossible( Channel *channel, User *usr )
  * @param cmd Class containing user processing the command and Server information.
  * @param nickToKill User to kick from the channel.
  */
-static void kickUser( Channel *channel, Command &cmd, std::string nickToKill )
+static void kickUser( Channel *channel, Command &cmd, std::string nickToKick )
 {
-	User *toKick = cmd.server->getUserByName(nickToKill);
+	User *toKick = cmd.server->getUserByName(nickToKick);
+	User *usr = cmd.getUser();
 	if (!channel->isJoinedUser(toKick))
-		cmd.getUser()->pushReply(err_usernotinchannel(cmd.getUser()->getNickname(), nickToKill, channel->getName()));
-	// else
-	// 	curChan->sendMessage()
+		usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(cmd.getUser()->getNickname(), nickToKick, channel->getName()));
+	else
+		sendAll(channel->getUsers(), usr, ":" + usr->getNickname() + " KICK " + channel->getName() + nickToKick);
 }
 
 /**
@@ -55,13 +56,13 @@ void	kick(Command &cmd)
 	User *usr = cmd.getUser();
 
 	if (params.size() < 2)
-		return usr->pushReply(err_needmoreparams(usr->getNickname(), "KICK"));	
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KICK"));	
 
 	std::vector<std::string> channels = splitByComma(params[0]);
 	std::vector<std::string> users = splitByComma(params[1]);
 
 	if (channels.size() != users.size() && channels.size() != 1)
-		return usr->pushReply(error(usr->getNickname(), "Syntax error")); //??
+		return usr->pushReply(":" + cmd.server->getName() + " " + error(usr->getNickname(), "Syntax error")); //??
 	
 	if (channels.size() == 1)
 	{

@@ -135,7 +135,7 @@ bool	User::isOnChan( std::string name )
 	return false;
 }
 
-void	User::pushReply( std::string reply ) { this->_replies.push(":" + this->server->getName() + " " + reply + "\r\n"); }
+void	User::pushReply( std::string reply ) { this->_replies.push(reply + "\r\n"); }
 void	User::popReply() { this->_replies.pop(); }
 
 void    User::addPing() { this->_nbPing++; }
@@ -148,6 +148,15 @@ std::string User::popIncompleteCmd()
     this->_incompleteCmd = "";
     return tmp;
 }
+
+void	User::sendAllChannels( std::string msg )
+{
+    std::vector<Channel *> chans = this->getJoinedChan();
+    for (std::vector<Channel *>::iterator it = chans.begin();
+        it != chans.end(); it++)
+        sendAll((*it)->getUsers(), NULL, msg);
+}
+
 
 
 /*---------------- Non-member functions ----------------*/

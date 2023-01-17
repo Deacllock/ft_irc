@@ -6,7 +6,7 @@ void	join(Command &cmd)
 	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return usr->pushReply(err_needmoreparams(usr->getNickname(), "JOIN"));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "JOIN"));
 	
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);
 	std::vector<std::string> keys;
@@ -27,7 +27,7 @@ void	join(Command &cmd)
 		// CHECK NAME IS VALID
 		if (!checkChannelName(*it))
 		{
-			usr->pushReply(err_badnamechannel(usr->getNickname(), *it));
+			usr->pushReply(":" + cmd.server->getName() + " " + err_badnamechannel(usr->getNickname(), *it));
 			continue;
 		}
 		// CREATE CHAN
@@ -45,24 +45,24 @@ void	join(Command &cmd)
 		{
 			if (*it_k != chan->getKey())
 			{
-				usr->pushReply(err_badchannelkey(usr->getNickname(), chan->getName()));
+				usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
 				continue;
 			}
 		}
 
 		if (chan->isBannedUser(usr))
 		{
-			usr->pushReply(err_bannedfromchan(usr->getNickname(), chan->getName()));
+			usr->pushReply(":" + cmd.server->getName() + " " + err_bannedfromchan(usr->getNickname(), chan->getName()));
 			continue;
 		}
 
 		if (chan->isInviteOnly() && !chan->isInvitedUser(usr))
-			return usr->pushReply(err_inviteonlychan(usr->getNickname(), chan->getName()));
+			return usr->pushReply(":" + cmd.server->getName() + " " + err_inviteonlychan(usr->getNickname(), chan->getName()));
 		if (usr->tooManyChanJoined())
-			return usr->pushReply(err_toomanychannels(usr->getNickname(), chan->getName()));
+			return usr->pushReply(":" + cmd.server->getName() + " " + err_toomanychannels(usr->getNickname(), chan->getName()));
 		if (chan->isChannelFull())
 		{
-			usr->pushReply(err_channelisfull(usr->getNickname(), chan->getName()));
+			usr->pushReply(":" + cmd.server->getName() + " " + err_channelisfull(usr->getNickname(), chan->getName()));
 			continue;
 		}
 		

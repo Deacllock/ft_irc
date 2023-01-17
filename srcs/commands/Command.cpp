@@ -110,12 +110,12 @@ void	handle_input(User *user, std::string user_input)
 			if (cmd.compare("PASS") && cmd.compare("NICK") && cmd.compare("CAP")
 				&& cmd.compare("USER") && cmd.compare("QUIT") && cmd.compare("PONG")
 				&& !user->isRegistered())
-					user->pushReply(err_notregistered(user->getNickname()));
+					user->pushReply(":" + c.server->getName() + " " + err_notregistered(user->getNickname()));
 			else
 				c.getHandler()(c);
 		}
 		else
-			user->pushReply(error(user->getNickname(), c.getCmd() + " :Cannot find command"));
+			user->pushReply(":" + c.server->getName() + " " + error(user->getNickname(), c.getCmd() + " :Cannot find command"));
 		cur = "";
 	}
 }

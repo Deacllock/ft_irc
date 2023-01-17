@@ -36,18 +36,18 @@ void	user_mode(Command &cmd)
 	bool	isOp = true;
 
 	if ( !usr->isRegistered() )
-		(usr->pushReply(err_notregistered(usr->getNickname())));
+		(usr->pushReply(":" + cmd.server->getName() + " " + err_notregistered(usr->getNickname())));
 
 	else if ( params.size() < 1)
-		usr->pushReply(err_needmoreparams(usr->getNickname(), "MODE"));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
     else if (cmd.getUser()->getNickname().compare(params[0]))
-		usr->pushReply(err_usersdontmatch(usr->getNickname()));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_usersdontmatch(usr->getNickname()));
 	
 	else if (params.size() > 1)
 	{
 		if (parseParams(isOp, params))
-			usr->pushReply(err_umodeunknownflag(usr->getNickname()));
+			usr->pushReply(":" + cmd.server->getName() + " " + err_umodeunknownflag(usr->getNickname()));
 		if (usr->isOperator() && !isOp)
 			rpl_umodeis(usr->getNickname(), "-o");
 	}

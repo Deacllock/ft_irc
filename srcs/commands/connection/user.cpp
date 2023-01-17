@@ -29,10 +29,10 @@ void	user( Command &cmd )
 	std::vector <std::string> params = cmd.getParams();
 
 	if (usr->isRegistered())
-		usr->pushReply(err_alreadyregistered(usr->getNickname(), usr->getUsername()));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_alreadyregistered(usr->getNickname(), usr->getUsername()));
 
 	else if (params.size() < 4)
-		usr->pushReply(err_needmoreparams(usr->getNickname(), "USER"));
+		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "USER"));
 
 	else
 	{

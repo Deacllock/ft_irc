@@ -6,7 +6,7 @@ void	ping(Command &cmd)
 	User *usr = cmd.getUser();
 
 	if (params.size() == 0)
-		return usr->pushReply(err_noorigin(usr->getNickname()));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_noorigin(usr->getNickname()));
 	if (params[0][0] == ':')
 		return usr->pushReply("PONG :" + getColonMsg(params, 0));
 	
@@ -14,9 +14,9 @@ void	ping(Command &cmd)
 	{
 		User *to = cmd.server->getUserByName(params[1]);
 		if (!to)
-			usr->pushReply(err_nosuchserver(usr->getNickname(), params[1]));
+			usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchserver(usr->getNickname(), params[1]));
 		else
-			to->pushReply("PONG " + params[0]); //hum not that sur about pong shall do some test
+			to->pushReply(":" + usr->getNickname() + " PONG " + params[0]); //hum not that sur about pong shall do some test
 	}
 	usr->pushReply("PONG " + params[0]); //hum not that sur about pong shall do some test
 }
