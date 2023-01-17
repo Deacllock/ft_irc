@@ -37,7 +37,7 @@ static bool isNicknameValid( std::string nick )
 static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string nickname)
 {
 	for (size_t i = 0; i < users.size(); i++)
-		if (users[i] != usr && users[i]->getNickname().compare(nickname) == 0)
+		if (users[i] != usr && users[i]->getNickname() == nickname)
 			return true;
 	return false;
 }

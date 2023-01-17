@@ -8,7 +8,7 @@ void	pong(Command &cmd)
 	if (params.size() == 0)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noorigin(usr->getNickname()));
 
-	if (getColonMsg(params, 0).compare(cmd.server->getPingValue()) == 0)
+	if (getColonMsg(params, 0) == cmd.server->getPingValue())
 		usr->subPing();
 	
 	if (params.size() >= 2)

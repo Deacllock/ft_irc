@@ -107,9 +107,8 @@ void	handle_input(User *user, std::string user_input)
 		if (c.getHandler())
 		{
 			std::string cmd = c.getCmd();
-			if (cmd.compare("PASS") && cmd.compare("NICK") && cmd.compare("CAP")
-				&& cmd.compare("USER") && cmd.compare("QUIT") && cmd.compare("PONG")
-				&& !user->isRegistered())
+			if (cmd != "PASS" && cmd !="NICK" && cmd != "CAP" && cmd != "USER"
+				&& cmd != "QUIT" && cmd != "PONG" && !user->isRegistered())
 					user->pushReply(":" + c.server->getName() + " " + err_notregistered(user->getNickname()));
 			else
 				c.getHandler()(c);

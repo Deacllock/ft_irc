@@ -109,7 +109,7 @@ bool	Server::isExistingUserByName( std::string name )
 	std::vector<User *>::iterator it_end = this->_users.end();
 
 	for (; it < it_end; it++)
-		if (name.compare((*it)->getNickname()) == 0)
+		if (name == (*it)->getNickname())
 			return true;
 
 	return false;
@@ -133,7 +133,7 @@ User	*Server::getUserByName( std::string name )
 	std::vector<User *>::iterator	it_end = this->_users.end();
 
 	for (; it < it_end; it++)
-		if ((*it)->getUsername() == name)
+		if ((*it)->getNickname() == name)
 			return *it;
 
 	return NULL;
@@ -195,12 +195,12 @@ Channel	*Server::getChannelByName( std::string name )
 /*--------------- Password ---------------*/
 bool    Server::checkPassword( std::string pwd )
 {
-	return (this->_password == "" || pwd.compare(this->_password) == 0);
+	return (this->_password == "" || pwd == this->_password);
 }
 
 bool    Server::checkOpeCredentials( std::string username, std::string pwd )
 {
-	return (this->_opeCredential[0].compare(username) == 0 && this->_opeCredential[0].compare(pwd) == 0);
+	return (this->_opeCredential[0] == username && this->_opeCredential[0] == pwd);
 }
 
 std::ostream & operator<<(std::ostream &o, Server const &rhs)

@@ -41,7 +41,7 @@ void	user_mode(Command &cmd)
 	else if ( params.size() < 1)
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
-    else if (cmd.getUser()->getNickname().compare(params[0]))
+    else if (cmd.getUser()->getNickname() == params[0])
 		usr->pushReply(":" + cmd.server->getName() + " " + err_usersdontmatch(usr->getNickname()));
 	
 	else if (params.size() > 1)

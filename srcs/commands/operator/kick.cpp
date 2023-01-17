@@ -42,7 +42,15 @@ static void kickUser( Channel *channel, Command &cmd, std::string nickToKick )
 	if (!channel->isJoinedUser(toKick))
 		usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(cmd.getUser()->getNickname(), nickToKick, channel->getName()));
 	else
-		sendAll(cmd.server->getUsers(), usr, ":" + usr->getNickname() + " KICK " + channel->getName() + nickToKick);
+	{
+		std::string msg = "";
+		size_t i = 1;
+		while (i < cmd.getParams().size() && cmd.getParams()[i][0] != ':')
+			i++;
+		if (i < cmd.getParams().size())
+			msg = " :" + getColonMsg(cmd.getParams(), i);
+		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getNickname() + " KICK " + channel->getName() + " " + nickToKick + msg);
+	}
 }
 
 /**
