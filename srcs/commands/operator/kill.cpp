@@ -16,7 +16,7 @@ void	kill(Command &cmd)
 	if (params.size() < 2)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KILL"));
 	
-	if (params[0].compare(cmd.server->getName()) == 0)
+	if (params[0] == cmd.server->getName())
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_cantkillserver(usr->getNickname()));
 	
 	User *toKill = cmd.server->getUserByName(params[0]);

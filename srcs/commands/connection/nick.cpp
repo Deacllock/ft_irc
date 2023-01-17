@@ -24,7 +24,7 @@ static bool isspecial(int c) { return (c == '[' || c == ']' || c == '\\' || c ==
  */
 static bool isNicknameValid( std::string nick )
 {
-	if (nick.length() == 0 || nick.length() > 9)
+	if (nick.length() || nick.length() > 9)
 		return false;
 	if (!isspecial(nick[0]) && !isalpha(nick[0]))
 		return false;
@@ -37,7 +37,7 @@ static bool isNicknameValid( std::string nick )
 static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string nickname)
 {
 	for (size_t i = 0; i < users.size(); i++)
-		if (users[i] != usr && users[i]->getNickname().compare(nickname) == 0)
+		if (users[i] != usr && users[i]->getNickname() == nickname)
 			return true;
 	return false;
 }
