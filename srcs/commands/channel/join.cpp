@@ -17,7 +17,7 @@ void	join(Command &cmd)
 	std::vector<std::string>::iterator it_end = channels.end();
 	std::vector<std::string>::iterator it_k = keys.begin();
 	std::vector<std::string>::iterator it_k_end = keys.end();
-	for (; it < it_end; it++, it_k++)
+	for (; it != it_end; it++)
 	{
 		if (*it == "0")
 		{
@@ -46,8 +46,10 @@ void	join(Command &cmd)
 			if (*it_k != chan->getKey())
 			{
 				usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
+				it_k++;
 				continue;
 			}
+			it_k++;
 		}
 
 		if (chan->isBannedUser(usr))

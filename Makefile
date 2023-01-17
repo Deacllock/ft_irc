@@ -3,7 +3,7 @@ NAME = ft_irc
 
 CPPFLAGS = -Iincludes
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD
-DBFLAGS = -DDEBUG -g
+DBFLAGS = -DDEBUG -g -D_GLIBCXX_DEBUG
 
 SRCS_PATH = srcs/
 OBJS_PATH = objs/

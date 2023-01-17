@@ -10,7 +10,7 @@ void	privmsg(Command &cmd)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_notexttosend(usr->getNickname()));
 	
 	std::string target = cmd.getParams()[0];
-	std::string msg = ":" + usr->getNickname() + " PRIVMSG " + cmd.getParams()[1];
+	std::string msg = ":" + usr->getNickname() + " PRIVMSG " + target + " " + getColonMsg(cmd.getParams(), 1);
 
 	if (Command::server->isExistingChannelByName(target))
 	{

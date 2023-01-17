@@ -13,11 +13,21 @@ Client side:
 ```
 nc -NC 127.0.0.1 6667
 ```
+-N : close fd when using ctrl+d
+-C : add crlf when enter is pressed
+
+```
+irssi -c localhost -p 6667 -w pwd -n test
+```
 -> Shall output "Amazing" on server side
 -> Usable with ::1 as IPv6
 -> Usable with localhost
 -> Usable with network ip
 
--N : close fd when using ctrl+d
+
+-> Shall output "Amazing" on server side
+-> Usable with ::1 as IPv6
+-> Usable with localhost
+-> Usable with network ip
 
 //nc -C -N ircnet.clue.be 6667

@@ -109,7 +109,7 @@ bool	Server::isExistingUserByName( std::string name )
 	std::vector<User *>::iterator it_end = this->_users.end();
 
 	for (; it < it_end; it++)
-		if (name == (*it)->getUsername())
+		if (name.compare((*it)->getNickname()) == 0)
 			return true;
 
 	return false;

@@ -78,7 +78,7 @@ void    sendAll( std::vector<User *> users, User *avoid, std::string msg )
 		it != users.end(); it++)
 	{
 		if (!avoid || (*it) != avoid)
-			if ((*it)->isConnected())
+			if (!(*it)->isDisconnected())
 				(*it)->pushReply(msg);
 	}
 }
