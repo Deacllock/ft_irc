@@ -45,13 +45,13 @@ void	Channel::setKey( std::string key )			{ this->_key = key; }
 void	Channel::setLimit( unsigned long limit )	{ this->_limit = limit; }
 void	Channel::setInviteOnly( bool inviteOnly )	{ this->_inviteOnly = inviteOnly; }
 
-static void addUserToVector( std::vector<User *> vect, User *u )
+static void addUserToVector( std::vector<User *> &vect, User *u )
 {
 	if (std::find(vect.begin(), vect.end(), u) == vect.end())
 		vect.push_back(u);
 }
 
-static void removeUserFromVector( std::vector<User *> vect, User *u )
+static void removeUserFromVector( std::vector<User *> &vect, User *u )
 {
 	std::vector<User *>::iterator it = std::find(vect.begin(), vect.end(), u);
 

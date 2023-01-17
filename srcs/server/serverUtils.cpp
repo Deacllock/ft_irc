@@ -213,8 +213,8 @@ int Server::client_interactions()
 				#ifdef DEBUG
 					std::cout << "Connection closed with " + (*it)->getNickname() << std::endl;
 				#endif
-				this->removeUser(*it);
 				fds.erase(fds.begin() + (it - this->_users.begin() + 1));
+				this->removeUser(*it);
 			}
 			else
 				it++;
@@ -247,8 +247,8 @@ int Server::client_interactions()
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;
 				#endif
-				this->removeUser(user);
 				fds.erase(fds.begin() + (i--));
+				this->removeUser(user);
 			}
 		}
 	}
