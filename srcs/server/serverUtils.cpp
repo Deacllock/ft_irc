@@ -205,19 +205,20 @@ int Server::client_interactions()
 
 	while (this->_isUp)
 	{
-		for (std::vector<User *>::iterator it = this->_users.begin(); it < this->_users.end(); )
+		size_t i = 0;
+		while (i < this->_users.size())
 		{
-			reply(*it);
-			if ((*it)->isDisconnected())
+			reply(this->_users[i]);
+			if ((this->_users[i])->isDisconnected())
 			{
 				#ifdef DEBUG
-					std::cout << "Connection closed with " + (*it)->getNickname() << std::endl;
+					std::cout << "Connection closed with " + (this->_users[i])->getNickname() << std::endl;
 				#endif
-				fds.erase(fds.begin() + (it - this->_users.begin() + 1));
-				this->removeUser(*it);
+				fds.erase(fds.begin() + i + 1);
+				this->removeUser(this->_users[i]);
 			}
 			else
-				it++;
+				i++;
 		}
 
 		int ret = poll(fds.data(), fds.size(), TIMEOUT);

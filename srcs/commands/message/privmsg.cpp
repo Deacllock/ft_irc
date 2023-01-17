@@ -17,7 +17,7 @@ void	privmsg(Command &cmd)
 		Channel	*chan = Command::server->getChannelByName(target);
 		if (!usr->isOnChan(target))
 			return usr->pushReply(":" + cmd.server->getName() + " " + err_cannotsendtochan(usr->getNickname(), target));
-		sendAll(chan->getUsers(), NULL, msg);
+		sendAll(chan->getUsers(), usr, msg);
 	}
 	else
 	{

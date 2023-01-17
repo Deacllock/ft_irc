@@ -154,10 +154,10 @@ void	User::sendAllChannels( std::string msg )
     std::vector<Channel *> chans = this->getJoinedChan();
     for (std::vector<Channel *>::iterator it = chans.begin();
         it != chans.end(); it++)
-        sendAll((*it)->getUsers(), NULL, msg);
+        {
+            sendAll( (*it)->getUsers(), NULL, msg);
+        }
 }
-
-
 
 /*---------------- Non-member functions ----------------*/
 

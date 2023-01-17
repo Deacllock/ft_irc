@@ -10,7 +10,7 @@ static void	listAllChan(Command &cmd)
 	User *usr = cmd.getUser();
 	
 	for (; it < it_end; it++)
-		usr->pushReply(rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
+		usr->pushReply(":" + cmd.server->getName() + " " +rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
 }
 
 void	list(Command &cmd)
@@ -29,9 +29,9 @@ void	list(Command &cmd)
 				continue;
 
 			Channel	*chan = Command::server->getChannelByName(*it);
-			usr->pushReply(rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
+			usr->pushReply(":" + cmd.server->getName() + " " +rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
 		}
 	}
 	else { listAllChan(cmd); }
-	usr->pushReply(rpl_listend(usr->getNickname()));
+	usr->pushReply(":" + cmd.server->getName() + " " +rpl_listend(usr->getNickname()));
 }

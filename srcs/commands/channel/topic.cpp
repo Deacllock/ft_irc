@@ -27,7 +27,7 @@ void	topic(Command &cmd)
 	else
 	{
 		if (chan->getTopic() == "")
-			return usr->pushReply(rpl_notopic(usr->getNickname(), channel));
-		return usr->pushReply(rpl_topic(usr->getNickname(), channel, chan->getTopic()));
+			return usr->pushReply(":" + cmd.server->getName() + " " + rpl_notopic(usr->getNickname(), channel));
+		return usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), channel, chan->getTopic()));
 	}
 }

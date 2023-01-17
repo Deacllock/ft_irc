@@ -23,5 +23,5 @@ void	invite(Command &cmd)
 
 	chan->addInvited(userToInvite);
 
-	usr->pushReply(rpl_inviting(usr->getNickname(), channel, nickname));
+	usr->pushReply(":" + cmd.server->getName() + " " +rpl_inviting(usr->getNickname(), channel, nickname));
 }

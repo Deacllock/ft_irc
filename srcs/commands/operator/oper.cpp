@@ -19,7 +19,7 @@ void	oper(Command &cmd) //what about multiple attempts?
 	else
 	{
 		usr->setOperator(true);
-		usr->pushReply(rpl_youreoper(usr->getNickname()));
-		usr->pushReply(rpl_umodeis(usr->getNickname(), "+o"));
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_youreoper(usr->getNickname()));
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_umodeis(usr->getNickname(), "+o"));
 	}
 }

@@ -11,7 +11,7 @@ void greetNewComer( Command &cmd )
 	if (usr->isConnected() && usr->getNickname() != "" && usr->getUsername() != "")
 	{
 		usr->setStatus(REGISTERED);
-		usr->pushReply(rpl_welcome(usr->getNickname(), cmd.server->getName()));
+		usr->pushReply(":" + cmd.server->getName() + " " +rpl_welcome(usr->getNickname(), cmd.server->getName()));
 	}
 }
 

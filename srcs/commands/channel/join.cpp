@@ -69,11 +69,11 @@ void	join(Command &cmd)
 		}
 		
 		if (chan->getTopic() != "")
-			usr->pushReply(rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
+			usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 
 		// JOIN
 		chan->addUser(usr);
-		sendAll(chan->getUsers(), NULL, ":" + usr->getNickname() + " JOIN " + chan->getName());
+		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getNickname() + " JOIN " + chan->getName());
 		usr->addJoinedChan(chan);
 		chan->removeInvited(usr);
 	}

@@ -53,5 +53,5 @@ void	user_mode(Command &cmd)
 	}
 
 	else if (usr->isOperator())
-		usr->pushReply(rpl_umodeis(usr->getNickname(), "o"));
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_umodeis(usr->getNickname(), "o"));
 }
