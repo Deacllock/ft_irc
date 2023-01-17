@@ -133,7 +133,7 @@ User	*Server::getUserByName( std::string name )
 	std::vector<User *>::iterator	it_end = this->_users.end();
 
 	for (; it < it_end; it++)
-		if ((*it)->getUsername() == name)
+		if ((*it)->getNickname() == name)
 			return *it;
 
 	return NULL;
