@@ -17,7 +17,7 @@ void	pong(Command &cmd)
 		if (!to)
 			usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchserver(usr->getNickname(), params[1]));
 		else
-			to->pushReply(":" + usr->getNickname() + " PONG " +  params[0]); //hum not that sur about pong shall do some test
+			to->pushReply(":" + usr->getFullName() + " PONG " +  params[0]); //hum not that sur about pong shall do some test
 	}
 
 }

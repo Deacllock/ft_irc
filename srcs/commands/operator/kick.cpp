@@ -43,7 +43,7 @@ static void kickUser( Channel *channel, Command &cmd, std::string nickToKick )
 		usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(cmd.getUser()->getNickname(), nickToKick, channel->getName()));
 	else
 	{
-		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getNickname() + " KICK " + channel->getName() + " " + nickToKick);
+		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getFullName() + " KICK " + channel->getName() + " " + nickToKick);
 		channel->removeUser(toKick);
 		channel->removeOperator(toKick);
 	}

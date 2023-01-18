@@ -66,7 +66,7 @@ void	nick(Command &cmd)
 
 	else
 	{
-		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getNickname() + " NICK " + cmd.getParams()[0]);
+		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getFullName() + " NICK " + cmd.getParams()[0]);
 		usr->setNickname(cmd.getParams()[0]);
 		greetNewComer(cmd);
 	}

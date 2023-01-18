@@ -13,5 +13,5 @@ void	quit(Command &cmd)
 		msg = cmd.getParams()[0];//getColonMsg(cmd.getParams(), 0);
 	usr->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + msg));
 	usr->setStatus(DISCONNECTED);
-	usr->sendAllChannels(":" + usr->getNickname() + " QUIT " + msg);
+	usr->sendAllChannels(":" + usr->getFullName() + " QUIT " + msg);
 }

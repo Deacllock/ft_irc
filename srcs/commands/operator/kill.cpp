@@ -29,10 +29,10 @@ void	kill(Command &cmd)
 	if (params.size() >= 2)
 		reason += " " + params[1];
 
-	toKill->pushReply(":" + usr->getNickname() + " KILL " + toKill->getNickname());
-	toKill->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + cmd.server->getName() + " Killed " + usr->getNickname() + reason));
+	toKill->pushReply(":" + usr->getFullName() + " KILL " + toKill->getNickname());
+	toKill->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + cmd.server->getName() + " Killed " + usr->getFullName() + reason));
 	
-	std::string msg = ":" + toKill->getNickname() + " QUIT Killed " + usr->getNickname() + reason;
+	std::string msg = ":" + toKill->getFullName() + " QUIT Killed " + usr->getFullName() + reason;
 
 	toKill->sendAllChannels(msg);
 	if (!usr->getReplies().size() || usr->getReplies().back() != msg)

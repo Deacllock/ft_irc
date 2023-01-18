@@ -61,7 +61,7 @@ bool            User::isOperator() const            { return this->_operator; }
 std::string     User::getUsername() const       	{ return this->_username; }
 std::string     User::getNickname() const       	{ return this->_nickname; }
 time_t      	User::getLastNickChange() const 	{ return this->_lastNickChange; }
-std::string		User::getFullName() const           { return this->_nickname + "!" + this->_username + "@" + server.getName(); }
+std::string		User::getFullName() const           { return this->_nickname + "!" + this->_username + "@" + server->getName(); }
 
 std::vector<Channel *>	User::getJoinedChan() const { return this->_joinedChan; }
 
