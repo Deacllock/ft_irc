@@ -69,32 +69,31 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 void	Command::split_str(std::string str)
 {
 	std::istringstream ss(str);
-
 	std::string elem;
 
-	bool first = true;
-	while (getline(ss, elem, ' '))
+	if (getline(ss, elem, ' ') && elem != "")
 	{
-		if (first && elem != "")
+		for (int i = 0; elem[i]; i++)
+			if (islower(elem[i]))
+				elem[i] = toupper(elem[i]);
+		this->_cmd = elem;
+	}
+
+	std::string param = "";
+	while (1)
+	{
+		if (param == "" && !getline(ss, elem, ' '))
+			break;
+		param += elem;
+		if (param[0] == ':')
 		{
-			for (int i = 0; elem[i]; i++)
-				if (islower(elem[i]))
-					elem[i] = toupper(elem[i]);
-			this->_cmd = elem;
-			first = false;
+			while (getline(ss, elem, ' ') && elem != "" && elem[0] != ':')
+				param += (" " + elem);
+			this->_params.push_back(param);
 		}
-		else if (elem != "")
-		{
-			std::string param = elem;
-			if (elem[0] == ':')
-			{
-				while (getline(ss, elem, ' ') && elem != "" && elem[0] != ':')
-					param += (" " + elem);
-				this->_params.push_back(param);
-			}
-			if (elem != "")
-				this->_params.push_back(elem);
-		}
+		else
+			this->_params.push_back(param);
+		param = "";
 	}
 }
 
