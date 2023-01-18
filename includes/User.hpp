@@ -64,6 +64,7 @@ class User
 		std::string     		getNickname() const;
 		time_t					getLastNickChange() const;
 		std::string     		getRealName() const;
+		std::string				getFullName() const;
 
 		bool					isOperator() const;
 		unsigned long			getLimit() const;
