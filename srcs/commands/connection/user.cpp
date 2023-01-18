@@ -37,7 +37,7 @@ void	user( Command &cmd )
 	else
 	{
 		usr->setUsername(params[0]);
-		usr->setRealName(params[3]);//getColonMsg(params, 3));
+		usr->setRealName(params[3].substr(1, params[3].length()));
 		greetNewComer(cmd);
 	}
 }

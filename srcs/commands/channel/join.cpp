@@ -76,5 +76,8 @@ void	join(Command &cmd)
 		usr->addJoinedChan(chan);
 		chan->removeInvited(usr);
 		sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " JOIN " + chan->getName());
+		
+		Command name_cmd(usr, "NAMES " + chan->getName());
+		names(name_cmd);
 	}
 }

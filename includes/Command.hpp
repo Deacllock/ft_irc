@@ -31,7 +31,7 @@ class Command
 	public:
 		/*---------------- Constructors ----------------*/
 		Command();
-		Command( User *user, std::string &usr_input );
+		Command( User *user, std::string zzsusr_input );
 		Command( const Command &rhs );
 		Command &operator=( const Command &rhs );
 		~Command();

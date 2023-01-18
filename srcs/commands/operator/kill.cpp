@@ -38,3 +38,4 @@ void	kill(Command &cmd)
 	if (!usr->getReplies().size() || usr->getReplies().back() != msg)
 		usr->pushReply(msg);
 }
+//double messages

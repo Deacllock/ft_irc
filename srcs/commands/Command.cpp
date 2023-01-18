@@ -32,7 +32,7 @@ void instanciateCommand()
 
 /*---------------- Constructors ----------------*/
 Command::Command() {}
-Command::Command( User *user, std::string &str ): _user(user)
+Command::Command( User *user, std::string str ): _user(user)
 { 
 	split_str(str);
 	this->_handler = this->cmd_map[this->_cmd];
