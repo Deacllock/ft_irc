@@ -13,7 +13,7 @@ void	kill(Command &cmd)
 	if (!usr->isOperator())
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noprivileges(usr->getNickname()));
 	
-	if (params.size() < 2)
+	if (params.size() < 1)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KILL"));
 	
 	if (params[0] == cmd.server->getName())
@@ -21,8 +21,20 @@ void	kill(Command &cmd)
 	
 	User *toKill = cmd.server->getUserByName(params[0]);
 	if (toKill == NULL)
-		usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchnick(usr->getNickname(), params[0]));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchnick(usr->getNickname(), params[0]));
+	
 	toKill->setStatus(DISCONNECTED);
 
-	//send message?
+	std::string reason = "";	
+	if (params.size() >= 2)
+		reason += " " + params[1];
+
+	toKill->pushReply(":" + usr->getNickname() + " KILL " + toKill->getNickname());
+	toKill->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + cmd.server->getName() + " Killed " + usr->getNickname() + reason));
+	
+	std::string msg = ":" + toKill->getNickname() + " QUIT Killed " + usr->getNickname() + reason;
+
+	toKill->sendAllChannels(msg);
+	if (!usr->getReplies().size() || usr->getReplies().back() != msg)
+		usr->pushReply(msg);
 }

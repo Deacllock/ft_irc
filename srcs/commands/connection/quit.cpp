@@ -11,7 +11,7 @@ void	quit(Command &cmd)
 	std::string msg = "";
 	if (cmd.getParams().size())
 		msg = cmd.getParams()[0];//getColonMsg(cmd.getParams(), 0);
-	usr->pushReply(":" + cmd.server->getName() + " " + error(usr->getNickname(), msg));
+	usr->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + msg));
 	usr->setStatus(DISCONNECTED);
 	usr->sendAllChannels(":" + usr->getNickname() + " QUIT " + msg);
 }

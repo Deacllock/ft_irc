@@ -155,8 +155,10 @@ void	User::sendAllChannels( std::string msg )
     for (std::vector<Channel *>::iterator it = chans.begin();
         it != chans.end(); it++)
         {
-            sendAll( (*it)->getUsers(), NULL, msg);
+            sendAll( (*it)->getUsers(), this, msg);
         }
+    if (!this->isDisconnected())
+        this->pushReply(msg);
 }
 
 /*---------------- Non-member functions ----------------*/

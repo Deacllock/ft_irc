@@ -66,7 +66,7 @@ void	kick(Command &cmd)
 	std::vector<std::string> users = splitByComma(params[1]);
 
 	if (channels.size() != users.size() && channels.size() != 1)
-		return usr->pushReply(":" + cmd.server->getName() + " " + error(usr->getNickname(), "Syntax error")); //??
+		return usr->pushReply(":" + cmd.server->getName() + " " + error("Syntax error"));
 	
 	if (channels.size() == 1)
 	{

@@ -2,6 +2,7 @@
 
 #include "Server.hpp"
 #include "utils.hpp"
+#include "numericReplies.hpp"
 
 unsigned long	Server::_pingID = 0;
 
@@ -227,7 +228,10 @@ void	Server::checkPong()
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
 	{
 		if ((*it)->getNbPing())
+		{
+			(*it)->pushReply(":" + this->_name + " " + error("Connection timeout"));
 			(*it)->setStatus(DISCONNECTED);
+		}
 	}
 }
 

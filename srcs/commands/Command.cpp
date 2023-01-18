@@ -123,22 +123,7 @@ void	handle_input(User *user, std::string user_input)
 				c.getHandler()(c);
 		}
 		else
-			user->pushReply(":" + c.server->getName() + " " + error(user->getNickname(), c.getCmd() + " :Cannot find command"));
+			user->pushReply(":" + c.server->getName() + " " + error(c.getCmd() + " :Cannot find command"));
 		cur = "";
 	}
 }
-
-// std::string		getColonMsg( std::vector<std::string> params, size_t pos )
-// {
-// 	if (pos >= params.size())
-// 		return "";
-
-// 	std::string ret = params[pos];
-// 	if (pos < params.size() && params[pos][0] == ':')
-// 	{
-// 		ret = params[pos].substr(1, params[pos].length());
-// 		for (size_t i = pos + 1; i < params.size(); i++)
-// 			ret = ret + " " + params[i];
-// 	}
-// 	return ret;	
-// }
