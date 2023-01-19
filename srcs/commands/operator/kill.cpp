@@ -3,7 +3,9 @@
 /**
  * @brief  The KILL command is used to cause a client-server connection to be closed by the server.
  * 
- * @param cmd Command class containing parameters, usr and connection state to use.
+ * Parameters: <nickname> <comment>
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void	kill(Command cmd)
 {
@@ -13,7 +15,7 @@ void	kill(Command cmd)
 	if (!usr->isOperator())
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noprivileges(usr->getNickname()));
 	
-	if (params.size() < 1)
+	if (params.size() < 2 || params[1] == ":")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KILL"));
 	
 	if (params[0] == cmd.server->getName())
@@ -25,9 +27,7 @@ void	kill(Command cmd)
 	
 	toKill->setStatus(DISCONNECTED);
 
-	std::string reason = "";	
-	if (params.size() >= 2)
-		reason += " " + params[1];
+	std::string reason = " " + params[1];
 
 	toKill->pushReply(":" + usr->getFullName() + " KILL " + toKill->getNickname());
 	toKill->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + cmd.server->getName() + " Killed " + usr->getFullName() + reason));
@@ -38,4 +38,3 @@ void	kill(Command cmd)
 	if (!usr->getReplies().size() || usr->getReplies().back() != msg)
 		usr->pushReply(msg);
 }
-//double messages
