@@ -138,7 +138,7 @@ bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.
 
 void	User::pushReply( std::string reply )
 {
-    if (!this->_replies.size() || this->_replies.back() != reply)
+    if (!this->_replies.size() || this->_replies.back() != (reply + "\r\n"))
         this->_replies.push(reply + "\r\n");
 }
 void	User::popReply() { this->_replies.pop(); }

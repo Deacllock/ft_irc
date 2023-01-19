@@ -35,6 +35,6 @@ void	kill(Command cmd)
 	std::string msg = ":" + toKill->getFullName() + " QUIT Killed " + usr->getFullName() + reason;
 
 	toKill->sendAllChannels(msg);
-	if (!usr->getReplies().size() || usr->getReplies().back() != msg)
+	if (!usr->getReplies().size() || usr->getReplies().back() != (msg + "\r\n"))
 		usr->pushReply(msg);
 }
