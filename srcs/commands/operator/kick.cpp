@@ -6,7 +6,7 @@
  * 
  * @param channel Channel to kick a user from.
  * @param usr User who operate the kick command.
- * @return bool If everythink is validated, returns true, otherwise false.
+ * @return bool If everythink is valid, returns true, otherwise false.
  */
 static bool isKickPossible( Channel *channel, User *usr )
 {
@@ -34,16 +34,20 @@ static bool isKickPossible( Channel *channel, User *usr )
  * @param channel Channel to kick the user from.
  * @param cmd Class containing user processing the command and Server information.
  * @param nickToKill User to kick from the channel.
+ * @param comment Msg to send to user to explain kick.
  */
-static void kickUser( Channel *channel, Command cmd, std::string nickToKick )
+static void kickUser( Channel *channel, Command cmd, std::string nickToKick, std::string comment )
 {
 	User *toKick = cmd.server->getUserByName(nickToKick);
 	User *usr = cmd.getUser();
+
 	if (!channel->isJoinedUser(toKick))
 		usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(cmd.getUser()->getNickname(), nickToKick, channel->getName()));
+
 	else
 	{
-		sendAll(cmd.server->getUsers(), NULL, ":" + usr->getFullName() + " KICK " + channel->getName() + " " + nickToKick);
+		toKick->pushReply(":" + usr->getFullName() + " KICK " + channel->getName() + " " + nickToKick + comment);
+		sendAll(cmd.server->getUsers(), toKick, ":" + toKick->getFullName() + " PART " + channel->getName() + " :Kicked by " + usr->getNickname() + comment);
 		channel->removeUser(toKick);
 		channel->removeOperator(toKick);
 	}
@@ -51,8 +55,10 @@ static void kickUser( Channel *channel, Command cmd, std::string nickToKick )
 
 /**
  * @brief  The KICK command can be used to request the forced removal of a user from a channel.
+ * 
  * Parameters: <channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
- * @param cmd Command class containing parameters, usr and connection state to use.
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void	kick(Command cmd)
 {
@@ -64,22 +70,26 @@ void	kick(Command cmd)
 
 	std::vector<std::string> channels = splitByComma(params[0]);
 	std::vector<std::string> users = splitByComma(params[1]);
+	std::string comment = " :Pitiful kicker kicked again";
+
+	if (params.size() > 2 && params[2] != ":")
+		comment = " " + params[2];
 
 	if (channels.size() != users.size() && channels.size() != 1)
-		return usr->pushReply(":" + cmd.server->getName() + " " + error("Syntax error"));
+		return usr->pushReply(":" + cmd.server->getName() + " " + error("KICK :Syntax error"));
 	
 	if (channels.size() == 1)
 	{
 		Channel *curChan = cmd.server->getChannelByName(channels[0]);
 		if (isKickPossible(curChan, usr))
 			for (size_t i = 0; i < users.size(); i++)
-				kickUser(curChan, cmd, users[i]);
+				kickUser(curChan, cmd, users[i], comment);
 		return;
 	}
 	for (size_t i = 0; i < channels.size(); i++)
 	{
 		Channel *curChan = cmd.server->getChannelByName(channels[i]);
 		if (isKickPossible(curChan, usr))
-			kickUser(curChan, cmd, users[i]);
+			kickUser(curChan, cmd, users[i], comment);
 	} 
 }
