@@ -15,7 +15,7 @@ static void	listAllChan(Command cmd)
 	User *usr = cmd.getUser();
 	
 	for (; it < it_end; it++)
-		usr->pushReply(":" + cmd.server->getName() + " " + rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
+		usr->pushReply(":" + cmd.server->getName() + " " +rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
 }
 
 /**
