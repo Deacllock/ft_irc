@@ -5,7 +5,7 @@
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
-void	oper(Command &cmd) //what about multiple attempts?
+void	oper(Command cmd) //what about multiple attempts?
 {
 	std::vector<std::string> params = cmd.getParams();
 	User	*usr = cmd.getUser();

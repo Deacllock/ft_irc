@@ -1,6 +1,6 @@
 #include "commandHandlers.hpp"
 
-void	privmsg(Command &cmd)
+void	privmsg(Command cmd)
 {
 	User	*usr = cmd.getUser();
 

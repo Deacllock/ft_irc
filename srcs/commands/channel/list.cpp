@@ -1,7 +1,7 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-static void	listAllChan(Command &cmd)
+static void	listAllChan(Command cmd)
 {
 	std::vector<Channel *> channels = Command::server->getChannels();
 
@@ -13,7 +13,7 @@ static void	listAllChan(Command &cmd)
 		usr->pushReply(":" + cmd.server->getName() + " " +rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
 }
 
-void	list(Command &cmd)
+void	list(Command cmd)
 {
 	User *usr = cmd.getUser();
 

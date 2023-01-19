@@ -1,6 +1,6 @@
 #include "commandHandlers.hpp"
 
-void	ping(Command &cmd)
+void	ping(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User *usr = cmd.getUser();

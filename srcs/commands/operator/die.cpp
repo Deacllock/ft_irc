@@ -5,7 +5,7 @@
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
-void	die(Command &cmd) 
+void	die(Command cmd) 
 {
 	User	*usr = cmd.getUser();
 	

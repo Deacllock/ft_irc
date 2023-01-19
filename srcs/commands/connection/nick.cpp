@@ -47,7 +47,7 @@ static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string n
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
-void	nick(Command &cmd)
+void	nick(Command cmd)
 {
 	User *usr = cmd.getUser();
 	if (cmd.getParams().size() < 1)

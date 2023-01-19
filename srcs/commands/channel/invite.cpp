@@ -7,7 +7,7 @@
  * 
  * @param cmd Contains command, parameters, user and server infos.
  */
-void	invite(Command &cmd)
+void	invite(Command cmd)
 {
 	User	*usr = cmd.getUser();
 

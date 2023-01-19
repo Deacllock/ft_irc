@@ -1,3 +1,3 @@
 #include "commandHandlers.hpp"
 
-void	cap(Command &cmd) { (void)cmd; }
+void	cap(Command cmd) { (void)cmd; }

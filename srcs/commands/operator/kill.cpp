@@ -5,7 +5,7 @@
  * 
  * @param cmd Command class containing parameters, usr and connection state to use.
  */
-void	kill(Command &cmd)
+void	kill(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User	*usr = cmd.getUser();

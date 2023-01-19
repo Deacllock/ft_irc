@@ -1,6 +1,6 @@
 #include "commandHandlers.hpp"
 
-void	pong(Command &cmd)
+void	pong(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User *usr = cmd.getUser();

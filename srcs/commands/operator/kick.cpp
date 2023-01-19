@@ -35,7 +35,7 @@ static bool isKickPossible( Channel *channel, User *usr )
  * @param cmd Class containing user processing the command and Server information.
  * @param nickToKill User to kick from the channel.
  */
-static void kickUser( Channel *channel, Command &cmd, std::string nickToKick )
+static void kickUser( Channel *channel, Command cmd, std::string nickToKick )
 {
 	User *toKick = cmd.server->getUserByName(nickToKick);
 	User *usr = cmd.getUser();
@@ -54,7 +54,7 @@ static void kickUser( Channel *channel, Command &cmd, std::string nickToKick )
  * Parameters: <channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
  * @param cmd Command class containing parameters, usr and connection state to use.
  */
-void	kick(Command &cmd)
+void	kick(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User *usr = cmd.getUser();

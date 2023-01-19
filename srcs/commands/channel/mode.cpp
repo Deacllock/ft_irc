@@ -82,7 +82,7 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
 }
 
-void	channel_mode(Command &cmd)
+void	channel_mode(Command cmd)
 {
 	User	*usr = cmd.getUser();
 	std::vector<std::string> params = cmd.getParams();
@@ -126,7 +126,7 @@ void	channel_mode(Command &cmd)
 	}
 }
 
-void	mode(Command &cmd) // See how to organize this part
+void	mode(Command cmd) // See how to organize this part
 {
 	User	*usr = cmd.getUser();
 

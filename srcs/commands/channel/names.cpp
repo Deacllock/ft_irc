@@ -1,7 +1,7 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
-static void	listAllUsers(Command &cmd)
+static void	listAllUsers(Command cmd)
 {
 	std::vector<Channel *> channels = Command::server->getChannels();
 
@@ -19,7 +19,7 @@ static void	listAllUsers(Command &cmd)
 	}
 }
 
-void	names(Command &cmd)
+void	names(Command cmd)
 {
 	if (cmd.getParams().size() > 0)
 	{

@@ -15,7 +15,7 @@ class User;
 class Command
 {
 	public:
-		typedef void (*handler_type)(Command &);
+		typedef void (*handler_type)(Command);
 		static Server 								*server;
 		static std::map<std::string, handler_type>	cmd_map;
 

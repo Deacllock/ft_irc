@@ -8,7 +8,7 @@
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
-void	pass(Command &cmd)
+void	pass(Command cmd)
 {
 	User		*usr = cmd.getUser();
 	std::string	username = usr->getUsername();

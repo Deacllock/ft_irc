@@ -5,7 +5,7 @@
  * 
  * @param cmd Class containing the user to eventually greet.
  */
-void greetNewComer( Command &cmd )
+void greetNewComer( Command cmd )
 {
 	User *usr = cmd.getUser();
 	if (usr->isConnected() && usr->getNickname() != "" && usr->getUsername() != "")
@@ -23,7 +23,7 @@ void greetNewComer( Command &cmd )
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
-void	user( Command &cmd )
+void	user( Command cmd )
 {
 	User *usr = cmd.getUser();
 	std::vector <std::string> params = cmd.getParams();

@@ -1,6 +1,6 @@
 #include "commandHandlers.hpp"
 
-void	topic(Command &cmd)
+void	topic(Command cmd)
 {
 	User	*usr = cmd.getUser();
 

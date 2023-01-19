@@ -5,7 +5,7 @@
  * 
  * @param cmd Command class containing parameters, user and connection state to use.
  */
-void	quit(Command &cmd)
+void	quit(Command cmd)
 {
 	User *usr = cmd.getUser();
 	std::string msg = "";

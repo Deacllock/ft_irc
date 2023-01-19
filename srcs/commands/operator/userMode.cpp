@@ -29,7 +29,7 @@ static bool	parseParams(bool &isOp, std::vector<std::string> params)
 }
 
 //Parameters: <nickname> *( ( "+" / "-" ) *( "o" ) )
-void	user_mode(Command &cmd)
+void	user_mode(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User	*usr = cmd.getUser();
