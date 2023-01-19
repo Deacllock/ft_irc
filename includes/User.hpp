@@ -83,11 +83,12 @@ class User
 		void	setOperator( bool val );
 		void	setLimit( unsigned long limit );
 
-		void	addJoinedChan( Channel *c );
-		void	removeJoinedChan( Channel *c );
-		void	quitAllChan();
-		bool	tooManyChanJoined() const;
-		bool    isOnChan( std::string name );
+		void		addJoinedChan( Channel *c );
+		void		removeJoinedChan( Channel *c );
+		void		quitAllChan();
+		bool		tooManyChanJoined() const;
+		bool    	isOnChan( std::string name );
+		std::string listAllChans();
 
 		void	pushReply( std::string reply );
 		void	popReply();

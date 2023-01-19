@@ -122,6 +122,17 @@ void	User::quitAllChan()
 	this->_joinedChan.clear();
 }
 
+std::string User::listAllChans()
+{
+    std::string chanList = "";
+    std::vector<Channel *>::iterator it = this->_joinedChan.begin();
+    if (it != this->_joinedChan.end())
+        chanList += (*it)->getName();
+    for (it++; it != this->_joinedChan.end(); it++)
+        chanList += "," + (*it)->getName();
+    return chanList;
+}
+
 /*--------------- Others ---------------*/
 bool	User::tooManyChanJoined() const { return this->_limit == this->_joinedChan.size(); }
 bool	User::isOnChan( std::string name )
