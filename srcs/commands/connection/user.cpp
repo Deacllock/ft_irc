@@ -3,7 +3,7 @@
 /**
  * @brief Check if user is newly registered to a server. If so greet them.
  * 
- * @param cmd Class containing the user to eventually greet.
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void greetNewComer( Command cmd )
 {
@@ -16,12 +16,29 @@ void greetNewComer( Command cmd )
 }
 
 /**
+ * @brief Check if given username is valid.
+ * 
+ * @param username username to check.
+ * @return true if valid, false otherwise.
+ */
+static bool	isUsernameValid( std::string username )
+{
+	if (username == "")
+		return false;
+
+	for (size_t i = 0; i < username.length(); i++)
+		if (username[i] == '\r' || username[i] == '\n' || username[i] == ' ' || username[i] == '@')
+			return false;
+	return true;
+}
+
+/**
  * @brief The USER command is used at the beginning of connection to configure user.
  * 
  * User shall specify the username, hostname and realname of a new user.
  * A mode shall be given when creating the user.
  * 
- * @param cmd Command class containing parameters, user and connection state to use.
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void	user( Command cmd )
 {
@@ -34,10 +51,13 @@ void	user( Command cmd )
 	else if (params.size() < 4)
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "USER"));
 
-	else
+	else if isUsernameValid(params[0])
 	{
 		usr->setUsername(params[0]);
-		usr->setRealName(params[3].substr(1, params[3].length()));
+		if (params[3][0] == ':')
+			usr->setRealName(params[3].substr(1, params[3].length()));
+		else
+			usr->setRealName(params[3])
 		greetNewComer(cmd);
 	}
 }
