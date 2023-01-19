@@ -33,8 +33,9 @@ void	topic(Command cmd)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
 
 	if (!chan->isOperatorUser(usr))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));mak
 
 	chan->setTopic(topic);
-	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " " + topic);
+	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
+	
 }

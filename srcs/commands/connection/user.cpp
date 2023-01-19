@@ -12,6 +12,7 @@ void greetNewComer( Command cmd )
 	{
 		usr->setStatus(REGISTERED);
 		usr->pushReply(":" + cmd.server->getName() + " " +rpl_welcome(usr->getNickname(), cmd.server->getName()));
+		list(Command(usr, "LIST"));
 	}
 }
 
