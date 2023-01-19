@@ -16,7 +16,7 @@ void	join(Command cmd)
 	if (cmd.getParams().size() < 1)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "JOIN"));
 	
-	if (cmd.getParams()[0] == "0")
+	if (cmd.getParams()[0].substr(1, cmd.getParams()[0].length()) == "0")
 		return part(Command(usr, "PART " + usr->listAllChans()));
 
 	std::vector<std::string> channels = splitByComma(cmd.getParams()[0]);

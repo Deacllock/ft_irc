@@ -14,7 +14,7 @@ std::string	rpl_channelmodeis( std::string nick, std::string channel, std::strin
 std::string	rpl_notopic( std::string nick, std::string channel ); //331
 std::string	rpl_topic( std::string nick, std::string channel, std::string topic ); //332
 std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ); //341
-std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std::string> nicks ); //353 //VISIBILITY ????
+std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std::string> nicks ); //353
 std::string	rpl_endofnames( std::string nick, std::string channel ); //366
 std::string	err_nosuchnick( std::string nick, std::string nickname ); //401
 std::string err_nosuchserver( std::string nick, std::string server ); //402
@@ -50,6 +50,7 @@ std::string err_restricted( std::string nick ); //484
 std::string err_umodeunknownflag( std::string nick ); //501
 std::string err_usersdontmatch( std::string nick ); //502
 std::string	err_badnamechannel( std::string nick, std::string name );
+
 std::string error( std::string data );
 
 #endif

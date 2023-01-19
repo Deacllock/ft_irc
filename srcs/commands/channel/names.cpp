@@ -24,24 +24,23 @@
 // 	}
 // }
 
-static void	listAllUsers( std::vector<std::string> channels, User *usr )
+static void	listAllUsers( std::vector<Channel *> channels, User *usr )
 {
-	std::vector<std::string>::iterator it = channels.begin();
-	std::vector<std::string>::iterator it_end = channels.end();
+	std::vector<Channel *>::iterator it = channels.begin();
+	std::vector<Channel *>::iterator it_end = channels.end();
 
 	for (; it < it_end; it++)
 	{
-		if (!Command::server->isExistingChannelByName(*it))
-			continue;
-		
-		Channel	*chan = Command::server->getChannelByName(*it);
-		std::vector<User *> users = chan->getUsers();
+		std::vector<User *> users = (*it)->getUsers();
 
 		std::vector<User *>::iterator it_usr = users.begin();
 		std::vector<User *>::iterator it_usr_end = users.end();
+
+		std::vector<std::string>	nicks;
 		for (; it_usr < it_usr_end; it_usr++)
-			usr->pushReply(":" + Command::server->getName() + " " + rpl_namreply(usr->getNickname(), chan->getName(), (*it)->getName()));
-		cmd.getUser()->pushReply(":" + cmd.server->getName() + " " + rpl_endofnames(cmd.getUser()->getNickname(), chan->getName()));
+			nicks.push_back((*it_usr)->getNickname());
+		usr->pushReply(":" + Command::server->getName() + " " + rpl_namreply(usr->getNickname(), (*it)->getName(), nicks));
+		usr->pushReply(":" + usr->getNickname() + " " + rpl_endofnames(usr->getNickname(), (*it)->getName()));
 	}
 }
 
@@ -56,9 +55,20 @@ void	names(Command cmd)
 {
 	User *usr = cmd.getUser();
 	if (cmd.getParams().size() == 0)
-		return listAllUsers(urs->listAllChans(), usr);
-	return listAllUsers(splitByComma(cmd.getParams()[0]), usr);
+		return listAllUsers(usr->getJoinedChan(), usr);
 
 
-	
+	std::vector<std::string>	channels_str = splitByComma(cmd.getParams()[0]);
+	std::vector<Channel *>		channels;
+
+	std::vector<std::string>::iterator it = channels_str.begin();
+	std::vector<std::string>::iterator it_end = channels_str.end();
+	for (; it < it_end; it++)
+	{
+		if (!Command::server->isExistingChannelByName(*it))
+			continue;
+		
+		channels.push_back(Command::server->getChannelByName(*it));
+	}
+	return listAllUsers(channels, usr);
 }
