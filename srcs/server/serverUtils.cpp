@@ -208,7 +208,7 @@ int Server::client_interactions()
 		size_t i = 0;
 		while (i < this->_users.size())
 		{
-			if (fds[i + 1].revents != POLLHUP)
+			if (fds[i + 1].revents == POLLOUT)
 				reply(this->_users[i]);
 			if ((this->_users[i])->isDisconnected())
 			{
@@ -244,7 +244,7 @@ int Server::client_interactions()
 			}
 
 			User *user = this->searchUserByFd(fds[i].fd);
-			if (fds[i].revents != POLLIN || (fds[i].revents == POLLIN && read_and_parse(user) == 0))
+			if (fds[i].revents != POLLIN || read_and_parse(user) == 0)
 			{
 				#ifdef DEBUG
 					std::cout << "User has left " + this->_name << std::endl;
