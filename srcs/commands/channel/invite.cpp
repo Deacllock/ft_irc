@@ -1,5 +1,12 @@
 #include "commandHandlers.hpp"
 
+/**
+ * @brief The INVITE command is used to invite a user to a channel.
+ * 
+ * Parameters: <nickname> <channel>
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
+ */
 void	invite(Command &cmd)
 {
 	User	*usr = cmd.getUser();
