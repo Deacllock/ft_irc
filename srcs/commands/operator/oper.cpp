@@ -3,9 +3,11 @@
 /**
  * @brief Oper command allow a user to become operator if valid credentials are provided.
  * 
- * @param cmd Command class containing parameters, user and connection state to use.
+ * Parameters: <name> <password>
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
  */
-void	oper(Command cmd) //what about multiple attempts?
+void	oper(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
 	User	*usr = cmd.getUser();

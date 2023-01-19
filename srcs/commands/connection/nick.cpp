@@ -34,6 +34,14 @@ static bool isNicknameValid( std::string nick )
 	return true;
 }
 
+/**
+ * @brief Check if username is already in use.
+ * 
+ * @param users User list to search for nickname.
+ * @param usr User to avoid.
+ * @param nickname Nickname to search.
+ * @return true if found, false otherwise
+ */
 static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string nickname)
 {
 	for (size_t i = 0; i < users.size(); i++)
@@ -45,8 +53,10 @@ static bool isNicknameInUse( std::vector<User *> users, User *usr, std::string n
 /**
  * @brief NICK command is used to give user a nickname or change the existing one.
  * 
- * @param cmd Command class containing parameters, user and connection state to use.
- */
+ * Parameters: <nickname>
+ * 
+ * @param cmd Contains command, parameters, user and server infos. */
+
 void	nick(Command cmd)
 {
 	User *usr = cmd.getUser();

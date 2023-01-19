@@ -1,5 +1,12 @@
 #include "commandHandlers.hpp"
 
+/**
+ * @brief The PING command is used to test the presence of an active client or server at the other end of the connection.
+ * 
+ * Parameters: <server1>
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
+ */
 void	ping(Command cmd)
 {
 	std::vector<std::string> params = cmd.getParams();
@@ -7,16 +14,6 @@ void	ping(Command cmd)
 
 	if (params.size() == 0)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noorigin(usr->getNickname()));
-	// if (params[0][0] == ':')
-	// 	return usr->pushReply("PONG :" + params[0]);
-	
-	else if (params.size() >= 2)
-	{
-		User *to = cmd.server->getUserByName(params[1]);
-		if (!to)
-			usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchserver(usr->getNickname(), params[1]));
-		else
-			to->pushReply(":" + usr->getFullName() + " PONG " + params[0]);
-	}
+
 	usr->pushReply("PONG " + params[0]);
 }

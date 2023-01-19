@@ -23,7 +23,7 @@ static void	listAllUsers( std::vector<Channel *> channels, User *usr )
 		for (; it_usr < it_usr_end; it_usr++)
 		{
 			std::string opPrefix = "";
-			if (chan->isOperatorUser(*it_usr))
+			if ((*it)->isOperatorUser(*it_usr))
 				opPrefix += "@";
 			nicks.push_back(opPrefix + (*it_usr)->getNickname());
 		}

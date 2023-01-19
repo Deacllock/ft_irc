@@ -32,7 +32,7 @@ static bool isKickPossible( Channel *channel, User *usr )
  * @brief Procede to kick a user from a channel.
  * 
  * @param channel Channel to kick the user from.
- * @param cmd Class containing user processing the command and Server information.
+ * @param cmd Contains command, parameters, user and server infos.
  * @param nickToKill User to kick from the channel.
  * @param comment Msg to send to user to explain kick.
  */

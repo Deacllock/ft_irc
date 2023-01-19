@@ -1,5 +1,16 @@
 #include "commandHandlers.hpp"
 
+
+/**
+ * @brief Set operator Mode in channel for a user;
+ * 
+ * @param usr 
+ * @param chan 
+ * @param params 
+ * @param sym 
+ * @param i 
+ * @return std::string 
+ */
 static std::string operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
 	User	*newOp;
@@ -12,7 +23,7 @@ static std::string operatorModeInChan(User *usr, Channel *chan, std::vector<std:
 		if (!Command::server->isExistingUserByName(param))
 			return err_usernotinchannel(usr->getNickname(), param, chan->getName());
 		newOp = Command::server->getUserByName(param);
-		if (!newOp->isOnChan(chan->getName()))
+		if (!chan->isJoinedUser(newOp))
 			return err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName());
 		chan->addOperator(newOp);
 	}
@@ -23,7 +34,7 @@ static std::string operatorModeInChan(User *usr, Channel *chan, std::vector<std:
 		if (!Command::server->isExistingUserByName(param))
 			return err_usernotinchannel(usr->getNickname(), param, chan->getName());
 		newOp = Command::server->getUserByName(param);
-		if (!newOp->isOnChan(chan->getName()))
+		if (!chan->isJoinedUser(newOp))
 			return err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName());
 		chan->removeOperator(newOp);
 	}
@@ -82,31 +93,43 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
 }
 
+/**
+ * @brief The MODE command is provided so that users may query and change the characteristics of a channel.
+ * 
+ * Parameters: <channel> *( ( "-" / "+" ) *<modes> *<modeparams> )
+ * o - add/remove channel operator mode on user
+ * l - set user limit for the channel
+ * i - set invite only option on channel
+ * k - set key for the channel
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
+ */
 void	channel_mode(Command cmd)
 {
-	User	*usr = cmd.getUser();
-	std::vector<std::string> params = cmd.getParams();
+	User						*usr = cmd.getUser();
+	std::vector<std::string>	params = cmd.getParams();
 
-	if (!Command::server->isExistingChannelByName(params[0]))
-		return;
-	
 	Channel	*chan = Command::server->getChannelByName(params[0]);
 
-	if (!usr->isOnChan(chan->getName()))
+	if (!chan->isJoinedUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
 	
-	if (!usr->isOperator())
+	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 
+	char sym = '+';
 	for (size_t i = 1; i < params.size(); i++)
 	{
-		char	sym = params[i][0];
-		if (sym != '-' && sym != '+')
-			continue;
-		for (size_t j = 1; j < params[i].size(); j++)
+		for (size_t j = 0; j < params[i].size(); j++)
 		{
 			switch (params[i][j])
 			{
+				case '+':
+					sym = '+';
+					break;
+				case '-':
+					sym = '-';
+					break;
 				case 'o': // make someone op in chan - or supp op
 					usr->pushReply(":" + cmd.server->getName() + " " + operatorModeInChan(usr, chan, params, sym, i + 1));
 					break;
@@ -126,16 +149,29 @@ void	channel_mode(Command cmd)
 	}
 }
 
+/*
+	ERR_KEYSET
+    RPL_CHANNELMODEIS
 
-void	mode(Command cmd) // See how to organize this part
+	limit of 3 changes per commands
+*/
+
+
+/**
+ * @brief Mode command is used to set or remove options from target
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
+ */
+void	mode(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 2)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
-	if (Command::server->isExistingUserByName(usr->getNickname()))
-		user_mode(cmd);
-	else
+	std::string name = cmd.getParams()[0];
+	if (Command::server->isExistingChannelByName(name))
 		channel_mode(cmd);
+	else
+		user_mode(cmd);
 }

@@ -13,8 +13,6 @@ std::string	rpl_list( std::string nick, std::string channel, std::string visible
 std::string	rpl_listend( std::string nick ) { return "323 " + nick + " :End of LIST"; }
 //324
 std::string	rpl_channelmodeis( std::string nick, std::string channel, std::string mode, std::string modeParams ) { return "324 " + nick + " " +channel + " " + mode + " " + modeParams; }
-//325
-std::string	rpl_uniqopis( std::string nick, std::string channel, std::string nickname ) { return "325 " + nick + "  " + channel + " " + nickname; }
 //331
 std::string	rpl_notopic( std::string nick, std::string channel ) { return "331 " + nick + " " + channel + " :No topic is set"; }
 //332
@@ -27,6 +25,7 @@ std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std
 	std::string ret = "353 " + nick + " = " + channel + " :";
 	std::vector<std::string>::iterator it = nickname.begin();
 	std::vector<std::string>::iterator it_end = nickname.end();
+
 	for (; it < it_end; it++)
 	{
 		ret += *it;

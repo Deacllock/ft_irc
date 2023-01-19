@@ -5,7 +5,7 @@
  * 
  * Parameters: <channel> [ <topic> ]
  * 
- * @param cmd 
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void	topic(Command cmd)
 {
@@ -29,7 +29,7 @@ void	topic(Command cmd)
 	else
 		topic = cmd.getParams()[1];
 
-	if (!usr->isOnChan(chan->getName()))
+	if (!chan->isJoinedUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
 
 	if (!chan->isOperatorUser(usr))

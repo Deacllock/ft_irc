@@ -51,13 +51,13 @@ void	user( Command cmd )
 	else if (params.size() < 4)
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "USER"));
 
-	else if isUsernameValid(params[0])
+	else if (isUsernameValid(params[0]))
 	{
 		usr->setUsername(params[0]);
 		if (params[3][0] == ':')
 			usr->setRealName(params[3].substr(1, params[3].length()));
 		else
-			usr->setRealName(params[3])
+			usr->setRealName(params[3]);
 		greetNewComer(cmd);
 	}
 }

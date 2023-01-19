@@ -87,7 +87,6 @@ class User
 		void		removeJoinedChan( Channel *c );
 		void		quitAllChan();
 		bool		tooManyChanJoined() const;
-		bool    	isOnChan( std::string name );
 		std::string listAllChans();
 
 		void	pushReply( std::string reply );

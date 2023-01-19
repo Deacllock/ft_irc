@@ -3,7 +3,9 @@
 /**
  * @brief An operator can use the DIE command to shutdown the server->
  * 
- * @param cmd Command class containing parameters, user and connection state to use.
+ * Parameters: None
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void	die(Command cmd) 
 {
@@ -15,5 +17,3 @@ void	die(Command cmd)
 	else
 		cmd.server->setIsUp(false);
 }
-
-//CHECK WHEN HANDLING SEVERAL USERS

@@ -5,8 +5,10 @@
  * 
  * This command is used to verify the connection to the server is autorized by comparing
  * given password with server password.
- * 
- * @param cmd Command class containing parameters, user and connection state to use.
+ *
+ * Parameters: <password>
+ *  
+ * @param cmd Contains command, parameters, user and server infos.
  */
 void	pass(Command cmd)
 {
@@ -24,5 +26,4 @@ void	pass(Command cmd)
 
 	else
 		usr->setStatus(STARTING);
-
 }
