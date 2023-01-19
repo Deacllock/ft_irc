@@ -21,7 +21,12 @@ static void	listAllUsers( std::vector<Channel *> channels, User *usr )
 
 		std::vector<std::string>	nicks;
 		for (; it_usr < it_usr_end; it_usr++)
-			nicks.push_back((*it_usr)->getNickname());
+		{
+			std::string opPrefix = "";
+			if (chan->isOperatorUser(*it_usr))
+				opPrefix += "@";
+			nicks.push_back(opPrefix + (*it_usr)->getNickname());
+		}
 		usr->pushReply(":" + Command::server->getName() + " " + rpl_namreply(usr->getNickname(), (*it)->getName(), nicks));
 		usr->pushReply(":" + usr->getNickname() + " " + rpl_endofnames(usr->getNickname(), (*it)->getName()));
 	}
