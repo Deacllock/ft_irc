@@ -44,18 +44,16 @@ void	join(Command cmd)
 			Channel	*chan = Command::server->getChannelByName(*it);
 			
 			// VERIF KEY
-			if (it_k < it_k_end)
+			if (chan->getKey() != "")
 			{
-				if (*it_k != chan->getKey())
+				if (it_k > it_k_end || *(it_k++) != chan->getKey())
 				{
 					usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
-					it_k++;
 					continue;
 				}
-				it_k++;
 			}
 
-			else if (chan->isBannedUser(usr))
+			if (chan->isBannedUser(usr))
 				usr->pushReply(":" + cmd.server->getName() + " " + err_bannedfromchan(usr->getNickname(), chan->getName()));
 
 

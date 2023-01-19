@@ -1,6 +1,11 @@
 #include "commandHandlers.hpp"
 #include "utils.hpp"
 
+/**
+ * @brief List All chan existing on server.
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
+ */
 static void	listAllChan(Command cmd)
 {
 	std::vector<Channel *> channels = Command::server->getChannels();
@@ -10,9 +15,16 @@ static void	listAllChan(Command cmd)
 	User *usr = cmd.getUser();
 	
 	for (; it < it_end; it++)
-		usr->pushReply(":" + cmd.server->getName() + " " +rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_list(usr->getNickname(), (*it)->getName(), intToString((*it)->getUsers().size()), (*it)->getTopic()));
 }
 
+/**
+ * @brief The list command is used to list channels and their topics.
+ * 
+ * Parameters: [ <channel> *( "," <channel> ) [ <target> ] ]
+ * 
+ * @param cmd Contains command, parameters, user and server infos.
+ */
 void	list(Command cmd)
 {
 	User *usr = cmd.getUser();
@@ -29,7 +41,7 @@ void	list(Command cmd)
 				continue;
 
 			Channel	*chan = Command::server->getChannelByName(*it);
-			usr->pushReply(":" + cmd.server->getName() + " " +rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
+			usr->pushReply(":" + cmd.server->getName() + " " + rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
 		}
 	}
 	else { listAllChan(cmd); }
