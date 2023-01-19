@@ -24,7 +24,7 @@ std::string	rpl_inviting( std::string nick, std::string channel, std::string nic
 //353
 std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std::string> nickname )
 {
-	std::string ret = "353 " + nick + " " + channel + " :";
+	std::string ret = "353 " + nick + " = " + channel + " :";
 	std::vector<std::string>::iterator it = nickname.begin();
 	std::vector<std::string>::iterator it_end = nickname.end();
 	for (; it < it_end; it++)
