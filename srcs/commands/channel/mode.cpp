@@ -126,6 +126,7 @@ void	channel_mode(Command cmd)
 	}
 }
 
+
 void	mode(Command cmd) // See how to organize this part
 {
 	User	*usr = cmd.getUser();

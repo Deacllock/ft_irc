@@ -2,28 +2,11 @@
 #include "utils.hpp"
 
 /**
- * @brief List all users existing on server.
+ * @brief List all users existing on channel list.
  * 
- * @param cmd Contains command, parameters, user and server infos.
+ * @param channels Vector containing the channels to browse.
+ * @param usr User to send message from.
  */
-// static void	listAllUsers(Command cmd)
-// {
-// 	std::vector<Channel *> channels = Command::server->getChannels();
-
-// 	std::vector<Channel *>::iterator it = channels.begin();
-// 	std::vector<Channel *>::iterator it_end = channels.end();
-// 	for (; it < it_end; it++)
-// 	{
-// 		std::vector<std::string> nicks;
-// 		std::vector<User *> users = (*it)->getUsers();
-// 		std::vector<User *>::iterator it_usr = users.begin();
-// 		std::vector<User *>::iterator it_usr_end = users.end();
-// 		for (; it_usr < it_usr_end; it_usr++)
-// 			nicks.push_back((*it_usr)->getNickname());
-// 		cmd.getUser()->pushReply(":" + cmd.server->getName() + " " +rpl_namreply(cmd.getUser()->getNickname(), (*it)->getName(), nicks));
-// 	}
-// }
-
 static void	listAllUsers( std::vector<Channel *> channels, User *usr )
 {
 	std::vector<Channel *>::iterator it = channels.begin();

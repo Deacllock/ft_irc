@@ -43,23 +43,14 @@ void	join(Command cmd)
 
 			Channel	*chan = Command::server->getChannelByName(*it);
 			
-			// VERIF KEY
-			if (chan->getKey() != "")
-			{
-				if (it_k > it_k_end || *(it_k++) != chan->getKey())
-				{
-					usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
-					continue;
-				}
-			}
+			if (chan->getKey() != "" && (it_k > it_k_end || *(it_k++) != chan->getKey()))
+				usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
 
-			if (chan->isBannedUser(usr))
+			else if (chan->isBannedUser(usr))
 				usr->pushReply(":" + cmd.server->getName() + " " + err_bannedfromchan(usr->getNickname(), chan->getName()));
-
 
 			else if (chan->isInviteOnly() && !chan->isInvitedUser(usr))
 				usr->pushReply(":" + cmd.server->getName() + " " + err_inviteonlychan(usr->getNickname(), chan->getName()));
-
 			
 			else if (usr->tooManyChanJoined())
 				return usr->pushReply(":" + cmd.server->getName() + " " + err_toomanychannels(usr->getNickname(), chan->getName()));
@@ -67,17 +58,15 @@ void	join(Command cmd)
 			else if (chan->isChannelFull())
 				usr->pushReply(":" + cmd.server->getName() + " " + err_channelisfull(usr->getNickname(), chan->getName()));
 
+			// JOIN
 			else
 			{
-			
-				if (chan->getTopic() != "")
-					usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
-
-				// JOIN
 				chan->addUser(usr);
 				usr->addJoinedChan(chan);
 				chan->removeInvited(usr);
+
 				sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " JOIN " + chan->getName());
+				topic(Command (usr, "TOPIC " + chan->getName()));
 				names(Command (usr, "NAMES " + chan->getName()));
 			}
 		}
