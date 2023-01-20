@@ -93,35 +93,56 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
 }
 
+static	std::string		do_rpl_banlist(User *usr)
+{
+	return err_needmoreparams(usr->getNickname(), "MODE");
+}
+
 static  std::string	setBanForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
 {
-	std::string param = params[i];
-	User		*usrBan;
+	std::string					param = params[i];
+	std::vector<std::string>	users;
+	User						*usrBan;
 
 	if (sym == '+')
 	{
 		if (param[0] == '+' || param[0] == '-')
-			return err_needmoreparams(usr->getNickname(), "MODE");
-		if (Command::server->isExistingUser(param))
+			return do_rpl_banlist(usr);
+		
+		users = splitByComma(param);
+		std::vector<std::string>::iterator	it = users.begin();
+		std::vector<std::string>::iterator	it_end = users.end();
+
+		for (; it < it_end; it++)
 		{
-			usrBan = Command::server->getUserByNickname(param);
-			chan->addBannedUser(usrBan);
-			chan->removeUser(usrBan); // Supp user from chan ??
+			if (Command::server->isExistingUserByName(*it))
+			{
+				usrBan = Command::server->getUserByNickname(*it);
+				chan->addBannedUser(usrBan);
+				chan->removeUser(usrBan); // Supp user from chan ??
+			}
 		}
-		//rpl_banlist ???
 	}
 	else
 	{
 		if (param[0] == '+' || param[0] == '-')
 			return err_needmoreparams(usr->getNickname(), "MODE");
-		if (Command::server->isExistingUser(param))
+
+		users = splitByComma(param);
+		std::vector<std::string>::iterator	it = users.begin();
+		std::vector<std::string>::iterator	it_end = users.end();
+
+		for (; it < it_end; it++)
 		{
-			usrBan = Command::server->getUserByNickname(param);
-			chan->removeBannedUser(usrBan);
+			if (Command::server->isExistingUserByName(*it))
+			{
+				usrBan = Command::server->getUserByNickname(*it);
+				chan->removeBannedUser(usrBan);
+			}
 		}
 	}
 	if (param[0] == '+' || param[0] == '-')
-		paran = "";
+		param = "";
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param);
 }
 
