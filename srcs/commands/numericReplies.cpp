@@ -36,6 +36,10 @@ std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std
 }
 //366
 std::string	rpl_endofnames( std::string nick, std::string channel ) { return "366 " + nick + " " + channel + " :End of NAMES list"; }
+//367
+std::string	rpl_banlist( std::string nick, std::string channel, std::string ban ) { return "367 " + nick + " " + channel + " " + ban; }
+//368
+std::string	rpl_banlistend( std::string nick, std::string channel ) { return "368 " + nick + " " + channel + " :End of channel ban list"; }
 //381
 std::string rpl_youreoper( std::string nick ) { return "381 " + nick + " :You are now an IRC operator"; }
 //401
