@@ -93,6 +93,38 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
 }
 
+static  std::string	setBanForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+{
+	std::string param = params[i];
+	User		*usrBan;
+
+	if (sym == '+')
+	{
+		if (param[0] == '+' || param[0] == '-')
+			return err_needmoreparams(usr->getNickname(), "MODE");
+		if (Command::server->isExistingUser(param))
+		{
+			usrBan = Command::server->getUserByNickname(param);
+			chan->addBannedUser(usrBan);
+			chan->removeUser(usrBan); // Supp user from chan ??
+		}
+		//rpl_banlist ???
+	}
+	else
+	{
+		if (param[0] == '+' || param[0] == '-')
+			return err_needmoreparams(usr->getNickname(), "MODE");
+		if (Command::server->isExistingUser(param))
+		{
+			usrBan = Command::server->getUserByNickname(param);
+			chan->removeBannedUser(usrBan);
+		}
+	}
+	if (param[0] == '+' || param[0] == '-')
+		paran = "";
+	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param);
+}
+
 /**
  * @brief The MODE command is provided so that users may query and change the characteristics of a channel.
  * 
@@ -101,6 +133,7 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
  * l - set user limit for the channel
  * i - set invite only option on channel
  * k - set key for the channel
+ * b - set ban for the channel
  * 
  * @param cmd Contains command, parameters, user and server infos.
  */
@@ -141,6 +174,9 @@ void	channel_mode(Command cmd)
 					break;
 				case 'k': // set key for chan
 					usr->pushReply(":" + cmd.server->getName() + " " + setKeyForChan(usr, chan, params, sym, i + 1));
+					break;
+				case 'b': // set ban for chan
+					usr->pushReply(":" + cmd.server->getName() + " " + setBanForChan(usr, chan, params, sym, i + 1));
 					break;
 				default:
 					usr->pushReply(":" + cmd.server->getName() + " " + err_unknownmode(usr->getNickname(), charToString(params[i][j]), chan->getName()));
