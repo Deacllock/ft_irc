@@ -57,7 +57,7 @@ static bool isCommandValid( std::string msg, size_t &i )
 	// if (isdigit(msg[i]))
 	// {
 	// 	i++;
-	// 	return isdigit(msg.at(i++)) && isdigit(msg.at(i++));
+	// 	return isdigit(msg[i++)) && isdigit(msg[i++));
 	// }
 	
 	if (isalpha(msg[i]))
@@ -73,31 +73,31 @@ static bool isCommandValid( std::string msg, size_t &i )
 // {
 // 	size_t	j = 1;
 	
-// 	if (!isalpha(msg.at(*i)) && !isdigit(msg.at(*i)))
+// 	if (!isalpha(msg[*i)) && !isdigit(msg[*i)))
 // 		return false;
 
-// 	for (; msg.at(*i + j) != '.' && msg.at(*i + j) != ' '; j++)
-// 		if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)) && msg.at(*i + j) != '-')
+// 	for (; msg[*i + j) != '.' && msg[*i + j) != ' '; j++)
+// 		if (!isalpha(msg[*i + j)) && !isdigit(msg[*i + j)) && msg[*i + j) != '-')
 // 			return false;
 
-// 	if (msg.at(*i + j - 1) == '-')
+// 	if (msg[*i + j - 1) == '-')
 // 		return false;
 	
-// 	while (msg.at(*i + j) != ' ')
+// 	while (msg[*i + j) != ' ')
 // 	{
-// 		if (msg.at(*i + j) != '.')
+// 		if (msg[*i + j) != '.')
 // 			return false;
 
 // 		j++;
-// 		if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)))
+// 		if (!isalpha(msg[*i + j)) && !isdigit(msg[*i + j)))
 // 			return false;
 
 // 		j++;
-// 		for (; msg.at(*i + j) != '.' && msg.at(*i + j) != ' '; j++)
-// 			if (!isalpha(msg.at(*i + j)) && !isdigit(msg.at(*i + j)) && msg.at(*i + j) != '-')
+// 		for (; msg[*i + j) != '.' && msg[*i + j) != ' '; j++)
+// 			if (!isalpha(msg[*i + j)) && !isdigit(msg[*i + j)) && msg[*i + j) != '-')
 // 				return false;
 
-// 		if (msg.at(*i + j - 1) == '-')
+// 		if (msg[*i + j - 1) == '-')
 // 			return false;
 // 	}
 // 	*i += j;

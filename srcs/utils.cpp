@@ -52,22 +52,22 @@ static bool	isChanstring(char c)
 bool	checkChannelName(std::string name)
 {
 	int	i = 1;
-	if (name.at(0) != '#' && name.at(0) != '+' && name.at(0) != '&' && name.at(0) != '!')
+	if (name[0] != '#' && name[0] != '+' && name[0] != '&' && name[0] != '!')
 		return false;
-	if (name.at(0) == '!')
+	if (name[0] == '!')
 	{
-		if (name.at(i) != '5')
+		if (name[i] != '5')
 			return false;
  		i++;
- 		if (!isupper(name.at(i)) && !isdigit(name.at(i)))
+ 		if (!isupper(name[i]) && !isdigit(name[i]))
  			return false;
  		i++;
 	}
-	if (!isChanstring(name.at(i)))
+	if (!isChanstring(name[i]))
 		return false;
 	i++;
-	if (name.at(i) == ':')
-		if (!isChanstring(name.at(i + 1)))
+	if (name[i] == ':')
+		if (!isChanstring(name[i + 1]))
 			return false;
 	return true;
 }

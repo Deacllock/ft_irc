@@ -42,10 +42,17 @@ main test
 [DONE] change error reply to give nickname	
 [DONE] make regular ping 
 [DONE] check registration for every command!
-lower cases?
+[DONE] lower cases?
 
-
-
-After test:
--privmsg :nick PRIVMSG nick
-- test column messages
+TO TEST:
+- INVITE :
+	- invite mode 
+	- join channel without invite mode
+	- join channel without invite mode but while being invited
+	- join channel with invite mode but without being invited
+	- invite user that does not exist
+	- invite user already in chan
+	- invite channel
+	- invite ban user
+	- invite with no params
+	- invite with wrong channel name

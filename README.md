@@ -4,12 +4,12 @@ Notion: https://comet-sycamore-801.notion.site/Team-Home-e792cf6da5824c139b21268
 
 # How to use it?
 
-Server side:
+## Server side:
 ```
 make test
 ```
 
-Client side:
+## Client side:
 ```
 nc -NC 127.0.0.1 6667
 ```
@@ -31,3 +31,22 @@ irssi -c localhost -p 6667 -w pwd -n test
 -> Usable with network ip
 
 //nc -C -N ircnet.clue.be 6667
+
+## List of handled commands
+INVITE
+JOIN
+LIST
+MODE
+NAMES
+PART
+TOPIC
+NICK
+PASS
+PING
+PONG
+USER
+PRIVMSG
+DIE
+KICK
+KILL
+OPER
