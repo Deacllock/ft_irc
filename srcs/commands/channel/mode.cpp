@@ -1,6 +1,5 @@
 #include "commandHandlers.hpp"
 
-
 /**
  * @brief Set operator Mode in channel for a user;
  * 
@@ -11,39 +10,29 @@
  * @param i 
  * @return std::string 
  */
-static std::string operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+static std::string operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	User	*newOp;
 	std::string	param = params[i];
 
-	if (sym == '+')
-	{
-		if (param[0] == '+' || param[0] == '-')
-			return err_needmoreparams(usr->getNickname(), "MODE");
-		if (!Command::server->isExistingUserByName(param))
-			return err_usernotinchannel(usr->getNickname(), param, chan->getName());
-		newOp = Command::server->getUserByName(param);
-		if (!chan->isJoinedUser(newOp))
-			return err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName());
-		chan->addOperator(newOp);
-	}
-	else
-	{
-		if (param[0] == '+' || param[0] == '-')
-			return err_needmoreparams(usr->getNickname(), "MODE");
-		if (!Command::server->isExistingUserByName(param))
-			return err_usernotinchannel(usr->getNickname(), param, chan->getName());
-		newOp = Command::server->getUserByName(param);
-		if (!chan->isJoinedUser(newOp))
-			return err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName());
-		chan->removeOperator(newOp);
-	}
 	if (param[0] == '+' || param[0] == '-')
-		param = "";
+		return err_needmoreparams(usr->getNickname(), "MODE");
+	
+	params.erase(params.begin() + i);
+	if (!Command::server->isExistingUserByName(param))
+		return err_usernotinchannel(usr->getNickname(), param, chan->getName());
+	newOp = Command::server->getUserByName(param);
+	if (!chan->isJoinedUser(newOp))
+		return err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName());	
+	if (sym == '+')
+		chan->addOperator(newOp);
+	else
+		chan->removeOperator(newOp);
+
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
 }
 
-static  std::string	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+static  std::string	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string	param = params[i];
 	
@@ -51,9 +40,8 @@ static  std::string	setLimitInChan(User *usr, Channel *chan, std::vector<std::st
 	{
 		if (param[0] == '+' || param[0] == '-')
 			return err_needmoreparams(usr->getNickname(), "MODE");
-		chan->setLimit(stringToULong(param));
-		if (param[0] == '+' || param[0] == '-')
-			param = "";
+		chan->setLimit(stringToULong(param)); //no verif?
+		params.erase(params.begin() + i);
 	}
 	else
 	{
@@ -69,28 +57,24 @@ static  std::string	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "i", "");
 }
 
-static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string	param = params[i];
 
+	if (param[0] == '+' || param[0] == '-')
+		return err_needmoreparams(usr->getNickname(), "MODE");
+	
+	params.erase(params.begin() + i);
 	if (sym == '+')
 	{
 		if (chan->getKey() != "")
 			return err_keyset(usr->getNickname(), chan->getName());
-		if (param[0] == '+' || param[0] == '-')
-			return err_needmoreparams(usr->getNickname(), "MODE");
 		chan->setKey(param);
 	}
-	else
-	{
-		if (param[0] == '+' || param[0] == '-')
-			return err_needmoreparams(usr->getNickname(), "MODE");
-		if (chan->getKey() == param)
-			chan->setKey("");
-	}
-	if (param[0] == '+' || param[0] == '-')
-		param = "";
-	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
+	else if (chan->getKey() == param)
+		chan->setKey("");
+
+	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "k", param);
 }
 
 /**
@@ -118,7 +102,8 @@ void	channel_mode(Command cmd)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 
 	char sym = '+';
-	for (size_t i = 1; i < params.size(); i++)
+	size_t i = 1;
+	while( i < params.size())
 	{
 		for (size_t j = 0; j < params[i].size(); j++)
 		{
@@ -146,13 +131,11 @@ void	channel_mode(Command cmd)
 					usr->pushReply(":" + cmd.server->getName() + " " + err_unknownmode(usr->getNickname(), charToString(params[i][j]), chan->getName()));
 			}
 		}
+		i++;
 	}
 }
 
 /*
-	ERR_KEYSET
-    RPL_CHANNELMODEIS
-
 	limit of 3 changes per commands
 */
 

@@ -208,7 +208,7 @@ int Server::client_interactions()
 		size_t i = 0;
 		while (i < this->_users.size())
 		{
-			if (fds[i + 1].revents == POLLOUT)
+			if (fds[i + 1].revents != POLLHUP)
 				reply(this->_users[i]);
 			if ((this->_users[i])->isDisconnected())
 			{
