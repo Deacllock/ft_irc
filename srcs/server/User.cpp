@@ -127,9 +127,11 @@ std::string User::listAllChans()
     std::string chanList = "";
     std::vector<Channel *>::iterator it = this->_joinedChan.begin();
     if (it != this->_joinedChan.end())
+    {
         chanList += (*it)->getName();
-    for (it++; it != this->_joinedChan.end(); it++)
-        chanList += "," + (*it)->getName();
+        for (++it; it != this->_joinedChan.end(); it++)
+            chanList += "," + (*it)->getName();
+    }
     return chanList;
 }
 
