@@ -92,51 +92,40 @@ static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
 	usr->pushReply(":" + cmd.server->getName() + " " + rpl_banlistend(usr->getNickname(), chan->getName()));
 }
 
-static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string					param = params[i];
-	std::vector<std::string>	users;
+	
 	User						*usrBan;
 
-	if (sym == '+')
-	{
-		if (param[0] == '+' || param[0] == '-')
-			return do_rpl_banlist(cmd, usr, chan);
-		
-		users = splitByComma(param);
-		std::vector<std::string>::iterator	it = users.begin();
-		std::vector<std::string>::iterator	it_end = users.end();
-
-		for (; it < it_end; it++)
-		{
-			if (Command::server->isExistingUserByName(*it))
-			{
-				usrBan = Command::server->getUserByNickname(*it);
-				chan->addBannedUser(usrBan);
-				chan->removeUser(usrBan); // Supp user from chan ??
-			}
-		}
-	}
-	else
-	{
-		if (param[0] == '+' || param[0] == '-')
-			return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
-
-		users = splitByComma(param);
-		std::vector<std::string>::iterator	it = users.begin();
-		std::vector<std::string>::iterator	it_end = users.end();
-
-		for (; it < it_end; it++)
-		{
-			if (Command::server->isExistingUserByName(*it))
-			{
-				usrBan = Command::server->getUserByNickname(*it);
-				chan->removeBannedUser(usrBan);
-			}
-		}
-	}
 	if (param[0] == '+' || param[0] == '-')
-		param = "";
+	{
+		if (sym == '+')
+			return do_rpl_banlist(cmd, usr, chan);
+		else
+			return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+	}
+
+	params.erase(params.begin() + i);
+
+	std::vector<std::string> users = splitByComma(param);
+	std::vector<std::string>::iterator	it = users.begin();
+	std::vector<std::string>::iterator	it_end = users.end();
+
+	for (; it < it_end; it++)
+	{
+		if (Command::server->isExistingUserByName(*it))
+		{
+			usrBan = Command::server->getUserByNickname(*it);
+			if (sym == '-')
+				chan->removeBannedUser(usrBan);
+			else
+			{
+				chan->addBannedUser(usrBan);
+				chan->removeUser(usrBan);
+			}
+		}
+	}
 	return usr->pushReply(":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
 }
 
