@@ -81,6 +81,9 @@ void	kick(Command cmd)
 	if (channels.size() == 1)
 	{
 		Channel *curChan = cmd.server->getChannelByName(channels[0]);
+		if (!curChan)
+			return usr->pushReply(":" + usr->server->getName() + " " + err_nosuchchannel(usr->getNickname(), channels[0]));
+	
 		if (isKickPossible(curChan, usr))
 			for (size_t i = 0; i < users.size(); i++)
 				kickUser(curChan, cmd, users[i], comment);
@@ -89,6 +92,9 @@ void	kick(Command cmd)
 	for (size_t i = 0; i < channels.size(); i++)
 	{
 		Channel *curChan = cmd.server->getChannelByName(channels[i]);
+		if (!curChan)
+			return usr->pushReply(":" + usr->server->getName() + " " + err_nosuchchannel(usr->getNickname(), channels[i]));
+	
 		if (isKickPossible(curChan, usr))
 			kickUser(curChan, cmd, users[i], comment);
 	} 

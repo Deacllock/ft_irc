@@ -10,36 +10,38 @@
  * @param i 
  * @return std::string 
  */
-static std::string operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
+static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	User	*newOp;
 	std::string	param = params[i];
 
 	if (param[0] == '+' || param[0] == '-')
-		return err_needmoreparams(usr->getNickname(), "MODE");
+		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
 	params.erase(params.begin() + i);
 	if (!Command::server->isExistingUserByName(param))
-		return err_usernotinchannel(usr->getNickname(), param, chan->getName());
+		return usr->pushReply(":" + usr->server->getName() + " " + err_usernotinchannel(usr->getNickname(), param, chan->getName()));
+	
 	newOp = Command::server->getUserByName(param);
 	if (!chan->isJoinedUser(newOp))
-		return err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName());	
+		return usr->pushReply(":" + usr->server->getName() + " " + err_usernotinchannel(usr->getNickname(), newOp->getNickname(), chan->getName()));	
+	
 	if (sym == '+')
 		chan->addOperator(newOp);
 	else
 		chan->removeOperator(newOp);
 
-	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param);
+	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
 }
 
-static  std::string	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
+static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string	param = params[i];
 	
 	if (sym == '+')
 	{
 		if (param[0] == '+' || param[0] == '-')
-			return err_needmoreparams(usr->getNickname(), "MODE");
+			return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 		chan->setLimit(stringToULong(param)); //no verif?
 		params.erase(params.begin() + i);
 	}
@@ -48,33 +50,33 @@ static  std::string	setLimitInChan(User *usr, Channel *chan, std::vector<std::st
 		chan->setLimit(-1);
 		param = "";
 	}
-	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "l", param);
+	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "l", param));
 }
 
-static  std::string	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
+static void	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
 {
 	chan->setInviteOnly(sym == '+');
-	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "i", "");
+	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "i", ""));
 }
 
-static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
+static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string	param = params[i];
 
 	if (param[0] == '+' || param[0] == '-')
-		return err_needmoreparams(usr->getNickname(), "MODE");
+		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
 	params.erase(params.begin() + i);
 	if (sym == '+')
 	{
 		if (chan->getKey() != "")
-			return err_keyset(usr->getNickname(), chan->getName());
+			return usr->pushReply(":" + usr->server->getName() + " " + err_keyset(usr->getNickname(), chan->getName()));
 		chan->setKey(param);
 	}
 	else if (chan->getKey() == param)
 		chan->setKey("");
 
-	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "k", param);
+	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "k", param));
 }
 
 static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
@@ -87,9 +89,9 @@ static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
 		std::vector<User *>::iterator	it_end = banned.end();
 
 		for (; it < it_end; it++)
-			usr->pushReply(":" + cmd.server->getName() + " " + rpl_banlist(usr->getNickname(), chan->getName(), (*it)->getNickname()));
+			sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_banlist(usr->getNickname(), chan->getName(), (*it)->getNickname()));
 	}
-	usr->pushReply(":" + cmd.server->getName() + " " + rpl_banlistend(usr->getNickname(), chan->getName()));
+	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_banlistend(usr->getNickname(), chan->getName()));
 }
 
 static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
@@ -122,11 +124,11 @@ static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<st
 			else
 			{
 				chan->addBannedUser(usrBan);
-				chan->removeUser(usrBan);
+				kick(Command(usr, "KICK " + chan->getName() + " " + *it + " :Banned from " + chan->getName()));
 			}
 		}
 	}
-	return usr->pushReply(":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
+	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
 }
 
 /**
@@ -169,16 +171,16 @@ void	channel_mode(Command cmd)
 					sym = '-';
 					break;
 				case 'o': // make someone op in chan - or supp op
-					usr->pushReply(":" + cmd.server->getName() + " " + operatorModeInChan(usr, chan, params, sym, i + 1));
+					operatorModeInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'l': // set limit for chan
-					usr->pushReply(":" + cmd.server->getName() + " " + setLimitInChan(usr, chan, params, sym, i + 1));
+					setLimitInChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'i': // set inviteonly chan
-					usr->pushReply(":" + cmd.server->getName() + " " + setInviteOnlyForChan(usr, chan, sym));
+					setInviteOnlyForChan(usr, chan, sym);
 					break;
 				case 'k': // set key for chan
-					usr->pushReply(":" + cmd.server->getName() + " " + setKeyForChan(usr, chan, params, sym, i + 1));
+					setKeyForChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'b': // set ban for chan
 					setBanForChan(cmd, usr, chan, params, sym, i + 1);

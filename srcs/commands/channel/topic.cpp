@@ -15,6 +15,8 @@ void	topic(Command cmd)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "TOPIC"));
 
 	Channel *chan = Command::server->getChannelByName(cmd.getParams()[0]);
+	if (!chan)
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchchannel(usr->getNickname(), cmd.getParams()[0]));
 
 	if (cmd.getParams().size() == 1)
 	{

@@ -18,7 +18,7 @@ std::string	rpl_notopic( std::string nick, std::string channel ) { return "331 "
 //332
 std::string	rpl_topic( std::string nick, std::string channel, std::string topic ) { return "332 " + nick + " " + channel + " :" + topic; }
 //341
-std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ) { return "341 " + nick + " " + channel + " " + nickname; }
+std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ) { return "341 " + nick + " " + nickname + " " + channel  ; }
 //353
 std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std::string> nickname )
 {
