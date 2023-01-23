@@ -16,6 +16,8 @@ std::string	rpl_topic( std::string nick, std::string channel, std::string topic 
 std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ); //341
 std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std::string> nicks ); //353
 std::string	rpl_endofnames( std::string nick, std::string channel ); //366
+std::string	rpl_banlist( std::string nick, std::string channel, std::string ban ); //367
+std::string	rpl_banlistend( std::string nick, std::string channel ); //368
 std::string	err_nosuchnick( std::string nick, std::string nickname ); //401
 std::string err_nosuchserver( std::string nick, std::string server ); //402
 std::string err_nosuchchannel( std::string nick, std::string channel ); //403

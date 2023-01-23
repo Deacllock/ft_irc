@@ -77,6 +77,69 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
 	return rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "k", param);
 }
 
+static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
+{
+	std::vector<User *>	banned = chan->getBanned();
+
+	if (!banned.empty())
+	{
+		std::vector<User *>::iterator	it = banned.begin();
+		std::vector<User *>::iterator	it_end = banned.end();
+
+		for (; it < it_end; it++)
+			usr->pushReply(":" + cmd.server->getName() + " " + rpl_banlist(usr->getNickname(), chan->getName(), (*it)->getNickname()));
+	}
+	usr->pushReply(":" + cmd.server->getName() + " " + rpl_banlistend(usr->getNickname(), chan->getName()));
+}
+
+static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<std::string> params, char sym, size_t i)
+{
+	std::string					param = params[i];
+	std::vector<std::string>	users;
+	User						*usrBan;
+
+	if (sym == '+')
+	{
+		if (param[0] == '+' || param[0] == '-')
+			return do_rpl_banlist(cmd, usr, chan);
+		
+		users = splitByComma(param);
+		std::vector<std::string>::iterator	it = users.begin();
+		std::vector<std::string>::iterator	it_end = users.end();
+
+		for (; it < it_end; it++)
+		{
+			if (Command::server->isExistingUserByName(*it))
+			{
+				usrBan = Command::server->getUserByNickname(*it);
+				chan->addBannedUser(usrBan);
+				chan->removeUser(usrBan); // Supp user from chan ??
+			}
+		}
+	}
+	else
+	{
+		if (param[0] == '+' || param[0] == '-')
+			return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+
+		users = splitByComma(param);
+		std::vector<std::string>::iterator	it = users.begin();
+		std::vector<std::string>::iterator	it_end = users.end();
+
+		for (; it < it_end; it++)
+		{
+			if (Command::server->isExistingUserByName(*it))
+			{
+				usrBan = Command::server->getUserByNickname(*it);
+				chan->removeBannedUser(usrBan);
+			}
+		}
+	}
+	if (param[0] == '+' || param[0] == '-')
+		param = "";
+	return usr->pushReply(":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
+}
+
 /**
  * @brief The MODE command is provided so that users may query and change the characteristics of a channel.
  * 
@@ -85,6 +148,7 @@ static  std::string	setKeyForChan(User *usr, Channel *chan, std::vector<std::str
  * l - set user limit for the channel
  * i - set invite only option on channel
  * k - set key for the channel
+ * b - set ban for the channel
  * 
  * @param cmd Contains command, parameters, user and server infos.
  */
@@ -126,6 +190,9 @@ void	channel_mode(Command cmd)
 					break;
 				case 'k': // set key for chan
 					usr->pushReply(":" + cmd.server->getName() + " " + setKeyForChan(usr, chan, params, sym, i + 1));
+					break;
+				case 'b': // set ban for chan
+					setBanForChan(cmd, usr, chan, params, sym, i + 1);
 					break;
 				default:
 					usr->pushReply(":" + cmd.server->getName() + " " + err_unknownmode(usr->getNickname(), charToString(params[i][j]), chan->getName()));
