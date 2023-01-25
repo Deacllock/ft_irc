@@ -37,11 +37,9 @@ void	list(Command cmd)
 		std::vector<std::string>::iterator it_end = channels.end();
 		for (; it < it_end; it++)
 		{
-			if (!Command::server->isExistingChannelByName(*it))
-				continue;
-
 			Channel	*chan = Command::server->getChannelByName(*it);
-			usr->pushReply(":" + cmd.server->getName() + " " + rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
+			if (chan)
+				usr->pushReply(":" + cmd.server->getName() + " " + rpl_list(usr->getNickname(), chan->getName(), intToString(chan->getUsers().size()), chan->getTopic()));
 		}
 	}
 	else { listAllChan(cmd); }
