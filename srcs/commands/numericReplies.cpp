@@ -12,13 +12,13 @@ std::string	rpl_list( std::string nick, std::string channel, std::string visible
 //323
 std::string	rpl_listend( std::string nick ) { return "323 " + nick + " :End of LIST"; }
 //324
-std::string	rpl_channelmodeis( std::string nick, std::string channel, std::string mode, std::string modeParams ) { return "324 " + nick + " " +channel + " " + mode + " " + modeParams; }
+std::string	rpl_channelmodeis( std::string nick, std::string channel, std::string mode, std::string modeParams ) { return "324 " + nick + " " + channel + " " + mode + " " + modeParams; }
 //331
 std::string	rpl_notopic( std::string nick, std::string channel ) { return "331 " + nick + " " + channel + " :No topic is set"; }
 //332
 std::string	rpl_topic( std::string nick, std::string channel, std::string topic ) { return "332 " + nick + " " + channel + " :" + topic; }
 //341
-std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ) { return "341 " + nick + " " + nickname + " " + channel  ; }
+std::string	rpl_inviting( std::string nick, std::string channel, std::string nickname ) { return "341 " + nick + " " + channel  + " " + nickname  ; }
 //353
 std::string	rpl_namreply( std::string nick, std::string channel, std::vector<std::string> nickname )
 {

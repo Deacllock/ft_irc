@@ -63,7 +63,13 @@ void	Channel::addBannedUser( User *u )		{ addUserToVector(this->_banned, u); }
 void	Channel::removeBannedUser( User *u )	{ removeUserFromVector(this->_banned, u); }
 
 void	Channel::addUser( User *u )				{ addUserToVector(this->_users, u); }
-void	Channel::removeUser( User *u )			{ removeUserFromVector(this->_users, u); }
+void	Channel::removeUser( User *u )
+{ 
+	removeUserFromVector(this->_users, u);
+	if (this->_users.size() == 0)
+		User::server->removeChannel(this);
+
+}
 
 void	Channel::addOperator( User *u )			{ addUserToVector(this->_operators, u); }
 void	Channel::removeOperator( User *u )		{ removeUserFromVector(this->_operators, u); }

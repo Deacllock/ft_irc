@@ -41,9 +41,6 @@ void	part(Command cmd)
 			chan->removeOperator(usr);
 			chan->removeUser(usr);
 			usr->removeJoinedChan(chan);
-
-			if (chan->getUsers().size() == 0)
-				cmd.server->removeChannel(chan);
 		}
 	}
 }

@@ -222,7 +222,6 @@ std::string	Server::getPingValue()
 	return (static_cast< std::ostringstream & >(( std::ostringstream() << std::dec << this->_pingID ) ).str());
 }
 
-//parcours and apply function
 void	Server::checkPong()
 {
 	for (std::vector<User *>::iterator it = this->_users.begin(); it != this->_users.end(); it++)
