@@ -13,5 +13,7 @@ int main(int argc, char *argv[])
 		return (2);
 	}
 	signal(SIGINT, ctrl_c);
-	Server(argv[1], argv[2]);
+	try {
+		Server(argv[1], argv[2]);
+	} catch (std::exception &e) { std::cout << e.what() << std::endl; }
 }
