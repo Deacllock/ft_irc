@@ -13,11 +13,13 @@
 static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	User	*newOp;
-	std::string	param = params[i];
+	std::string	param;
 
-	if (param[0] == '+' || param[0] == '-')
+	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
+	param = params[i];
+
 	params.erase(params.begin() + i);
 	if (!Command::server->isExistingUserByName(param))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_usernotinchannel(usr->getNickname(), param, chan->getName()));
@@ -36,12 +38,13 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 
 static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
-	std::string	param = params[i];
-	
+	std::string	param;
+
 	if (sym == '+')
 	{
-		if (param[0] == '+' || param[0] == '-')
+		if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 			return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+		param = params[i];
 		chan->setLimit(stringToULong(param)); //no verif?
 		params.erase(params.begin() + i);
 	}
@@ -61,11 +64,13 @@ static void	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
 
 static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
-	std::string	param = params[i];
+	std::string	param;
 
-	if (param[0] == '+' || param[0] == '-')
+	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
+	param = params[i];
+
 	params.erase(params.begin() + i);
 	if (sym == '+')
 	{
@@ -96,17 +101,18 @@ static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
 
 static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
-	std::string					param = params[i];
-	
+	std::string					param;
 	User						*usrBan;
 
-	if (param[0] == '+' || param[0] == '-')
+	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 	{
 		if (sym == '+')
 			return do_rpl_banlist(cmd, usr, chan);
 		else
 			return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	}
+
+	param = params[i];
 
 	params.erase(params.begin() + i);
 
