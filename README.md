@@ -33,20 +33,22 @@ irssi -c localhost -p 6667 -w pwd -n test
 //nc -C -N ircnet.clue.be 6667
 
 ## List of handled commands
-INVITE
-JOIN
-LIST
-MODE
-NAMES
-PART
-TOPIC
-NICK
-PASS
-PING
-PONG
-USER
-PRIVMSG
-DIE
-KICK
-KILL
-OPER
+- INVITE
+- JOIN
+- LIST
+- MODE
+  + User (o)
+  + Channel (i, b, o, k, l)
+- NAMES
+- PART
+- TOPIC
+- NICK
+- PASS
+- PING
+- PONG
+- USER
+- PRIVMSG
+- DIE
+- KICK
+- KILL
+- OPER
