@@ -100,6 +100,7 @@ void     Server::removeUser( User *user )
 		(*it)->removeBannedUser(user);
 		(*it)->removeUser(user);
 		(*it)->removeOperator(user);
+		delete (*it);
 	}
 	delete user;
 }
