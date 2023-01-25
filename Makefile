@@ -40,7 +40,7 @@ opt_debug: CXXFLAGS += $(DBFLAGS)
 opt_debug: all
 
 test: opt_debug
-	valgrind ./ft_irc 6667 pwd
+	valgrind --leak-check=full ./ft_irc 6667 pwd
 
 debug: opt_debug
 	gdb --args ./ft_irc 6667 pwd

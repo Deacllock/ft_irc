@@ -40,7 +40,8 @@ void	join(Command cmd)
 			if (!chan)
 			{
 				Command::server->createChan(*it);
-				Command::server->getChannelByName(*it)->addOperator(usr);
+				chan = Command::server->getChannelByName(*it);
+				chan->addOperator(usr);
 			}
 
 			if (chan->getKey() != "" && (it_k > it_k_end || *(it_k++) != chan->getKey()))
