@@ -50,7 +50,9 @@ Server & Server::operator=( const Server &rhs )
 Server::~Server()
 {
 	while (this->_users.size())
-		removeUser(_users[0]);
+		removeUser(this->_users[0]);
+	while (this->_channels.size())
+		removeChannel(this->_channels[0]);
 	close (this->_sockfd);
 }
 
@@ -63,7 +65,7 @@ const char *Server::CannotStartServer::what() const throw()
 std::vector<User *>		Server::getUsers() const	{ return this->_users; };
 std::vector<Channel *>	Server::getChannels() const	{ return this->_channels; };
 std::string				Server::getName() const		{ return this->_name; };
-bool					Server::isUp() const 	{ return this->_isUp;}
+bool					Server::isUp() const		{ return this->_isUp;}
 
 /*--------------- Setters ---------------*/
 void	Server::setIsUp( bool val ) { this->_isUp = val; }
@@ -87,20 +89,15 @@ void Server::addUser( int fd )
 
 void     Server::removeUser( User *user )
 {
-	std::vector<User *>::iterator it = std::find(this->_users.begin(), this->_users.end(), user);
-	if (user == NULL || it == this->_users.end())
-		abort();
-	
-	this->_users.erase(it);
+	removeElmFromVector(this->_users, user);
 
 	std::vector<Channel *> joinedChan = user->getJoinedChan();
 	for (std::vector<Channel *>::iterator it = joinedChan.begin();
 		it != joinedChan.end(); it++)
 	{
 		(*it)->removeBannedUser(user);
-		(*it)->removeUser(user);
 		(*it)->removeOperator(user);
-		delete (*it);
+		(*it)->removeUser(user);
 	}
 	delete user;
 }
@@ -167,6 +164,14 @@ void	Server::addChannel( Channel *chan )
 void	Server::removeChannel( Channel *chan )
 {
 	removeElmFromVector(this->_channels, chan);
+
+	std::vector<User *> users = chan->getUsers();
+	for (std::vector<User *>::iterator it = users.begin();
+		it != users.end(); it++)
+	{
+		(*it)->removeJoinedChan(chan);
+	}
+	delete chan;
 }
 
 bool	Server::isExistingChannelByName( std::string name )
