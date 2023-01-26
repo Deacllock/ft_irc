@@ -137,6 +137,19 @@ static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<st
 	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
 }
 
+static void	infos_chan(Command cmd, User *usr, Channel *chan)
+{
+	std::string		mode = "";
+	unsigned long	limit = -1;
+	
+	if (chan->isInviteOnly())
+		mode += "i";
+	if (chan->getLimit() != limit)
+		mode += "l " + intToString(chan->getLimit());
+
+	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+}
+
 /**
  * @brief The MODE command is provided so that users may query and change the characteristics of a channel.
  * 
