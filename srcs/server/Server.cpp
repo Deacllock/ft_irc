@@ -63,7 +63,7 @@ const char *Server::CannotStartServer::what() const throw()
 std::vector<User *>		Server::getUsers() const	{ return this->_users; };
 std::vector<Channel *>	Server::getChannels() const	{ return this->_channels; };
 std::string				Server::getName() const		{ return this->_name; };
-bool					Server::isUp() const 	{ return this->_isUp;}
+bool					Server::isUp() const		{ return this->_isUp;}
 
 /*--------------- Setters ---------------*/
 void	Server::setIsUp( bool val ) { this->_isUp = val; }

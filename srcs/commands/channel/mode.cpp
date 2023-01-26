@@ -137,9 +137,9 @@ static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<st
 	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
 }
 
-static void	infos_chan(Command cmd, User *usr, Channel *chan)
+static void	infos_chan(User *usr, Channel *chan)
 {
-	std::string		mode = "";
+	std::string		mode = "+";
 	unsigned long	limit = -1;
 	
 	if (chan->isInviteOnly())
@@ -147,7 +147,7 @@ static void	infos_chan(Command cmd, User *usr, Channel *chan)
 	if (chan->getLimit() != limit)
 		mode += "l " + intToString(chan->getLimit());
 
-	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 }
 
 /**
@@ -171,6 +171,9 @@ void	channel_mode(Command cmd)
 
 	if (!chan->isJoinedUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
+	
+	if (params.size() == 1)
+		return infos_chan(cmd.getUser(), chan);
 	
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
@@ -226,7 +229,7 @@ void	mode(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() < 2)
+	if (cmd.getParams().size() < 1)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
 	std::string name = cmd.getParams()[0];

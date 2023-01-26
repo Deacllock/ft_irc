@@ -35,14 +35,14 @@ static bool	parseParams(bool &isOp, std::vector<std::string> params)
 	return unknown;
 }
 
-static void	infos_user(Command cmd, User *usr)
+static void	infos_user(User *usr)
 {
 	std::string		mode = "";
 	
-	if (chan->isOperator())
-		mode += "o";
+	if (usr->isOperator())
+		mode += "+o";
 
-	usr->pushReply(":" + cmd.server->getName() + " " + rpl_umodeis(usr->getNickname(), mode));
+	usr->pushReply(":" + usr->server->getName() + " " + rpl_umodeis(usr->getNickname(), mode));
 }
 
 
@@ -75,6 +75,6 @@ void	user_mode(Command cmd)
 			rpl_umodeis(usr->getNickname(), "-o");
 	}
 
-	else if (usr->isOperator())
-		usr->pushReply(":" + cmd.server->getName() + " " + rpl_umodeis(usr->getNickname(), "o"));
+	else 
+		infos_user(usr);
 }
