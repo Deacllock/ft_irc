@@ -68,7 +68,6 @@ void	Channel::removeUser( User *u )
 	removeUserFromVector(this->_users, u);
 	if (this->_users.size() == 0)
 		User::server->removeChannel(this);
-
 }
 
 void	Channel::addOperator( User *u )			{ addUserToVector(this->_operators, u); }
