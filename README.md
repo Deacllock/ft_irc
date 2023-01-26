@@ -19,18 +19,10 @@ nc -NC 127.0.0.1 6667
 ```
 irssi -c localhost -p 6667 -w pwd -n test
 ```
--> Shall output "Amazing" on server side
+
 -> Usable with ::1 as IPv6
 -> Usable with localhost
 -> Usable with network ip
-
-
--> Shall output "Amazing" on server side
--> Usable with ::1 as IPv6
--> Usable with localhost
--> Usable with network ip
-
-//nc -C -N ircnet.clue.be 6667
 
 ## List of handled commands
 - INVITE
