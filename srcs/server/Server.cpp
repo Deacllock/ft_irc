@@ -100,6 +100,7 @@ void     Server::removeUser( User *user )
 		(*it)->removeBannedUser(user);
 		(*it)->removeUser(user);
 		(*it)->removeOperator(user);
+		delete (*it);
 	}
 	delete user;
 }
@@ -155,8 +156,7 @@ User	*Server::getUserByNickname( std::string name )
 /*--------------- Channels ---------------*/
 void	Server::createChan( std::string name )
 {
-	Channel	*chan = new Channel(name,"", -1);
-	this->addChannel(chan);
+	this->addChannel(new Channel(name, "", -1));
 }
 
 void	Server::addChannel( Channel *chan )

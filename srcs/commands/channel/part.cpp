@@ -25,13 +25,14 @@ void	part(Command cmd)
 	std::vector<std::string>::iterator it_end = channels.end();
 	for (; it < it_end; it++)
 	{
-		if (!Command::server->isExistingChannelByName(*it))
+		Channel	*chan = Command::server->getChannelByName(*it);
+
+		if (!chan)
 		{
 			usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchchannel(usr->getNickname(), *it));
 			continue;
 		}
 
-		Channel	*chan = Command::server->getChannelByName(*it);
 		if (!chan->isJoinedUser(usr))
 			usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
 

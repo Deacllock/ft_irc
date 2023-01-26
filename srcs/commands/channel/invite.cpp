@@ -18,6 +18,9 @@ void	invite(Command cmd)
 	std::string channel = cmd.getParams()[1];
 
 	Channel	*chan = Command::server->getChannelByName(channel);
+	if (!chan)
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchchannel(usr->getNickname(), channel));
+
 	if (!chan->isJoinedUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
 	

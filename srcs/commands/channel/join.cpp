@@ -35,14 +35,15 @@ void	join(Command cmd)
 		// CREATE CHAN
 		else
 		{
-			if (!Command::server->isExistingChannelByName(*it))
+			Channel	*chan = Command::server->getChannelByName(*it);
+
+			if (!chan)
 			{
 				Command::server->createChan(*it);
-				Command::server->getChannelByName(*it)->addOperator(usr);
+				chan = Command::server->getChannelByName(*it);
+				chan->addOperator(usr);
 			}
 
-			Channel	*chan = Command::server->getChannelByName(*it);
-			
 			if (chan->getKey() != "" && (it_k > it_k_end || *(it_k++) != chan->getKey()))
 				usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
 

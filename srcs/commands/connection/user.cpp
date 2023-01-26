@@ -8,7 +8,7 @@
 void greetNewComer( Command cmd )
 {
 	User *usr = cmd.getUser();
-	if (usr->isConnected() && usr->getNickname() != "" && usr->getUsername() != "")
+	if (usr->isConnected() && usr->getNickname() != "*" && usr->getUsername() != "")
 	{
 		usr->setStatus(REGISTERED);
 		usr->pushReply(":" + cmd.server->getName() + " " +rpl_welcome(usr->getNickname(), cmd.server->getName()));
