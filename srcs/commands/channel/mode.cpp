@@ -87,6 +87,8 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 			std::string mode = "k = ";
 			if (chan->getKey() != "")
 				mode += chan->getKey();
+			else
+				mode += "''";
 			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 		}
 		else if (!chan->isOperatorUser(usr))
