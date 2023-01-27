@@ -15,6 +15,9 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	User	*newOp;
 	std::string	param;
 
+	if (!chan->isOperatorUser(usr))
+		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
+	
 	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
@@ -43,11 +46,20 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 	if (sym == '+')
 	{
 		if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
-			return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+		{
+			std::string mode = "l";
+			if (chan->getLimit() != (unsigned long)-1)
+				mode += " " + intToString(chan->getLimit());
+			else 
+				mode += " INF";
+			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+		}
 		param = params[i];
 		chan->setLimit(stringToULong(param)); //no verif?
 		params.erase(params.begin() + i);
 	}
+	else if (!chan->isOperatorUser(usr))
+		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 	else
 	{
 		chan->setLimit(-1);
@@ -58,6 +70,8 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 
 static void	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
 {
+	if (!chan->isOperatorUser(usr))
+		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 	chan->setInviteOnly(sym == '+');
 	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "i", ""));
 }
@@ -67,7 +81,22 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 	std::string	param;
 
 	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
-		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+	{
+		if (sym == '+')
+		{
+			std::string mode = "k = ";
+			if (chan->getKey() != "")
+				mode += chan->getKey();
+			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+		}
+		else if (!chan->isOperatorUser(usr))
+			return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
+		else
+			return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+	}
+
+	if (!chan->isOperatorUser(usr))
+		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 	
 	param = params[i];
 
@@ -84,7 +113,7 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "k", param));
 }
 
-static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
+static	void	do_rpl_banlist(User *usr, Channel *chan)
 {
 	std::vector<User *>	banned = chan->getBanned();
 
@@ -94,12 +123,12 @@ static	void	do_rpl_banlist(Command cmd, User *usr, Channel *chan)
 		std::vector<User *>::iterator	it_end = banned.end();
 
 		for (; it < it_end; it++)
-			sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_banlist(usr->getNickname(), chan->getName(), (*it)->getNickname()));
+			sendAll(chan->getUsers(), NULL, ":" + Command::server->getName() + " " + rpl_banlist(usr->getNickname(), chan->getName(), (*it)->getNickname()));
 	}
-	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_banlistend(usr->getNickname(), chan->getName()));
+	sendAll(chan->getUsers(), NULL, ":" + Command::server->getName() + " " + rpl_banlistend(usr->getNickname(), chan->getName()));
 }
 
-static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
+static  void	setBanForChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string					param;
 	User						*usrBan;
@@ -107,10 +136,15 @@ static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<st
 	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 	{
 		if (sym == '+')
-			return do_rpl_banlist(cmd, usr, chan);
+			return do_rpl_banlist(usr, chan);
+		else if (!chan->isOperatorUser(usr))
+			return usr->pushReply(":" + Command::server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 		else
-			return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+			return usr->pushReply(":" + Command::server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	}
+	
+	if (!chan->isOperatorUser(usr))
+		return usr->pushReply(":" + Command::server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 
 	param = params[i];
 
@@ -134,7 +168,7 @@ static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<st
 			}
 		}
 	}
-	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
+	sendAll(chan->getUsers(), NULL, ":" + Command::server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
 }
 
 static void	infos_chan(User *usr, Channel *chan)
@@ -170,14 +204,11 @@ void	channel_mode(Command cmd)
 	Channel	*chan = Command::server->getChannelByName(params[0]);
 
 	if (!chan->isJoinedUser(usr))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
+		return usr->pushReply(":" + Command::server->getName() + " " + err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
 	
 	if (params.size() == 1)
 		return infos_chan(cmd.getUser(), chan);
 	
-	if (!chan->isOperatorUser(usr))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
-
 	char sym = '+';
 	size_t i = 1;
 	while( i < params.size())
@@ -205,20 +236,15 @@ void	channel_mode(Command cmd)
 					setKeyForChan(usr, chan, params, sym, i + 1);
 					break;
 				case 'b': // set ban for chan
-					setBanForChan(cmd, usr, chan, params, sym, i + 1);
+					setBanForChan(usr, chan, params, sym, i + 1);
 					break;
 				default:
-					usr->pushReply(":" + cmd.server->getName() + " " + err_unknownmode(usr->getNickname(), charToString(params[i][j]), chan->getName()));
+					usr->pushReply(":" + Command::server->getName() + " " + err_unknownmode(usr->getNickname(), charToString(params[i][j]), chan->getName()));
 			}
 		}
 		i++;
 	}
 }
-
-/*
-	limit of 3 changes per commands
-*/
-
 
 /**
  * @brief Mode command is used to set or remove options from target
@@ -230,7 +256,7 @@ void	mode(Command cmd)
 	User	*usr = cmd.getUser();
 
 	if (cmd.getParams().size() < 1)
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
+		return usr->pushReply(":" + Command::server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
 	std::string name = cmd.getParams()[0];
 	if (Command::server->isExistingChannelByName(name))
