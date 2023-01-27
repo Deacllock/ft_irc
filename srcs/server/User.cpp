@@ -59,6 +59,7 @@ bool			User::isDisconnected() const        { return this->_status == DISCONNECTE
 bool            User::isOperator() const            { return this->_operator; }
 
 std::string     User::getUsername() const       	{ return this->_username; }
+std::string	User::getRealName() const		{ return this->_realName; }
 std::string     User::getNickname() const       	{ return this->_nickname; }
 time_t      	User::getLastNickChange() const 	{ return this->_lastNickChange; }
 std::string		User::getFullName() const           { return this->_nickname + "!" + this->_username + "@" + server->getName(); }

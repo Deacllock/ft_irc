@@ -21,7 +21,7 @@ void	whois( Command cmd )
 	//rpl_away		->are we using away ?
 	//rpl_whoisidle		->what is idle ?
 	
-	usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoisuser(usr->getNickname(), nick, target->getUsername(), "", target->getRealName()));
+	usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoisuser(nick, target->getUsername(), "", target->getRealName()));
 
 	channels = target->getJoinedChan();
 	std::vector<Channel *>::iterator	it = channels.begin();
@@ -35,12 +35,12 @@ void	whois( Command cmd )
 		channels_str += (*it)->getName();
 		channels_str += " ";
 	}
-	usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoischannels(usr->getNickname(), nick, channels_str));
+	usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoischannels(nick, channels_str));
 	
-	usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoisserver(usr->getNickname(), nick, cmd.server->getName(), ""));
+	usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoisserver(nick, cmd.server->getName(), ""));
 
 	if (target->isOperator())
-		usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoisoperator(usr->getNickname(), nick));
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_whoisoperator(nick));
 
-	usr->pushReply(":" + cmd.server->getName() + " " + rpl_endofwhois(usr->getNickname(), nick));
+	usr->pushReply(":" + cmd.server->getName() + " " + rpl_endofwhois(nick));
 }

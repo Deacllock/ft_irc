@@ -8,6 +8,11 @@ std::string	rpl_welcome( std::string nick, std::string host ); //001
 std::string rpl_umodeis( std::string nick, std::string user_mode ); //221
 std::string	rpl_topic( std::string nick, std::string channel, std::string topic ); //332
 std::string	rpl_youreoper( std::string nick ); //381
+std::string	rpl_whoisuser( std::string nick, std::string user, std::string host, std::string realname ); //311
+std::string	rpl_whoisserver( std::string nick, std::string server, std::string serverinfo ); //312
+std::string	rpl_whoisoperator( std::string nick ); //313
+std::string	rpl_endofwhois( std::string nick ); //318
+std::string	rpl_whoischannels( std::string nick, std::string channels ); //319
 std::string	rpl_list( std::string nick, std::string channel, std::string visible, std::string topic ); //322
 std::string	rpl_listend( std::string nick ); //323
 std::string	rpl_channelmodeis( std::string nick, std::string channel, std::string mode, std::string params ); //324
