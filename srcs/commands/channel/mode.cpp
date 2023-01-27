@@ -139,15 +139,29 @@ static  void	setBanForChan(Command cmd, User *usr, Channel *chan, std::vector<st
 
 static void	infos_chan(User *usr, Channel *chan)
 {
-	std::string		mode = "+";
+	std::string		mode = "";
+	std::string		params = "";
 	unsigned long	limit = -1;
 	
 	if (chan->isInviteOnly())
 		mode += "i";
 	if (chan->getLimit() != limit)
-		mode += "l " + intToString(chan->getLimit());
+	{
+		mode += "l"; 
+		params += intToString(chan->getLimit());
+	}
+	if (chan->getKey() != "")
+	{
+		mode += "k";
+		if (params != "")
+			params += " ";
+		params += chan->getKey();
+	}
 
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+	if (mode != "")
+		mode = "+" + mode;
+
+	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode + " " + params, ""));
 }
 
 /**
