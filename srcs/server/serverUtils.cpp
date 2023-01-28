@@ -48,7 +48,7 @@ static int	ft_bind(int sockfd, std::string port)
 	hints.ai_family = AF_UNSPEC; // Allow IPv4 or IPv6
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = getprotobyname("TCP")->p_proto;
-	hints.ai_flags = AI_NUMERICHOST | AI_PASSIVE;	
+	hints.ai_flags = AI_PASSIVE; // Make it suitable for bind
 	hints.ai_canonname = NULL;
 	hints.ai_addr = NULL;
 	hints.ai_next = NULL;
@@ -145,9 +145,6 @@ static void	reply(User *usr)
  */
 static int	read_and_parse(User *user)
 {
-	if (!user) //gnn
-		return (1);
-
 	char			buf[BUFFER_SIZE + 1];
 	std::string 	msg = "";
 

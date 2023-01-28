@@ -54,11 +54,6 @@ static bool areParamValids( std::string msg, size_t &i )
 
 static bool isCommandValid( std::string msg, size_t &i )
 {
-	// if (isdigit(msg[i]))
-	// {
-	// 	i++;
-	// 	return isdigit(msg[i++)) && isdigit(msg[i++));
-	// }
 	
 	if (isalpha(msg[i]))
 	{
@@ -69,57 +64,6 @@ static bool isCommandValid( std::string msg, size_t &i )
 	return false;
 }
 
-// bool	is_servername(std::string msg, size_t *i)
-// {
-// 	size_t	j = 1;
-	
-// 	if (!isalpha(msg[*i)) && !isdigit(msg[*i)))
-// 		return false;
-
-// 	for (; msg[*i + j) != '.' && msg[*i + j) != ' '; j++)
-// 		if (!isalpha(msg[*i + j)) && !isdigit(msg[*i + j)) && msg[*i + j) != '-')
-// 			return false;
-
-// 	if (msg[*i + j - 1) == '-')
-// 		return false;
-	
-// 	while (msg[*i + j) != ' ')
-// 	{
-// 		if (msg[*i + j) != '.')
-// 			return false;
-
-// 		j++;
-// 		if (!isalpha(msg[*i + j)) && !isdigit(msg[*i + j)))
-// 			return false;
-
-// 		j++;
-// 		for (; msg[*i + j) != '.' && msg[*i + j) != ' '; j++)
-// 			if (!isalpha(msg[*i + j)) && !isdigit(msg[*i + j)) && msg[*i + j) != '-')
-// 				return false;
-
-// 		if (msg[*i + j - 1) == '-')
-// 			return false;
-// 	}
-// 	*i += j;
-
-// 	return true;
-// }
-
-// bool	is_other_prefix(std::string msg, size_t *i)
-// {
-// 	//size_t	j = 0;
-// 	(void) msg;
-// 	(void) i;
-// 	return true;
-// }
-
-
-// static bool isPrefixValid( std::string msg, size_t &i)
-// {
-// 	return (isServerName(msg, i) || isNickname(msg, i));
-// }
-
-//what about space managment
 /**
  * @brief Check if the message has a good parsing.
  *
@@ -130,9 +74,6 @@ static bool isCommandValid( std::string msg, size_t &i )
  */
 int	isMessageValid( std::string msg, size_t &i )
 {
-	// if (msg[i] == ':')
-	// 	if (isPrefixValid(msg, ++i) && !areSpaces(msg, i))
-	// 		return false;
 	
 	if (!isCommandValid(msg, i))
 		return isCrlf(msg, i);

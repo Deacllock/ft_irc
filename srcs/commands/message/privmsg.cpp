@@ -18,12 +18,12 @@ void	privmsg(Command cmd)
 		return usr->pushReply(":" + Command::server->getName() + " " + err_notexttosend(usr->getNickname()));
 		
 	std::string target = cmd.getParams()[0];
-	std::string msg = ":" + usr->getFullName() + " PRIVMSG " + target + " " + cmd.getParams()[1];//getColonMsg(cmd.getParams(), 1);
+	std::string msg = ":" + usr->getFullName() + " PRIVMSG " + target + " " + cmd.getParams()[1];
 
 	if (Command::server->isExistingChannelByName(target))
 	{
 		Channel	*chan = Command::server->getChannelByName(target);
-		if (!chan->isJoinedUser(usr)) //works with banned user too
+		if (!chan->isJoinedUser(usr))
 			return usr->pushReply(":" + Command::server->getName() + " " + err_cannotsendtochan(usr->getNickname(), target));
 		sendAll(chan->getUsers(), usr, msg);		
 	}

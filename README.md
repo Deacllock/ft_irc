@@ -1,7 +1,5 @@
 # ft_irc
 
-Notion: https://comet-sycamore-801.notion.site/Team-Home-e792cf6da5824c139b21268e9f21ae64
-
 # How to use it?
 
 ## Server side:
@@ -29,8 +27,6 @@ irssi -c localhost -p 6667 -w pwd -n test
 -> Usable with ::1 as IPv6
 -> Usable with localhost
 -> Usable with network ip
-
-//nc -C -N ircnet.clue.be 6667
 
 ## List of handled commands
 - INVITE

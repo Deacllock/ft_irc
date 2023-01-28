@@ -183,7 +183,7 @@ static void	infos_chan(User *usr, Channel *chan)
 	if (chan->getLimit() != limit)
 		mode += "l " + intToString(chan->getLimit());
 
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+	usr->pushReply(":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 }
 
 /**
