@@ -28,6 +28,7 @@ void instanciateCommand()
 	Command::cmd_map["OPER"] = oper;
 
 	Command::cmd_map["PRIVMSG"] = privmsg;
+	Command::cmd_map["NOTICE"] = notice;
 }
 
 /*---------------- Constructors ----------------*/

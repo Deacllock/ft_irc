@@ -4,6 +4,7 @@
 # define TIMEOUT 60000 // 60 * 1000 = 1 minute
 # define BUFFER_SIZE 42
 # define NICK_DELAY 60 // 1 minute
+# define LIMIT_MAX 4294967295UL
 
 # include <ostream>
 # include <unistd.h>

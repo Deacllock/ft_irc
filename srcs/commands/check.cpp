@@ -27,7 +27,7 @@ static bool isMiddle( std::string msg, size_t &i )
 	if (!nospcrlfcl(msg[i]))
 		return (false);
 	i++;
-	while (nospcrlfcl(msg[i]) || msg[i] == ':') //: not usefull?
+	while (nospcrlfcl(msg[i]) || msg[i] == ':')
 		i++;
 	return (true);
 }
@@ -54,7 +54,6 @@ static bool areParamValids( std::string msg, size_t &i )
 
 static bool isCommandValid( std::string msg, size_t &i )
 {
-	
 	if (isalpha(msg[i]))
 	{
 		while (isalpha(msg[i]))
@@ -74,6 +73,8 @@ static bool isCommandValid( std::string msg, size_t &i )
  */
 int	isMessageValid( std::string msg, size_t &i )
 {
+	if (msg.find("\r\n") >= 510)
+		return false;
 	
 	if (!isCommandValid(msg, i))
 		return false;

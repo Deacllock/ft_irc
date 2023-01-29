@@ -31,7 +31,8 @@ void	kill( Command cmd );
 void	oper( Command cmd );
 void	user_mode( Command cmd );
  
-/*---------------- Operator ----------------*/
+/*---------------- Messages ----------------*/
 void	privmsg( Command cmd );
+void	notice( Command cmd );
 
 #endif

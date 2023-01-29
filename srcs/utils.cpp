@@ -51,6 +51,9 @@ static bool	isChanstring(char c)
 
 bool	checkChannelName(std::string name)
 {
+	if (name == "" || name.length() >= 50)
+		return false;
+
 	int	i = 1;
 	if (name[0] != '#' && name[0] != '+' && name[0] != '&' && name[0] != '!')
 		return false;

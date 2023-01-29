@@ -157,7 +157,7 @@ static int	read_and_parse(User *user)
 	}
 	
 	#ifdef DEBUG
-		std::cout << user->getNickname() << " < " << msg; //debug
+		std::cout << user->getNickname() << " < " << msg << std::flush; //debug
 	#endif
 
 	handle_input(user, msg);
