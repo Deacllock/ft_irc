@@ -99,20 +99,33 @@ void	Command::split_str(std::string str)
 
 void	handle_input(User *user, std::string user_input)
 {
-	std::string cur = user->popIncompleteCmd();
-	while (true)
+	std::string remainData = user->popIncompleteCmd() + user_input;
+	std::string curMsg;
+
+	while (remainData != "")
 	{
 		size_t i = 0;
-		if (isMessageValid(user_input, i) == INCOMPLETE)
-			return user->pushIncompleteCmd(cur + user_input.substr(0, i));
+		int validity = isMessageValid(remainData, i);
+	
+		if (validity == INCOMPLETE)
+			return user->pushIncompleteCmd(remainData);
 
-		cur += user_input.substr(0, i - 2);
-		std::string next = user_input.substr(i, user_input.length());
-		user_input = next;
-		if (cur == "")
+		else if (validity == false)
+		{
+			size_t nextI = remainData.find("\r\n");
+
+			if (nextI != 0)
+				user->pushReply(":" + Command::server->getName() + " " + error("Cannot parse command"));
+			if (nextI == std::string::npos || nextI + 2 == remainData.length())
+				return;
+			remainData = remainData.substr(nextI + 2, remainData.length());
 			continue;
+		}
 
-		Command c(user, cur);
+		curMsg = remainData.substr(0, i - 2);
+		remainData = remainData.substr(i, remainData.length());
+
+		Command c(user, curMsg);
 		if (c.getHandler())
 		{
 			std::string cmd = c.getCmd();
@@ -124,6 +137,5 @@ void	handle_input(User *user, std::string user_input)
 		}
 		else
 			user->pushReply(":" + c.server->getName() + " " + error(c.getCmd() + " :Cannot find command"));
-		cur = "";
 	}
 }

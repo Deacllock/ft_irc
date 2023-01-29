@@ -74,6 +74,7 @@ static bool isCommandValid( std::string msg, size_t &i )
  */
 int	isMessageValid( std::string msg, size_t &i )
 {
+	
 	if (!isCommandValid(msg, i))
 		return false;
 
