@@ -34,5 +34,6 @@ void	user_mode( Command cmd );
  
 /*---------------- Message ----------------*/
 void	privmsg( Command cmd );
+void	notice( Command cmd );
 
 #endif

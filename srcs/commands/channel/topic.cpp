@@ -21,9 +21,12 @@ void	topic(Command cmd)
 	if (cmd.getParams().size() == 1)
 	{
 		if (chan->getTopic() == "")
-			return usr->pushReply(":" + cmd.server->getName() + " " + rpl_notopic(usr->getNickname(), chan->getName()));
+			return;
 		return usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 	}
+
+	if (!chan->isJoinedUser(usr))
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
 
 	std::string topic;
 	if (cmd.getParams()[1][0] == ':')
@@ -31,13 +34,10 @@ void	topic(Command cmd)
 	else
 		topic = cmd.getParams()[1];
 
-	if (!chan->isJoinedUser(usr))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
-
-	if (!chan->isOperatorUser(usr))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
-
 	chan->setTopic(topic);
-	sendAll(chan->getUsers(), NULL, ":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
-	
+	if (chan->getTopic() == "")
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_notopic(usr->getNickname(), chan->getName()));
+	else
+		usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
+	sendAll(chan->getUsers(), usr, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " " + cmd.getParams()[1]);	
 }

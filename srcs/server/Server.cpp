@@ -43,7 +43,7 @@ Server & Server::operator=( const Server &rhs )
 	this->_port = rhs._port;
 	this->_password = rhs._password;
 	this->_sockfd = rhs._sockfd;
-	this->_users = rhs._users; //check vector cpy
+	this->_users = rhs._users;
 	return (*this);
 }
  
