@@ -1,0 +1,5 @@
+Topic, il manque un topic message a envoyer a la personne qui change le topic
+
+mode channel, il ne faut pas envoyer des RPL 324 aux autres users mais un mode message ( :user MODddE #channel [modes] )
+
+

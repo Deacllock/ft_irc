@@ -39,8 +39,7 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	else
 		chan->removeOperator(newOp);
 
-	sendAll(chan->getUsers(), usr, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
-	//usr->pushReply(":" + usr->getFullName() + " MODE " + chan->getName() + " " + charToString(sym) + "o " + param);
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "o " + param);
 }
 
 static bool	isLimitValid(std::string limit)
@@ -83,7 +82,7 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 		chan->setLimit(-1);
 		param = "";
 	}
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "l", param));
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "l " + param);
 }
 
 static void	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
@@ -91,7 +90,7 @@ static void	setInviteOnlyForChan(User *usr, Channel *chan, char sym)
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 	chan->setInviteOnly(sym == '+');
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "i", ""));
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "i");
 }
 
 static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
@@ -131,7 +130,7 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 	else if (chan->getKey() == param)
 		chan->setKey("");
 
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "k", param));
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "k " + param);
 }
 
 static	void	do_rpl_banlist(User *usr, Channel *chan)
@@ -188,7 +187,7 @@ static  void	setBanForChan(User *usr, Channel *chan, std::vector<std::string> &p
 			}
 		}
 	}
-	sendAll(chan->getUsers(), NULL, ":" + Command::server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "b", param));
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "b " + param);
 }
 
 static void	infos_chan(User *usr, Channel *chan)
