@@ -21,7 +21,7 @@ void	topic(Command cmd)
 	if (cmd.getParams().size() == 1)
 	{
 		if (chan->getTopic() == "")
-			return;
+			return usr->pushReply(":" + cmd.server->getName() + " " + rpl_notopic(usr->getNickname(), chan->getName()));
 		return usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
 	}
 
@@ -35,9 +35,5 @@ void	topic(Command cmd)
 		topic = cmd.getParams()[1];
 
 	chan->setTopic(topic);
-	if (chan->getTopic() == "")
-		usr->pushReply(":" + cmd.server->getName() + " " + rpl_notopic(usr->getNickname(), chan->getName()));
-	else
-		usr->pushReply(":" + cmd.server->getName() + " " + rpl_topic(usr->getNickname(), chan->getName(), chan->getTopic()));
-	sendAll(chan->getUsers(), usr, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " " + cmd.getParams()[1]);	
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " " + topic);	
 }
