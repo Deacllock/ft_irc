@@ -23,14 +23,12 @@ void	invite(Command cmd)
 
 	if (!chan->isJoinedUser(usr))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
-	
-	if (!chan->isOperatorUser(usr))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_chanoprivsneeded(chan->getName()));
-
-	if (!Command::server->isExistingUserByName(nickname))
-		return usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchnick(usr->getNickname(), nickname));
 
 	User	*userToInvite = Command::server->getUserByName(nickname);
+
+	if (!userToInvite)
+		return usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchnick(usr->getNickname(), nickname));
+
 	if (chan->isJoinedUser(userToInvite))
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_useronchannel(usr->getNickname(), nickname, channel));
 

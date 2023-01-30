@@ -208,7 +208,7 @@ static void	infos_chan(User *usr, Channel *chan)
 	if (mode != "")
 		mode = "+" + mode;
 
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode + " " + params, ""));
+	usr->pushReply(":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode + " " + params, ""));
 }
 
 /**

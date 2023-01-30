@@ -73,7 +73,10 @@ static bool isCommandValid( std::string msg, size_t &i )
  */
 int	isMessageValid( std::string msg, size_t &i )
 {
-	if (msg.find("\r\n") >= 510)
+	size_t crlfI = msg.find("\r\n");
+
+    if ((crlfI >= 510 && crlfI != std::string::npos)
+		|| (crlfI == std::string::npos && msg.length() >= 510))
 		return false;
 	
 	if (!isCommandValid(msg, i))

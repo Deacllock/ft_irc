@@ -2,7 +2,7 @@
 
 #include "Server.hpp"
 #include "utils.hpp"
-#include "numericReplies.hpp"
+#include "commandHandlers.hpp"
 
 unsigned long	Server::_pingID = 0;
 
@@ -90,15 +90,7 @@ void Server::addUser( int fd )
 void     Server::removeUser( User *user )
 {
 	removeElmFromVector(this->_users, user);
-
-	std::vector<Channel *> joinedChan = user->getJoinedChan();
-	for (std::vector<Channel *>::iterator it = joinedChan.begin();
-		it != joinedChan.end(); it++)
-	{
-		(*it)->removeBannedUser(user);
-		(*it)->removeOperator(user);
-		(*it)->removeUser(user);
-	}
+	part(Command(user, "PART " + user->listAllChans() + " :Leaving server."));
 	delete user;
 }
 
