@@ -72,7 +72,10 @@ void	user_mode(Command cmd)
 		if (parseParams(isOp, params))
 			usr->pushReply(":" + cmd.server->getName() + " " + err_umodeunknownflag(usr->getNickname()));
 		if (usr->isOperator() && !isOp)
-			rpl_umodeis(usr->getNickname(), "-o");
+		{
+			usr->setOperator(isOp);
+			usr->pushReply(":" + cmd.server->getName() + " " + rpl_umodeis(usr->getNickname(), "-o"));
+		}
 	}
 
 	else 

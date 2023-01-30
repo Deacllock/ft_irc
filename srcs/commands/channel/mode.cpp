@@ -15,15 +15,18 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	User	*newOp;
 	std::string	param;
 
+	if (params.size() > i && params[i][0] != '+' && params[i][0] != '-')
+	{
+		param = params[i];
+		params.erase(params.begin() + i);
+	}
+
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 	
 	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
 		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
-	param = params[i];
-
-	params.erase(params.begin() + i);
 	if (!Command::server->isExistingUserByName(param))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_usernotinchannel(usr->getNickname(), param, chan->getName()));
 	
@@ -39,7 +42,6 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
 }
 
-
 static bool	isLimitValid(std::string limit)
 {
 	for (size_t i = 0; limit[i];  i++)
@@ -52,6 +54,12 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 {
 	std::string	param;
 
+	if (params.size() > i && params[i][0] != '+' && params[i][0] != '-')
+	{
+		param = params[i];
+		params.erase(params.begin() + i);
+	}
+
 	if (sym == '+')
 	{
 		if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
@@ -63,8 +71,6 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 				mode += " INF";
 			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 		}
-		param = params[i];
-		params.erase(params.begin() + i);
 		if (!isLimitValid(param))
 			return usr->pushReply(":" + usr->server->getName() + " " + error("Improper limit parameter."));
 		chan->setLimit(stringToULong(param));
@@ -108,18 +114,19 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 			return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	}
 
+	param = params[i];
+	params.erase(params.begin() + i);
+
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
-	
-	param = params[i];
 
-	params.erase(params.begin() + i);
 	if (sym == '+')
 	{
 		if (chan->getKey() != "")
 			return usr->pushReply(":" + usr->server->getName() + " " + err_keyset(usr->getNickname(), chan->getName()));
 		chan->setKey(param);
 	}
+
 	else if (chan->getKey() == param)
 		chan->setKey("");
 
@@ -156,12 +163,11 @@ static  void	setBanForChan(User *usr, Channel *chan, std::vector<std::string> &p
 			return usr->pushReply(":" + Command::server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	}
 	
+	param = params[i];
+	params.erase(params.begin() + i);
+
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + Command::server->getName() + " " + err_chanoprivsneeded(chan->getName()));
-
-	param = params[i];
-
-	params.erase(params.begin() + i);
 
 	std::vector<std::string> users = splitByComma(param);
 	std::vector<std::string>::iterator	it = users.begin();

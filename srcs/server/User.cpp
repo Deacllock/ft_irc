@@ -117,8 +117,8 @@ void	User::quitAllChan()
 
 	for (; it < it_end; it++)
 	{
-		(*it)->removeUser(this);
 		(*it)->removeOperator(this);
+		(*it)->removeUser(this);
 	}
 	this->_joinedChan.clear();
 }

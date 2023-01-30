@@ -1,17 +1,5 @@
 #include "commandHandlers.hpp"
 
-static void disconnectFromAllChannels(User *user)
-{
-	std::vector<Channel *> joinedChan = user->getJoinedChan();
-	for (std::vector<Channel *>::iterator it = joinedChan.begin();
-	it != joinedChan.end(); it++)
-	{
-		(*it)->removeBannedUser(user);
-		(*it)->removeOperator(user);
-		(*it)->removeUser(user);
-	}
-}
-
 /**
  * @brief The QUIT command close the client session with a quit message.
  * 
@@ -31,5 +19,5 @@ void	quit(Command cmd)
 
 	usr->setStatus(DISCONNECTED);
 	usr->sendAllChannels(":" + usr->getFullName() + " QUIT :Quit:" + msg);
-	disconnectFromAllChannels(usr);
+	usr->quitAllChan();
 }
