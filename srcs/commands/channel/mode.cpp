@@ -13,7 +13,7 @@
 static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	User	*newOp;
-	std::string	param;
+	std::string	param = "";
 
 	if (params.size() > i && params[i][0] != '+' && params[i][0] != '-')
 	{
@@ -24,7 +24,7 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 	
-	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
+	if (param == "")
 		return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	
 	if (!Command::server->isExistingUserByName(param))
@@ -39,7 +39,8 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	else
 		chan->removeOperator(newOp);
 
-	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
+	sendAll(chan->getUsers(), usr, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
+	//usr->pushReply(":" + usr->getFullName() + " MODE " + chan->getName() + " " + charToString(sym) + "o " + param);
 }
 
 static bool	isLimitValid(std::string limit)
@@ -52,7 +53,7 @@ static bool	isLimitValid(std::string limit)
 
 static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
-	std::string	param;
+	std::string	param = "";
 
 	if (params.size() > i && params[i][0] != '+' && params[i][0] != '-')
 	{
@@ -62,7 +63,7 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 
 	if (sym == '+')
 	{
-		if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
+		if (param == "")
 		{
 			std::string mode = "l";
 			if (chan->getLimit() != (unsigned long)-1)
@@ -195,6 +196,7 @@ static void	infos_chan(User *usr, Channel *chan)
 	std::string		mode = "";
 	std::string		params = "";
 	unsigned long	limit = -1;
+	
 	
 	if (chan->isInviteOnly())
 		mode += "i";
