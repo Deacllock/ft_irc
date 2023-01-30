@@ -45,7 +45,6 @@ void	names(Command cmd)
 	if (cmd.getParams().size() == 0)
 		return listAllUsers(usr->getJoinedChan(), usr);
 
-
 	std::vector<std::string>	channels_str = splitByComma(cmd.getParams()[0]);
 	std::vector<Channel *>		channels;
 
