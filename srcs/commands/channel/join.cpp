@@ -44,7 +44,7 @@ void	join(Command cmd)
 				chan->addOperator(usr);
 			}
 
-			if (chan->getKey() != "" && (it_k > it_k_end || *(it_k++) != chan->getKey()))
+			if (chan->getKey() != "" && (it_k == it_k_end || *(it_k++) != chan->getKey()))
 				usr->pushReply(":" + cmd.server->getName() + " " + err_badchannelkey(usr->getNickname(), chan->getName()));
 
 			else if (chan->isBannedUser(usr))

@@ -39,6 +39,15 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " +  rpl_channelmodeis(usr->getNickname(), chan->getName(), charToString(sym) + "o", param));
 }
 
+
+static bool	isLimitValid(std::string limit)
+{
+	for (size_t i = 0; limit[i];  i++)
+		if (!isdigit(limit[i]))
+			return false;
+	return stringToULong(limit) <= LIMIT_MAX;
+}
+
 static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &params, char sym, size_t i)
 {
 	std::string	param;
@@ -55,8 +64,10 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 		}
 		param = params[i];
-		chan->setLimit(stringToULong(param)); //no verif?
 		params.erase(params.begin() + i);
+		if (!isLimitValid(param))
+			return usr->pushReply(":" + usr->server->getName() + " " + error("Improper limit parameter."));
+		chan->setLimit(stringToULong(param));
 	}
 	else if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
