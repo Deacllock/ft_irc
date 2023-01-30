@@ -12,7 +12,7 @@ FOLDER_TO_CREATE = server commands commands/connection commands/channel commands
 SRCS = main.cpp utils.cpp\
 		$(addprefix server/, Server.cpp serverUtils.cpp User.cpp Channel.cpp) \
 		$(addprefix commands/, check.cpp Command.cpp numericReplies.cpp\
-		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp ping.cpp pong.cpp) \
+		$(addprefix connection/, pass.cpp nick.cpp user.cpp cap.cpp quit.cpp ping.cpp pong.cpp whois.cpp) \
 		$(addprefix channel/, join.cpp part.cpp invite.cpp topic.cpp list.cpp names.cpp mode.cpp) \
 		$(addprefix operator/, die.cpp kill.cpp oper.cpp kick.cpp userMode.cpp) \
 		$(addprefix message/, sendMessage.cpp))

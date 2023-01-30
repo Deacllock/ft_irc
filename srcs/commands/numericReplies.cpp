@@ -7,6 +7,16 @@ std::string	rpl_welcome( std::string nick, std::string host ) { return "001 " + 
 std::string rpl_umodeis( std::string nick, std::string user_mode ) {return "221 " + nick + " " + user_mode; }
 //301
 std::string	rpl_away( std::string nick, std::string awayMess ) { return "301 " + nick + " :" + awayMess; }
+//311
+std::string	rpl_whoisuser( std::string nick, std::string user, std::string host, std::string realname ) { return "311 " + nick + " " + user + " " + host + " * :" + realname; }
+//312
+std::string	rpl_whoisserver( std::string nick, std::string server, std::string serverinfo ) { return "312 " + nick + " " + server + " :" + serverinfo; }
+//313
+std::string	rpl_whoisoperator( std::string nick ) { return "313 " + nick + " :is an IRC operator"; }
+//318
+std::string	rpl_endofwhois( std::string nick ) { return "318 " + nick + " :End of WHOIS list"; }
+//319
+std::string	rpl_whoischannels( std::string nick, std::string channels ) { return "319 " + nick + " :" + channels; }
 //322
 std::string	rpl_list( std::string nick, std::string channel, std::string visible, std::string topic ) { return "322 " + nick + " " + channel + " " + visible + " :" + topic; }
 //323
