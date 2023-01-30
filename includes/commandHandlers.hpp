@@ -15,7 +15,6 @@ void	quit( Command cmd );
 void	mode( Command cmd );
 void	ping( Command cmd );
 void	pong( Command cmd );
-void	whois( Command cmd );
 
 /*---------------- Channel ----------------*/
 void	join( Command cmd );

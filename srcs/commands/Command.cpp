@@ -13,7 +13,6 @@ void instanciateCommand()
 	Command::cmd_map["QUIT"] = quit;
 	Command::cmd_map["PING"] = ping;
 	Command::cmd_map["PONG"] = pong;
-	Command::cmd_map["WHOIS"] = whois;
 
 	Command::cmd_map["JOIN"] = join;
 	Command::cmd_map["PART"] = part;
