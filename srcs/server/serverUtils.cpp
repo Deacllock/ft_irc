@@ -122,7 +122,7 @@ static void	reply(User *usr)
 		std::string reply = usr->getReplies().front();
 		ret = send(usr->getFd(), reply.c_str(), reply.length(), MSG_DONTWAIT);
 		#ifdef DEBUG
-			std::cout << std::endl << usr->getNickname() << " > " << reply; //debug
+			std::cout << usr->getNickname() << " > " << reply; //debug
 		#endif
 		if (ret >= 0 && static_cast<size_t>(ret) == reply.length())
 			usr->popReply();
@@ -157,7 +157,7 @@ static int	read_and_parse(User *user)
 	}
 	
 	#ifdef DEBUG
-		std::cout << user->getNickname() << " < " << msg << std::flush; //debug
+		std::cout << user->getNickname() << " < " << msg << std::endl; //debug
 	#endif
 
 	handle_input(user, msg);
