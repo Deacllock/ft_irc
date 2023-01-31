@@ -86,15 +86,22 @@ void	Command::split_str(std::string str)
 		if (param == "" && !getline(ss, elem, ' '))
 			break;
 		param += elem;
-		if (param[0] == ':')
+		while (param[0] == ':')
 		{
+			param = param.substr(1, param.length());
 			while (getline(ss, elem, ' ') && elem != "" && elem[0] != ':')
 				param += (" " + elem);
 			this->_params.push_back(param);
+			if (elem != "")
+				param = elem;
+			else
+				param = "";
 		}
-		else
+		if (param != "")
+		{
 			this->_params.push_back(param);
-		param = "";
+			param = "";
+		}
 	}
 }
 
@@ -136,5 +143,8 @@ void	handle_input(User *user, std::string user_input)
 			else
 				c.getHandler()(c);
 		}
+		else
+			user->pushReply(":" + Command::server->getName() + " " + error(c.getCmd() + " :Unknown command"));
+
 	}
 }
