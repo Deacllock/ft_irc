@@ -136,7 +136,5 @@ void	handle_input(User *user, std::string user_input)
 			else
 				c.getHandler()(c);
 		}
-		else
-			user->pushReply(":" + c.server->getName() + " " + error(c.getCmd() + " :Cannot find command"));
 	}
 }

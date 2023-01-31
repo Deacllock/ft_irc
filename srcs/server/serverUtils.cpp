@@ -120,7 +120,7 @@ static void	reply(User *usr)
 	while (usr->getReplies().size())
 	{
 		std::string reply = usr->getReplies().front();
-		ret = send(usr->getFd(), reply.c_str(), reply.length(), MSG_DONTWAIT);
+		ret = send(usr->getFd(), reply.c_str(), reply.length(), MSG_DONTWAIT | MSG_NOSIGNAL);
 		#ifdef DEBUG
 			std::cout << usr->getNickname() << " > " << reply; //debug
 		#endif
@@ -157,7 +157,9 @@ static int	read_and_parse(User *user)
 	}
 	
 	#ifdef DEBUG
-		std::cout << user->getNickname() << " < " << msg << std::endl; //debug
+		std::cout << user->getNickname() << " < " << msg;
+		if (msg[msg.length() - 1] != '\n')
+			std::cout << std::flush; //debug
 	#endif
 
 	handle_input(user, msg);
@@ -182,8 +184,6 @@ int	Server::server_start()
 	this->_sockfd = sockfd;
 	return 0;
 }
-
-
 
 /**
  * @brief While server is up, handle user connections.
@@ -225,8 +225,9 @@ int Server::client_interactions()
 
 		if (ret == 0)
 		{
-			this->checkPong();
-			this->sendPing();
+			// this->checkPong();
+			// this->sendPing();
+			continue;
 		}
 		
 		for (size_t size = fds.size(), i = 0; i < size; i++, size = fds.size())

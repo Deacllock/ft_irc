@@ -87,7 +87,7 @@ std::string	err_notonchannel( std::string nick, std::string channel ) { return "
 //443
 std::string	err_useronchannel( std::string nick, std::string user, std::string channel ) { return "443 " + nick + " " + user + " " + channel + " :is already on channel"; }
 //461
-std::string	err_needmoreparams( std::string nick, std::string command ) { return "461 " + nick + " " + command + ": Not enough parameters"; }
+std::string	err_needmoreparams( std::string nick, std::string command ) { return "461 " + nick + " " + command + " :Not enough parameters"; }
 //462
 std::string	err_alreadyregistered( std::string nick, std::string client ) { return "462 " + nick + " " + client + " :You may not reregister"; }
 //464
