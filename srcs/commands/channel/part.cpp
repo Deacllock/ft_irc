@@ -38,7 +38,7 @@ void	part(Command cmd)
 
 		else
 		{
-			sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " PART " + chan->getName() + reason);
+			sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " PART " + chan->getName() + ":" + reason);
 			chan->removeOperator(usr);
 			chan->removeUser(usr);
 			usr->removeJoinedChan(chan);

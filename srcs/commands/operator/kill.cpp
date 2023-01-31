@@ -27,7 +27,7 @@ void	kill(Command cmd)
 	
 	toKill->setStatus(DISCONNECTED);
 
-	std::string reason = " " + params[1];
+	std::string reason = " :" + params[1];
 
 	toKill->pushReply(":" + usr->getFullName() + " KILL " + toKill->getNickname());
 	toKill->pushReply(":" + cmd.server->getName() + " " + error("Closing Link: " + cmd.server->getName() + " Killed " + usr->getFullName() + reason));

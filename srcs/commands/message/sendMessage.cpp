@@ -21,9 +21,9 @@ static void	sendMessage(Command cmd, bool sendReply)
 	std::string target = cmd.getParams()[0];
 	std::string msg;
 	if (sendReply)
-		msg = ":" + usr->getFullName() + " PRIVMSG " + target + " " + cmd.getParams()[1];
+		msg = ":" + usr->getFullName() + " PRIVMSG " + target + " :" + cmd.getParams()[1];
 	else
-		msg = ":" + usr->getFullName() + " NOTICE " + target + " " + cmd.getParams()[1];
+		msg = ":" + usr->getFullName() + " NOTICE " + target + " :" + cmd.getParams()[1];
 
 	if (Command::server->isExistingChannelByName(target))
 	{

@@ -18,6 +18,6 @@ void	quit(Command cmd)
 		msg = " " + cmd.getParams()[0];
 
 	usr->setStatus(DISCONNECTED);
-	usr->sendAllChannels(":" + usr->getFullName() + " QUIT :Quit:" + msg);
+	usr->sendAllChannels(":" + usr->getFullName() + " QUIT :" + msg);
 	usr->quitAllChan();
 }

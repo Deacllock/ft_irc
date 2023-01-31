@@ -74,7 +74,7 @@ void	kick(Command cmd)
 	std::string comment = " :Pitiful kicker kicked again";
 
 	if (params.size() > 2 && params[2] != "")
-		comment = " " + params[2];
+		comment = " :" + params[2];
 
 	if (channels.size() != users.size() && channels.size() != 1)
 		return usr->pushReply(":" + cmd.server->getName() + " " + error("KICK :Syntax error"));

@@ -133,7 +133,7 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 	else if (chan->getKey() == param)
 		chan->setKey("");
 
-	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "k " + param);
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "k :" + param);
 }
 
 static	void	do_rpl_banlist(User *usr, Channel *chan)

@@ -32,5 +32,5 @@ void	topic(Command cmd)
 	topic = cmd.getParams()[1];
 
 	chan->setTopic(topic);
-	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " " + topic);	
+	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " :" + topic);	
 }
