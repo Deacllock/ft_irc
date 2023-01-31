@@ -186,11 +186,13 @@ static  void	setBanForChan(User *usr, Channel *chan, std::vector<std::string> &p
 			else
 			{
 				chan->addBannedUser(usrBan);
-				kick(Command(usr, "KICK " + chan->getName() + " " + *it + " :Banned from " + chan->getName()));
+				if (chan->isJoinedUser(usrBan))
+					kick(Command(usr, "KICK " + chan->getName() + " " + *it + " :Banned from " + chan->getName()));
 			}
 		}
 	}
-	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "b " + param);
+	if (Command::server->getChannelByName(params[0]))
+		sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " MODE " + chan->getName() + " " + sym + "b " + param);
 }
 
 static void	infos_chan(User *usr, Channel *chan)
