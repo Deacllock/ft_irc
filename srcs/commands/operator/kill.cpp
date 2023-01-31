@@ -15,7 +15,7 @@ void	kill(Command cmd)
 	if (!usr->isOperator())
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noprivileges(usr->getNickname()));
 	
-	if (params.size() < 2 || params[1] == "")
+	if (params.size() < 2 || params[0] == "" || params[1] == "")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KILL"));
 	
 	if (params[0] == cmd.server->getName())

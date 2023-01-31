@@ -12,7 +12,7 @@ void	oper(Command cmd)
 	std::vector<std::string> params = cmd.getParams();
 	User	*usr = cmd.getUser();
 
-	if (params.size() < 2)
+	if (params.size() < 2 || params[0] == "" || params[1] == "")
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "OPER"));
 
 	else if (!cmd.server->checkOpeCredentials(params[0], params[1]))

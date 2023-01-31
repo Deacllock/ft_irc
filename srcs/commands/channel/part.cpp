@@ -12,7 +12,7 @@ void	part(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() == 0)
+	if (cmd.getParams().size() == 0 || cmd.getParams()[0] == "")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "PART"));
 	
 	std::string reason = "";

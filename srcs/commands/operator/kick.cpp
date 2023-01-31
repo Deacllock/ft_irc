@@ -66,7 +66,7 @@ void	kick(Command cmd)
 	std::vector<std::string> params = cmd.getParams();
 	User *usr = cmd.getUser();
 
-	if (params.size() < 2)
+	if (params.size() < 1 || cmd.getParams()[0] == "" || cmd.getParams()[1] == "")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "KICK"));	
 
 	std::vector<std::string> channels = splitByComma(params[0]);

@@ -11,14 +11,14 @@ void	topic(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() < 1)
+	if (cmd.getParams().size() < 1 || cmd.getParams()[0] == "")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "TOPIC"));
 
 	Channel *chan = Command::server->getChannelByName(cmd.getParams()[0]);
 	if (!chan)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_nosuchchannel(usr->getNickname(), cmd.getParams()[0]));
 
-	if (cmd.getParams().size() == 1)
+	if (cmd.getParams().size() == 1 && cmd.getParams()[1] != "")
 	{
 		if (chan->getTopic() == "")
 			return usr->pushReply(":" + cmd.server->getName() + " " + rpl_notopic(usr->getNickname(), chan->getName()));

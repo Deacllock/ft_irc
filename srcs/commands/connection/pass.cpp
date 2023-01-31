@@ -18,7 +18,7 @@ void	pass(Command cmd)
 	if (usr->isRegistered())
 	 	usr->pushReply(":" + cmd.server->getName() + " " + err_alreadyregistered(usr->getNickname(), username));
 
-	else if (cmd.getParams().size() < 1)
+	else if (cmd.getParams().size() < 1 || cmd.getParams()[0] == "")
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "PASS"));
 
 	else if (Command::server->checkPassword(cmd.getParams()[0]))

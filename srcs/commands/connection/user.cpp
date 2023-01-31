@@ -49,7 +49,7 @@ void	user( Command cmd )
 	if (usr->isRegistered())
 		usr->pushReply(":" + cmd.server->getName() + " " + err_alreadyregistered(usr->getNickname(), usr->getUsername()));
 
-	else if (params.size() < 4)
+	else if (params.size() < 4 || cmd.getParams()[0] == "" || cmd.getParams()[1] == "" || cmd.getParams()[2] == "" || cmd.getParams()[3] == "")
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "USER"));
 
 	else if (isUsernameValid(params[0]))

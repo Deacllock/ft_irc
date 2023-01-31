@@ -61,7 +61,7 @@ void	user_mode(Command cmd)
 	User	*usr = cmd.getUser();
 	bool	isOp = true;
 
-	if ( params.size() < 1)
+	if ( params.size() < 1 || params[0] == "")
 		usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
     else if (cmd.getUser()->getNickname() != params[0])

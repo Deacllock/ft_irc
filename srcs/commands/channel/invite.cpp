@@ -11,7 +11,7 @@ void	invite(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() < 2)
+	if (cmd.getParams().size() < 2 || cmd.getParams()[0] == "" || cmd.getParams()[1] == "")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "INVITE"));
 	
 	std::string nickname = cmd.getParams()[0];

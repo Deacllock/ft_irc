@@ -15,7 +15,7 @@ static void operatorModeInChan(User *usr, Channel *chan, std::vector<std::string
 	User	*newOp;
 	std::string	param = "";
 
-	if (params.size() > i && params[i][0] != '+' && params[i][0] != '-')
+	if (params.size() > i && params[i] != "" && params[i][0] != '+' && params[i][0] != '-')
 	{
 		param = params[i];
 		params.erase(params.begin() + i);
@@ -97,7 +97,7 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 {
 	std::string	param;
 
-	if ( i < params.size() && params[i][0] != '+' && params[i][0] != '-')
+	if ( i < params.size() && params[i] != "" && params[i][0] != '+' && params[i][0] != '-')
 	{	
 		param = params[i];
 		params.erase(params.begin() + i);
@@ -156,7 +156,7 @@ static  void	setBanForChan(User *usr, Channel *chan, std::vector<std::string> &p
 	std::string					param;
 	User						*usrBan;
 
-	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
+	if (params.size() <= i || params[i] == "" || params[i][0] == '+' || params[i][0] == '-')
 	{
 		if (sym == '+')
 			return do_rpl_banlist(usr, chan);
@@ -292,7 +292,7 @@ void	mode(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() < 1)
+	if (cmd.getParams().size() < 1 || cmd.getParams()[0] == "")
 		return usr->pushReply(":" + Command::server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 
 	std::string name = cmd.getParams()[0];

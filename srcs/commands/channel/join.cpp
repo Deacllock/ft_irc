@@ -13,7 +13,7 @@ void	join(Command cmd)
 {
 	User	*usr = cmd.getUser();
 
-	if (cmd.getParams().size() < 1)
+	if (cmd.getParams().size() < 1 || cmd.getParams()[0] == "")
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_needmoreparams(usr->getNickname(), "JOIN"));
 	
 	if (cmd.getParams()[0] == "0")
