@@ -61,6 +61,7 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 
 /*---------------- Non-member functions ----------------*/
 
+#include <iostream>
 /**
  * @brief Split string in command and parameters.
  *
@@ -69,39 +70,28 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
  */
 void	Command::split_str(std::string str)
 {
-	std::istringstream ss(str);
-	std::string elem;
+	size_t i = 0;
 
-	if (getline(ss, elem, ' ') && elem != "")
-	{
-		for (int i = 0; elem[i]; i++)
-			if (islower(elem[i]))
-				elem[i] = toupper(elem[i]);
-		this->_cmd = elem;
-	}
+	for ( ; str[i] && str[i] != ' '; i++)
+		this->_cmd += toupper(str[i]);
 
 	std::string param = "";
-	while (1)
+	while (++i < str.length())
 	{
-		if (param == "" && !getline(ss, elem, ' '))
-			break;
-		param += elem;
-		while (param[0] == ':')
+		if (str[i] == ':' )
 		{
-			param = param.substr(1, param.length());
-			while (getline(ss, elem, ' ') && elem != "" && elem[0] != ':')
-				param += (" " + elem);
+			for (i++; str[i] && !(str[i] == ' ' && str[i + 1] && str[i + 1] == ':'); i++)
+				param += str[i];
 			this->_params.push_back(param);
-			if (elem != "")
-				param = elem;
-			else
-				param = "";
 		}
-		if (param != "")
+
+		else
 		{
+			for (; str[i] && str[i] != ' '; i++)
+				param += str[i];
 			this->_params.push_back(param);
-			param = "";
 		}
+		param = "";
 	}
 }
 
