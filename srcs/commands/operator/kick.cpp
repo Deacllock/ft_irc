@@ -73,7 +73,7 @@ void	kick(Command cmd)
 	std::vector<std::string> users = splitByComma(params[1]);
 	std::string comment = " :Pitiful kicker kicked again";
 
-	if (params.size() > 2 && params[2] != ":")
+	if (params.size() > 2 && params[2] != "")
 		comment = " " + params[2];
 
 	if (channels.size() != users.size() && channels.size() != 1)

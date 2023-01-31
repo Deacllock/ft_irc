@@ -29,10 +29,7 @@ void	topic(Command cmd)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_notonchannel(usr->getNickname(), chan->getName()));
 
 	std::string topic;
-	if (cmd.getParams()[1][0] == ':')
-		topic = cmd.getParams()[1].substr(1, cmd.getParams()[1].size() - 1);
-	else
-		topic = cmd.getParams()[1];
+	topic = cmd.getParams()[1];
 
 	chan->setTopic(topic);
 	sendAll(chan->getUsers(), NULL, ":" + usr->getFullName() + " TOPIC " + chan->getName() + " " + topic);	

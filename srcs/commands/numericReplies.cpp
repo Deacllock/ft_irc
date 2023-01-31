@@ -101,7 +101,7 @@ std::string err_channelisfull( std::string nick, std::string channel ) { return 
 //472
 std::string	err_unknownmode( std::string nick, std::string c, std::string channel ) { return "472 " + nick + "  " + c + " :is unknown mode char to me for " + channel; }
 //473
-std::string err_inviteonlychan( std::string nick, std::string channel ) { return "473 " + nick + " " + channel + " :Cannot join channel (+i)"; } // what is +i
+std::string err_inviteonlychan( std::string nick, std::string channel ) { return "473 " + nick + " " + channel + " :Cannot join channel (+i)"; }
 //474
 std::string err_bannedfromchan( std::string nick, std::string channel) { return "474 " + nick + " " + channel + " :Cannot join channel (+b)"; }
 //475

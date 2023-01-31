@@ -15,6 +15,6 @@ void	pong(Command cmd)
 	if (params.size() == 0)
 		return usr->pushReply(":" + cmd.server->getName() + " " + err_noorigin(usr->getNickname()));
 
-	if (params[0] == cmd.server->getPingValue() || params[0] == (":" + cmd.server->getPingValue()))
+	if (params[0] == cmd.server->getPingValue())
 		usr->subPing();
 }

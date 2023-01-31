@@ -24,7 +24,7 @@ void greetNewComer( Command cmd )
  */
 static bool	isUsernameValid( std::string username )
 {
-	if (username == "")
+	if (username == "" || username == "*")
 		return false;
 
 	for (size_t i = 0; i < username.length(); i++)
@@ -55,10 +55,7 @@ void	user( Command cmd )
 	else if (isUsernameValid(params[0]))
 	{
 		usr->setUsername(params[0]);
-		if (params[3][0] == ':')
-			usr->setRealName(params[3].substr(1, params[3].length()));
-		else
-			usr->setRealName(params[3]);
+		usr->setRealName(params[3]);
 		greetNewComer(cmd);
 	}
 }

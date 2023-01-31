@@ -69,7 +69,7 @@ static void	setLimitInChan(User *usr, Channel *chan, std::vector<std::string> &p
 				mode += " " + intToString(chan->getLimit());
 			else 
 				mode += " INF";
-			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+			return usr->pushReply(":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 		}
 		if (!isLimitValid(param))
 			return usr->pushReply(":" + usr->server->getName() + " " + error("Improper limit parameter."));
@@ -97,7 +97,13 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 {
 	std::string	param;
 
-	if (params.size() <= i || params[i][0] == '+' || params[i][0] == '-')
+	if ( i < params.size() && params[i][0] != '+' && params[i][0] != '-')
+	{	
+		param = params[i];
+		params.erase(params.begin() + i);
+	}
+
+	else
 	{
 		if (sym == '+')
 		{
@@ -106,16 +112,13 @@ static void	setKeyForChan(User *usr, Channel *chan, std::vector<std::string> &pa
 				mode += chan->getKey();
 			else
 				mode += "''";
-			return sendAll(chan->getUsers(), NULL, ":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
+			return usr->pushReply(":" + usr->server->getName() + " " + rpl_channelmodeis(usr->getNickname(), chan->getName(), mode, ""));
 		}
 		else if (!chan->isOperatorUser(usr))
 			return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 		else
 			return usr->pushReply(":" + usr->server->getName() + " " + err_needmoreparams(usr->getNickname(), "MODE"));
 	}
-
-	param = params[i];
-	params.erase(params.begin() + i);
 
 	if (!chan->isOperatorUser(usr))
 		return usr->pushReply(":" + usr->server->getName() + " " + err_chanoprivsneeded(chan->getName()));

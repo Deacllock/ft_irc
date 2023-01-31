@@ -61,7 +61,6 @@ Command::handler_type Command::getHandler() const	{ return this->_handler; }
 
 /*---------------- Non-member functions ----------------*/
 
-#include <iostream>
 /**
  * @brief Split string in command and parameters.
  *
