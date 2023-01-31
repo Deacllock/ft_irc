@@ -110,18 +110,6 @@ void	User::removeJoinedChan( Channel *c )
 		}
 	}
 }
-void	User::quitAllChan()
-{
-	std::vector<Channel *>::iterator it = this->_joinedChan.begin();
-	std::vector<Channel *>::iterator it_end = this->_joinedChan.end();
-
-	for (; it < it_end; it++)
-	{
-		(*it)->removeOperator(this);
-		(*it)->removeUser(this);
-	}
-	this->_joinedChan.clear();
-}
 
 std::string User::listAllChans()
 {

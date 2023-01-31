@@ -19,5 +19,4 @@ void	quit(Command cmd)
 
 	usr->setStatus(DISCONNECTED);
 	usr->sendAllChannels(":" + usr->getFullName() + " QUIT :" + msg);
-	usr->quitAllChan();
 }
