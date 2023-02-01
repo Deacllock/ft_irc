@@ -169,14 +169,18 @@ static  void	setBanForChan(User *usr, Channel *chan, std::vector<std::string> &p
 	param = params[i];
 	params.erase(params.begin() + i);
 
-
-
 	std::vector<std::string> users = splitByComma(param);
 	std::vector<std::string>::iterator	it = users.begin();
 	std::vector<std::string>::iterator	it_end = users.end();
 
 	for (; it < it_end; it++)
 	{
+		if (!Command::server->isExistingChannelByName(params[0]))
+			return usr->pushReply(":" + Command::server->getName() + " " + err_nosuchchannel(usr->getNickname(), params[0]));
+		
+		if (!chan->isJoinedUser(usr))
+			return usr->pushReply(":" + Command::server->getName() + " " + err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
+
 		if (!chan->isOperatorUser(usr))
 			return usr->pushReply(":" + Command::server->getName() + " " + err_chanoprivsneeded(chan->getName()));
 
@@ -259,8 +263,15 @@ void	channel_mode(Command cmd)
 	{
 		for (size_t j = 0; j < params[i].size(); j++)
 		{
+			if (!Command::server->isExistingChannelByName(params[0]))
+					return usr->pushReply(":" + Command::server->getName() + " " + err_nosuchchannel(usr->getNickname(), params[0]));
+			
+			if (!chan->isJoinedUser(usr))
+					return usr->pushReply(":" + Command::server->getName() + " " + err_usernotinchannel(usr->getNickname(), usr->getNickname(), chan->getName()));
+
 			switch (params[i][j])
 			{
+				
 				case '+':
 					sym = '+';
 					break;

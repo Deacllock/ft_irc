@@ -81,12 +81,12 @@ void	kick(Command cmd)
 	
 	if (channels.size() == 1)
 	{
-		Channel *curChan = cmd.server->getChannelByName(channels[0]);
-		if (!curChan)
-			return usr->pushReply(":" + usr->server->getName() + " " + err_nosuchchannel(usr->getNickname(), channels[0]));
-	
 		for (size_t i = 0; i < users.size(); i++)
 		{
+			Channel *curChan = cmd.server->getChannelByName(channels[0]);
+			if (!curChan)
+				return usr->pushReply(":" + usr->server->getName() + " " + err_nosuchchannel(usr->getNickname(), channels[0]));
+	
 			if (isKickPossible(curChan, usr))
 				kickUser(curChan, cmd, users[i], comment);
 		}
