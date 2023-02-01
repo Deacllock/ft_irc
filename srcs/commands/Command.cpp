@@ -75,8 +75,10 @@ void	Command::split_str(std::string str)
 		this->_cmd += toupper(str[i]);
 
 	std::string param = "";
-	while (++i < str.length())
+	while (i < str.length())
 	{
+		for (; str[i] && str[i] == ' '; i++);
+
 		if (str[i] == ':' )
 		{
 			for (i++; str[i] && !(str[i] == ' ' && str[i + 1] && str[i + 1] == ':'); i++)
