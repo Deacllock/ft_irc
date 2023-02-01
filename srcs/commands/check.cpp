@@ -14,6 +14,8 @@ static int	isCrlf( std::string msg, size_t &i )
 {
 	if (msg[i++] == '\r' && msg[i++] == '\n')
 		return true;
+	if (i < msg.length())
+		return false;
 	return INCOMPLETE;
 }
 
